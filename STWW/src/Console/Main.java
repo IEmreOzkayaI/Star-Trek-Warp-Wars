@@ -7,11 +7,8 @@ import tools.FileReader;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		ConsolePrinter cp = new ConsolePrinter();
-		
-		Maze maze = new Maze();
 		FileReader file = new FileReader();
-		maze.printMaze(file.readFile("maze.txt"));
-
+		ConsolePrinter cp = new ConsolePrinter(file.readFile("maze.txt"));
+		
 	}
 }
