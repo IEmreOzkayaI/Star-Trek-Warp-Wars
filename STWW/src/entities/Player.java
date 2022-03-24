@@ -43,4 +43,8 @@ public class Player {
 		this.coordinates[0] = xcoordinates;
 		this.coordinates[1] = ycoordinates;
 	}
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
