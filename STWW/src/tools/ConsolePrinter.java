@@ -39,6 +39,7 @@ public class ConsolePrinter {
 
 		int x = defaultX + 60;
 		int y = defaultY+1;
+
 		cn.getTextWindow().setCursorPosition(x, y);
 		System.out.println("Input");
 		cn.getTextWindow().setCursorPosition(x, y+1);
@@ -67,6 +68,8 @@ public class ConsolePrinter {
 		System.out.println("Time     :");
 		cn.getTextWindow().setCursorPosition(x, y + 22);
 		this.time();
+
+
 	}
 
 

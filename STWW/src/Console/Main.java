@@ -9,7 +9,6 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		FileReader file = new FileReader();
 		ConsolePrinter cp = new ConsolePrinter(file.readFile("maze.txt"));
-		  
 		
 		
 	}
