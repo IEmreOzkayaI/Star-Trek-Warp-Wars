@@ -1,15 +1,15 @@
 package tools;
 
 public class Queue {
-	private int[] arr; // array to store queue elements
+	private Object[] arr; // array to store queue elements
 	private int front; // front points to the front element in the queue
 	private int rear; // rear points to the last element in the queue
 	private int capacity; // maximum capacity of the queue
 	private int count; // current size of the queue
 
 	// Constructor to initialize a queue
-	Queue(int size) {
-		arr = new int[size];
+	public Queue(int size) {
+		arr = new Object[size];
 		capacity = size;
 		front = 0;
 		rear = -1;
@@ -17,14 +17,14 @@ public class Queue {
 	}
 
 	// Utility function to dequeue the front element
-	public int dequeue() {
+	public Object dequeue() {
 		// check for queue underflow
 		if (isEmpty()) {
 			System.out.println("Underflow\nProgram Terminated");
 			System.exit(-1);
 		}
 
-		int x = arr[front];
+		Object x = arr[front];
 
 		System.out.println("Removing " + x);
 
@@ -35,7 +35,7 @@ public class Queue {
 	}
 
 	// Utility function to add an item to the queue
-	public void enqueue(int item) {
+	public void enqueue(Object item) {
 		// check for queue overflow
 		if (isFull()) {
 			System.out.println("Overflow\nProgram Terminated");
@@ -50,7 +50,7 @@ public class Queue {
 	}
 
 	// Utility function to return the front element of the queue
-	public int peek() {
+	public Object peek() {
 		if (isEmpty()) {
 			System.out.println("Underflow\nProgram Terminated");
 			System.exit(-1);
@@ -71,31 +71,5 @@ public class Queue {
 	// Utility function to check if the queue is full or not
 	public boolean isFull() {
 		return (size() == capacity);
-	}
-}
-
-class Main {
-	public static void main(String[] args) {
-		// create a queue of capacity 5
-		Queue q = new Queue(5);
-
-		q.enqueue(1);
-		q.enqueue(2);
-		q.enqueue(3);
-
-		System.out.println("The front element is " + q.peek());
-		q.dequeue();
-		System.out.println("The front element is " + q.peek());
-
-		System.out.println("The queue size is " + q.size());
-
-		q.dequeue();
-		q.dequeue();
-
-		if (q.isEmpty()) {
-			System.out.println("The queue is empty");
-		} else {
-			System.out.println("The queue is not empty");
-		}
 	}
 }
