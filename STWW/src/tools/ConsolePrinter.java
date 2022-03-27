@@ -5,8 +5,15 @@ import entities.Maze;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import Treasures.Constants.One;
+import Treasures.Constants.Three;
+import Treasures.Constants.Two;
+import Treasures.Moves.Five;
+import Treasures.Moves.Four;
 
 public class ConsolePrinter {
 
@@ -15,23 +22,64 @@ public class ConsolePrinter {
 	int defaultX;
 	int defaultY;
 	public int keypr; // key pressed?
-	private Maze maze ;
-
+	private Maze maze;
+	private Object[][] tempMap;
 	public static int rkey; // key (for press/release)
 	public KeyListener klis;
 
 	public ConsolePrinter(Object[][] map) { // --- Constructor
-		maze = new Maze(map);
+		maze = new Maze();
+		maze.printMaze(map);
+		tempMap = map;
 		this.template();
-		this.printMapElements();
+		maze.generatingQueueElement();
+		cn.getTextWindow().setCursorPosition(60, 3);
+		maze.printQueueToField();
 
 	}
 
 	public void printMapElements() {
-		maze.generatingQueueElement();
-		cn.getTextWindow().setCursorPosition(60, 3);
-		maze.printQueueToField();
+ 		for (int i = 0; i < 15; i++) {
+			Queue qu = maze.printQueueElemetToMaze();
+			String element = qu.dequeue().toString();
+			if (element.equalsIgnoreCase("1")) {
+				One one = new One();
+				tempMap[one.getY()][one.getX()] = one.getName();
+				cn.getTextWindow().setCursorPosition(one.getX(), one.getY());
+				System.out.print(one.getName());
+
+			}
+			if (element.equalsIgnoreCase("2")) {
+				Two two = new Two();
+				tempMap[two.getY()][two.getX()] = two.getName();
+				cn.getTextWindow().setCursorPosition(two.getX(), two.getY());
+				System.out.print(two.getName());
+
+			}
+			if (element.equalsIgnoreCase("3")) {
+				Three three = new Three();
+				tempMap[three.getY()][three.getX()] = three.getName();
+				cn.getTextWindow().setCursorPosition(three.getX(), three.getY());
+				System.out.print(three.getName());
+			}
+			
+			if (element.equalsIgnoreCase("4")) {
+				Four four = new Four();
+				tempMap[four.getY()][four.getX()] = four.getName();
+				cn.getTextWindow().setCursorPosition(four.getX(), four.getY());
+				System.out.print(four.getName());
+			}
+			
+			if (element.equalsIgnoreCase("5")) {
+				Five five = new Five();
+				tempMap[five.getY()][five.getX()] = five.getName();
+				cn.getTextWindow().setCursorPosition(five.getX(), five.getY());
+				System.out.print(five.getName());
+			}
+			
+		}
 	}
+
 	public void getCoordinatPoint() {
 		defaultX = cn.getTextWindow().getCursorX();
 		defaultY = cn.getTextWindow().getCursorY();
@@ -76,29 +124,44 @@ public class ConsolePrinter {
 	public char keyList() {
 
 		klis = new KeyListener() {
-			public void keyTyped(KeyEvent e) {}
-			public void keyReleased(KeyEvent e) {}
+			public void keyTyped(KeyEvent e) {
+			}
+
+			public void keyReleased(KeyEvent e) {
+			}
+
 			public void keyPressed(KeyEvent e) {
 				if (keypr == 0) {
 					keypr = 1;
 					rkey = e.getKeyCode();
-				}}};
+				}
+			}
+		};
 		cn.getTextWindow().addKeyListener(klis);
 
 		while (true) {
 
-			try {Thread.sleep(200);} 
-			catch (Exception e) {}
-			
+			try {
+				Thread.sleep(200);
+			} catch (Exception e) {
+			}
+
 			if (keypr == 1) { // if keyboard button pressed
 				cn.getTextWindow().setCursorPosition(defaultX + 2, defaultY - 1);
-				
+
 				for (int i = 0; i < 1; i++) {
-					if (rkey == KeyEvent.VK_UP)    return 'U';
-					if (rkey == KeyEvent.VK_RIGHT) return 'R';
-					if (rkey == KeyEvent.VK_LEFT)  return 'L';
-					if (rkey == KeyEvent.VK_DOWN)  return 'B';
-				}}}}
+					if (rkey == KeyEvent.VK_UP)
+						return 'U';
+					if (rkey == KeyEvent.VK_RIGHT)
+						return 'R';
+					if (rkey == KeyEvent.VK_LEFT)
+						return 'L';
+					if (rkey == KeyEvent.VK_DOWN)
+						return 'B';
+				}
+			}
+		}
+	}
 
 	public void reset() {
 		keypr = 0; // last action

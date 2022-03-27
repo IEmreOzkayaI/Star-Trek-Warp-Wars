@@ -9,9 +9,9 @@ public class Maze {
 
 	private Queue mazeQueue;
 
-	public Maze(Object[][] maze) {
+	public Maze() {
 		mazeQueue = new Queue(15);
-		this.printMaze(maze);
+		
 	}
 
 	public void printMaze(Object[][] maze) {
@@ -53,11 +53,20 @@ public class Maze {
 	}
 
 	public void printQueueToField() {
+		Queue tempQueue = new Queue(15);
 		for (int i = 0; i < 15; i++) {
 			Object obj = mazeQueue.dequeue();
-			System.out.print(obj.toString());
+			tempQueue.enqueue(obj);
+			System.out.print(obj);
+		}
+		for (int i = 0; i < 15; i++) {
+			mazeQueue.enqueue(tempQueue.dequeue());
 		}
 
+	}
+	
+	public Queue printQueueElemetToMaze() {
+		return this.mazeQueue;
 	}
 
 }
