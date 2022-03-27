@@ -23,6 +23,8 @@ public class ConsolePrinter {
 	public ConsolePrinter(Object[][] map) { // --- Constructor
 		maze = new Maze(map);
 		this.template();
+		cn.getTextWindow().setCursorPosition(60, 3);
+		maze.printQueueToField();
 
 	}
 

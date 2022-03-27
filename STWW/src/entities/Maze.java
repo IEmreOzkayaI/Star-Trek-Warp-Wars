@@ -1,18 +1,18 @@
 package entities;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import tools.Queue;
 
 public class Maze {
-	
-	private Queue mazeQueue ;
-	
+
+	private Queue mazeQueue;
+
 	public Maze(Object[][] maze) {
 		mazeQueue = new Queue(15);
 		this.printMaze(maze);
 	}
-	
 
 	public void printMaze(Object[][] maze) {
 		System.out.println("\n");
@@ -25,27 +25,40 @@ public class Maze {
 
 		}
 	}
-	
+
 	public void generatingQueueElement() {
-		Random random = new Random();
-		while(true) {
+		Random random = ThreadLocalRandom.current();
+		boolean flag = true;
+		while (flag) {
 			int x = random.nextInt(41);
-			if(1<= x && x>=12)
+			if (1 <= x && x >= 12)
 				mazeQueue.enqueue(1); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if(13<= x && x>=20)
+			if (13 <= x && x >= 20)
 				mazeQueue.enqueue(2); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if(21<= x && x>=26)
+			if (21 <= x && x >= 26)
 				mazeQueue.enqueue(3); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if(27<= x && x>=31)
+			if (27 <= x && x >= 31)
 				mazeQueue.enqueue(4); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if(32<= x && x>=35)
+			if (32 <= x && x >= 35)
 				mazeQueue.enqueue(5); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if(36<= x && x>=37)
+			if (36 <= x && x >= 37)
 				mazeQueue.enqueue("="); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if(38 == x )
+			if (38 == x)
 				mazeQueue.enqueue("*"); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if(39<= x && x>=40)
+			if (39 <= x && x >= 40)
 				mazeQueue.enqueue("C"); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+			if (mazeQueue.isFull())
+				flag = false;
 		}
 	}
+
+	public void printQueueToField() {
+		generatingQueueElement();
+//		Queue tempQueue = new Queue(15);
+		for (int i = 0; i < 14; i++) {
+			System.out.print(mazeQueue.dequeue());
+		}
+
+	}
+
 }
