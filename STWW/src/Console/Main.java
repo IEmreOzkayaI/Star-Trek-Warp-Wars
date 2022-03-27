@@ -10,6 +10,5 @@ public class Main {
 		FileReader file = new FileReader();
 		ConsolePrinter cp = new ConsolePrinter(file.readFile("maze.txt"));
 		
-		
 	}
 }

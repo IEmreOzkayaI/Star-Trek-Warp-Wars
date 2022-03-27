@@ -23,11 +23,15 @@ public class ConsolePrinter {
 	public ConsolePrinter(Object[][] map) { // --- Constructor
 		maze = new Maze(map);
 		this.template();
-		cn.getTextWindow().setCursorPosition(60, 3);
-		maze.printQueueToField();
+		this.printMapElements();
 
 	}
 
+	public void printMapElements() {
+		maze.generatingQueueElement();
+		cn.getTextWindow().setCursorPosition(60, 3);
+		maze.printQueueToField();
+	}
 	public void getCoordinatPoint() {
 		defaultX = cn.getTextWindow().getCursorX();
 		defaultY = cn.getTextWindow().getCursorY();

@@ -27,25 +27,25 @@ public class Maze {
 	}
 
 	public void generatingQueueElement() {
-		Random random = ThreadLocalRandom.current();
+		Random random = new Random();
 		boolean flag = true;
 		while (flag) {
 			int x = random.nextInt(41);
-			if (1 <= x && x >= 12)
+			if (1 <= x &&  12 >= x)
 				mazeQueue.enqueue(1); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if (13 <= x && x >= 20)
+			if (13 <= x && 20 >= x )
 				mazeQueue.enqueue(2); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if (21 <= x && x >= 26)
+			if (21 <= x && 26 >= x)
 				mazeQueue.enqueue(3); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if (27 <= x && x >= 31)
+			if (27 <= x && 31 >= x)
 				mazeQueue.enqueue(4); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if (32 <= x && x >= 35)
+			if (32 <= x && 35 >= x)
 				mazeQueue.enqueue(5); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if (36 <= x && x >= 37)
+			if (36 <= x && 37 >= x)
 				mazeQueue.enqueue("="); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
 			if (38 == x)
 				mazeQueue.enqueue("*"); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
-			if (39 <= x && x >= 40)
+			if (39 <= x && 40 >= x)
 				mazeQueue.enqueue("C"); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
 			if (mazeQueue.isFull())
 				flag = false;
@@ -53,10 +53,9 @@ public class Maze {
 	}
 
 	public void printQueueToField() {
-		generatingQueueElement();
-//		Queue tempQueue = new Queue(15);
-		for (int i = 0; i < 14; i++) {
-			System.out.print(mazeQueue.dequeue());
+		for (int i = 0; i < 15; i++) {
+			Object obj = mazeQueue.dequeue();
+			System.out.print(obj.toString());
 		}
 
 	}
