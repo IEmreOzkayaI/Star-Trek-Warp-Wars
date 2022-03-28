@@ -59,7 +59,7 @@ public class ConsolePrinter {
 					isNull = this.maze.updateMap(x=two.getX(),y= two.getY(), two.getName());
 				}
 				isNull = false;
-				cn.getTextWindow().setCursorPosition(x, y);
+				cn.getTextWindow().setCursorPosition(x,y);
 
 				System.out.print(two.getName());
 
@@ -71,7 +71,7 @@ public class ConsolePrinter {
 					isNull = this.maze.updateMap(x=three.getX(),y= three.getY(), three.getName());
 				}
 				isNull = false;
-				cn.getTextWindow().setCursorPosition(x, y);
+				cn.getTextWindow().setCursorPosition(x,y);
 
 				System.out.print(three.getName());
 			}
@@ -82,7 +82,7 @@ public class ConsolePrinter {
 					isNull = this.maze.updateMap(x=four.getX(),y= four.getY(), four.getName());
 				}
 				isNull = false;
-				cn.getTextWindow().setCursorPosition(x, y);
+				cn.getTextWindow().setCursorPosition(x,y);
 				System.out.print(four.getName());
 			}
 
@@ -92,7 +92,7 @@ public class ConsolePrinter {
 					isNull = this.maze.updateMap(x=five.getX(),y=five.getY(), five.getName());
 				}
 				isNull = false;
-				cn.getTextWindow().setCursorPosition(x, y);
+				cn.getTextWindow().setCursorPosition(x,y);
 
 				System.out.print(five.getName());
 			}
