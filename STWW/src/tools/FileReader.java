@@ -14,8 +14,12 @@ public class FileReader {
 			while (file.hasNextLine()) { // read one by one and store them line by line
 				String x = file.nextLine();
 				char[] line = x.toCharArray();
+				
 				for (int j = 0; j < line.length; j++) {
-					map[i][j] = line[j];
+					if(line[j]==' ')
+						map[i][j]=" ";
+					if(line[j]=='#')
+						map[i][j]="#";
 				}
 				i++;
 			}

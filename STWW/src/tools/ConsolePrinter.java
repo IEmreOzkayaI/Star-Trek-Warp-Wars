@@ -17,20 +17,18 @@ import Treasures.Moves.Four;
 
 public class ConsolePrinter {
 
-	public enigma.console.Console cn = Enigma.getConsole("Console", 80, 25, 15);
+	public enigma.console.Console cn = Enigma.getConsole("Console", 85, 25, 15);
 
 	int defaultX;
 	int defaultY;
 	public int keypr; // key pressed?
 	private Maze maze;
-	private Object[][] tempMap;
 	public static int rkey; // key (for press/release)
 	public KeyListener klis;
 
 	public ConsolePrinter(Object[][] map) { // --- Constructor
-		maze = new Maze();
-		maze.printMaze(map);
-		tempMap = map;
+		maze = new Maze(map);
+		maze.printMaze();
 		this.template();
 		maze.generatingQueueElement();
 		cn.getTextWindow().setCursorPosition(60, 3);
@@ -39,44 +37,66 @@ public class ConsolePrinter {
 	}
 
 	public void printMapElements() {
- 		for (int i = 0; i < 15; i++) {
+		boolean isNull = false;
+		int x = 0 ;
+		int y = 0;
+		for (int i = 0; i < 15; i++) {
 			Queue qu = maze.printQueueElemetToMaze();
 			String element = qu.dequeue().toString();
 			if (element.equalsIgnoreCase("1")) {
 				One one = new One();
-				tempMap[one.getY()][one.getX()] = one.getName();
-				cn.getTextWindow().setCursorPosition(one.getX(), one.getY());
+				while (!isNull) {
+					isNull = this.maze.updateMap(x=one.getX(),y=one.getY(), one.getName());
+				}
+				isNull = false;
+				cn.getTextWindow().setCursorPosition(x,y);
 				System.out.print(one.getName());
 
 			}
 			if (element.equalsIgnoreCase("2")) {
 				Two two = new Two();
-				tempMap[two.getY()][two.getX()] = two.getName();
-				cn.getTextWindow().setCursorPosition(two.getX(), two.getY());
+				while (!isNull) {
+					isNull = this.maze.updateMap(x=two.getX(),y= two.getY(), two.getName());
+				}
+				isNull = false;
+				cn.getTextWindow().setCursorPosition(x, y);
+
 				System.out.print(two.getName());
 
 			}
 			if (element.equalsIgnoreCase("3")) {
+											
 				Three three = new Three();
-				tempMap[three.getY()][three.getX()] = three.getName();
-				cn.getTextWindow().setCursorPosition(three.getX(), three.getY());
+				while (!isNull) {
+					isNull = this.maze.updateMap(x=three.getX(),y= three.getY(), three.getName());
+				}
+				isNull = false;
+				cn.getTextWindow().setCursorPosition(x, y);
+
 				System.out.print(three.getName());
 			}
-			
+
 			if (element.equalsIgnoreCase("4")) {
 				Four four = new Four();
-				tempMap[four.getY()][four.getX()] = four.getName();
-				cn.getTextWindow().setCursorPosition(four.getX(), four.getY());
+				while (!isNull) {
+					isNull = this.maze.updateMap(x=four.getX(),y= four.getY(), four.getName());
+				}
+				isNull = false;
+				cn.getTextWindow().setCursorPosition(x, y);
 				System.out.print(four.getName());
 			}
-			
+
 			if (element.equalsIgnoreCase("5")) {
 				Five five = new Five();
-				tempMap[five.getY()][five.getX()] = five.getName();
-				cn.getTextWindow().setCursorPosition(five.getX(), five.getY());
+				while (!isNull) {
+					isNull = this.maze.updateMap(x=five.getX(),y=five.getY(), five.getName());
+				}
+				isNull = false;
+				cn.getTextWindow().setCursorPosition(x, y);
+
 				System.out.print(five.getName());
 			}
-			
+
 		}
 	}
 
