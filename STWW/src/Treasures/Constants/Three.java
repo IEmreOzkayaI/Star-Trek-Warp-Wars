@@ -1,6 +1,6 @@
 package Treasures.Constants;
 
-import java.util.Random;
+import java.util.SplittableRandom;
 
 public class Three {
 	private final String name = "3";
@@ -15,12 +15,17 @@ public class Three {
 		return score;
 	}
 	public int getX() {
-		Random random = new Random();
-		 return coordinateX = random.nextInt(54 - 3 + 1) + 3;
+		SplittableRandom splittableRandom = new SplittableRandom();
+		int random = splittableRandom.nextInt(1, 55);
+		coordinateX = random ;
+		return coordinateX;
 	}
 
 	public int getY() {
-		Random random = new Random();
-		return coordinateY = random.nextInt(21 - 3 + 1) + 3;
+		SplittableRandom splittableRandom = new SplittableRandom();
+		int random = splittableRandom.nextInt(1, 23);
+		 coordinateY = random ;
+		 return coordinateY;
+			
 	}
 }

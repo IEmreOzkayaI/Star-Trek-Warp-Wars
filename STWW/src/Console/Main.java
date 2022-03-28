@@ -1,7 +1,7 @@
 package Console;
 
 import entities.Computer;
-import entities.Maze;
+import entities.Player;
 import tools.Console;
 import tools.FileReader;
 

@@ -7,7 +7,7 @@ public class Trap {
 	private final int score = 0;
 	private int coordinateX = 0;
 	private int coordinateY = 0;
-
+	private boolean isActivated = false;
 	public Trap() {
 
 	}
@@ -32,5 +32,13 @@ public class Trap {
 		 coordinateY = random ;
 		 return coordinateY;
 			
+	}
+
+	public boolean isActivated() {
+		return isActivated;
+	}
+
+	public void setActivated(boolean isActivated) {
+		this.isActivated = isActivated;
 	}
 }

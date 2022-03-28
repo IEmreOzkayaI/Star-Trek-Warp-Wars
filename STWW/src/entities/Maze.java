@@ -31,7 +31,12 @@ public class Maze {
 
 		if (maze[y][x].equals(" ")) {
 			maze[y][x] = value;
-
+//			try {
+//				Thread.sleep(1000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			return true;
 		} else {
 			return false;

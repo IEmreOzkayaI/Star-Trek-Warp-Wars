@@ -3,6 +3,7 @@ package tools;
 import enigma.core.Enigma;
 import entities.Computer;
 import entities.Maze;
+import entities.Player;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -28,112 +29,152 @@ public class Console {
 	private Maze maze = new Maze();
 	private Queue consoleQueue;
 
-	
 	public static int rkey; // key (for press/release)
 	public KeyListener klis;
-
-	public Console(Object[][] map,Computer computer) { // --- Constructor
+	private boolean isContinue = true;
+	
+	public Console(Object[][] map, Computer computer) { // --- Constructor
 		consoleQueue = new Queue(15);
 		maze.printMaze(map);
 		this.template();
 		this.generatingQueueElement();
+		this.printFirstTwenty(computer);
+		this.printPlayer();
 		cn.getTextWindow().setCursorPosition(60, 3);
-		this.printMapElements(computer);
 		this.printQueueToField();
+		this.continueQueue(computer);
 	}
 
-	public void printMapElements(Computer computerManager) {
+	private void continueQueue(Computer computerManager) {
+		Queue que = this.consoleQueue;
+		while(isContinue) {
+			String element = que.dequeue().toString();
+			this.generatingQueueElement();
+			elementDecision(element,computerManager);
+			try {
+				cn.getTextWindow().setCursorPosition(60, 3);
+				printQueueToField();
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	private void printPlayer() {
+		Player player = new Player();
 		boolean isNull = false;
 		int x = 0;
 		int y = 0;
+
+		while (!isNull) {
+			isNull = this.maze.updateMaze(x = player.getX(), y = player.getY(), player.getName());
+		}
+		isNull = false;
+		cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+		System.out.print(player.getName());
+	}
+
+	public void printFirstTwenty(Computer computerManager) {
+		
 		for (int i = 0; i < 20; i++) {
 			Queue qu = this.consoleQueue;
 			String element = qu.dequeue().toString();
 			this.generatingQueueElement();
-			if (element.equalsIgnoreCase("1")) {
-				One one = new One();
-				while (!isNull) {
-					isNull = this.maze.updateMaze(x = one.getX(), y = one.getY(), one.getName());
-				}
-				isNull = false;
-				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
-				System.out.print(one.getName());
-
+			elementDecision(element,computerManager);
+		}
+	}
+	
+	public void elementDecision(String element,Computer computerManager) {
+		boolean isNull = false;
+		int x = 0;
+		int y = 0;
+		
+		if (element.equalsIgnoreCase("1")) {
+			One one = new One();
+			while (!isNull) {
+				isNull = this.maze.updateMaze(x = one.getX(), y = one.getY(), one.getName());
 			}
-			if (element.equalsIgnoreCase("2")) {
-				Two two = new Two();
-				while (!isNull) {
-					isNull = this.maze.updateMaze(x = two.getX(), y = two.getY(), two.getName());
-				}
-				isNull = false;
-				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+			isNull = false;
+			cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+			System.out.print(one.getName());
 
-				System.out.print(two.getName());
-
+		}
+		if (element.equalsIgnoreCase("2")) {
+			Two two = new Two();
+			while (!isNull) {
+				isNull = this.maze.updateMaze(x = two.getX(), y = two.getY(), two.getName());
 			}
-			if (element.equalsIgnoreCase("3")) {
+			isNull = false;
+			cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 
-				Three three = new Three();
-				while (!isNull) {
-					isNull = this.maze.updateMaze(x = three.getX(), y = three.getY(), three.getName());
-				}
-				isNull = false;
-				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+			System.out.print(two.getName());
 
-				System.out.print(three.getName());
+		}
+		if (element.equalsIgnoreCase("3")) {
+
+			Three three = new Three();
+			while (!isNull) {
+				isNull = this.maze.updateMaze(x = three.getX(), y = three.getY(), three.getName());
 			}
+			isNull = false;
+			cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 
-			if (element.equalsIgnoreCase("4")) {
-				Four four = new Four();
-				while (!isNull) {
-					isNull = this.maze.updateMaze(x = four.getX(), y = four.getY(), four.getName());
-				}
-				isNull = false;
-				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
-				System.out.print(four.getName());
+			System.out.print(three.getName());
+		}
+
+		if (element.equalsIgnoreCase("4")) {
+			Four four = new Four();
+			while (!isNull) {
+				isNull = this.maze.updateMaze(x = four.getX(), y = four.getY(), four.getName());
 			}
+			isNull = false;
+			cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+			System.out.print(four.getName());
+		}
 
-			if (element.equalsIgnoreCase("5")) {
-				Five five = new Five();
-				while (!isNull) {
-					isNull = this.maze.updateMaze(x = five.getX(), y = five.getY(), five.getName());
-				}
-				isNull = false;
-				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
-
-				System.out.print(five.getName());
+		if (element.equalsIgnoreCase("5")) {
+			Five five = new Five();
+			while (!isNull) {
+				isNull = this.maze.updateMaze(x = five.getX(), y = five.getY(), five.getName());
 			}
-			if (element.equalsIgnoreCase("C")) {
-				Computer computer = new Computer();
-				computerManager.addComputer(computer);
-				while (!isNull) {
-					isNull = this.maze.updateMaze(x = computer.getX(), y = computer.getY(), computer.getName());
-				}
-				isNull = false;
-				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+			isNull = false;
+			cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 
-				System.out.print(computer.getName());
+			System.out.print(five.getName());
+		}
+		if (element.equalsIgnoreCase("C")) {
+			Computer computer = new Computer();
+			computerManager.addComputer(computer);
+			while (!isNull) {
+				isNull = this.maze.updateMaze(x = computer.getX(), y = computer.getY(), computer.getName());
 			}
-			if (element.equalsIgnoreCase("=")) {
-				Trap trap = new Trap();
-				while (!isNull) {
-					isNull = this.maze.updateMaze(x = trap.getX(), y = trap.getY(), trap.getName());
-				}
-				isNull = false;
-				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+			isNull = false;
+			cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 
-				System.out.print(trap.getName());
+			System.out.print(computer.getName());
+		}
+		if (element.equalsIgnoreCase("=")) {
+			Trap trap = new Trap();
+			while (!isNull) {
+				isNull = this.maze.updateMaze(x = trap.getX(), y = trap.getY(), trap.getName());
 			}
-			if (element.equalsIgnoreCase("*")) {
-				Wrap wrap = new Wrap();
-				while (!isNull) {
-					isNull = this.maze.updateMaze(x = wrap.getX(), y = wrap.getY(), wrap.getName());
-				}
-				isNull = false;
-				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+			isNull = false;
+			cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 
-				System.out.print(wrap.getName());
+			System.out.print(trap.getName());
+		}
+		if (element.equalsIgnoreCase("*")) {
+			Wrap wrap = new Wrap();
+			while (!isNull) {
+				isNull = this.maze.updateMaze(x = wrap.getX(), y = wrap.getY(), wrap.getName());
 			}
+			isNull = false;
+			cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+
+			System.out.print(wrap.getName());
 		}
 	}
 
@@ -162,7 +203,7 @@ public class Console {
 				flag = false;
 		}
 	}
-	
+
 	public void printQueueToField() {
 		Queue tempQueue = new Queue(15);
 		for (int i = 0; i < 15; i++) {
@@ -175,7 +216,7 @@ public class Console {
 		}
 
 	}
-	
+
 	public void template() {
 
 		int x = defaultX + 60;

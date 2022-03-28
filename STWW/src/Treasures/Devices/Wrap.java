@@ -7,6 +7,7 @@ public class Wrap {
 	private final int score = 0;
 	private int coordinateX = 0;
 	private int coordinateY = 0;
+	private boolean isActivated = false;
 
 	public Wrap() {
 
@@ -32,5 +33,13 @@ public class Wrap {
 		 coordinateY = random ;
 		 return coordinateY;
 			
+	}
+	
+	public boolean isActivated() {
+		return isActivated;
+	}
+
+	public void setActivated(boolean isActivated) {
+		this.isActivated = isActivated;
 	}
 }
