@@ -1,6 +1,7 @@
 package tools;
 
 import enigma.core.Enigma;
+import entities.Computer;
 import entities.Maze;
 
 import java.awt.event.KeyEvent;
@@ -12,66 +13,72 @@ import java.util.TimerTask;
 import Treasures.Constants.One;
 import Treasures.Constants.Three;
 import Treasures.Constants.Two;
+import Treasures.Devices.Trap;
+import Treasures.Devices.Wrap;
 import Treasures.Moves.Five;
 import Treasures.Moves.Four;
 
-public class ConsolePrinter {
+public class Console {
 
 	public enigma.console.Console cn = Enigma.getConsole("Console", 85, 25, 15);
 
 	int defaultX;
 	int defaultY;
 	public int keypr; // key pressed?
-	private Maze maze;
+	private Maze maze = new Maze();
+	private Queue consoleQueue;
+
+	
 	public static int rkey; // key (for press/release)
 	public KeyListener klis;
 
-	public ConsolePrinter(Object[][] map) { // --- Constructor
-		maze = new Maze(map);
-		maze.printMaze();
+	public Console(Object[][] map,Computer computer) { // --- Constructor
+		consoleQueue = new Queue(15);
+		maze.printMaze(map);
 		this.template();
-		maze.generatingQueueElement();
+		this.generatingQueueElement();
 		cn.getTextWindow().setCursorPosition(60, 3);
-		maze.printQueueToField();
-
+		this.printMapElements(computer);
+		this.printQueueToField();
 	}
 
-	public void printMapElements() {
+	public void printMapElements(Computer computerManager) {
 		boolean isNull = false;
-		int x = 0 ;
+		int x = 0;
 		int y = 0;
-		for (int i = 0; i < 15; i++) {
-			Queue qu = maze.printQueueElemetToMaze();
+		for (int i = 0; i < 20; i++) {
+			Queue qu = this.consoleQueue;
 			String element = qu.dequeue().toString();
+			this.generatingQueueElement();
 			if (element.equalsIgnoreCase("1")) {
 				One one = new One();
 				while (!isNull) {
-					isNull = this.maze.updateMap(x=one.getX(),y=one.getY(), one.getName());
+					isNull = this.maze.updateMaze(x = one.getX(), y = one.getY(), one.getName());
 				}
 				isNull = false;
-				cn.getTextWindow().setCursorPosition(x,y);
+				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 				System.out.print(one.getName());
 
 			}
 			if (element.equalsIgnoreCase("2")) {
 				Two two = new Two();
 				while (!isNull) {
-					isNull = this.maze.updateMap(x=two.getX(),y= two.getY(), two.getName());
+					isNull = this.maze.updateMaze(x = two.getX(), y = two.getY(), two.getName());
 				}
 				isNull = false;
-				cn.getTextWindow().setCursorPosition(x,y);
+				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 
 				System.out.print(two.getName());
 
 			}
 			if (element.equalsIgnoreCase("3")) {
-											
+
 				Three three = new Three();
 				while (!isNull) {
-					isNull = this.maze.updateMap(x=three.getX(),y= three.getY(), three.getName());
+					isNull = this.maze.updateMaze(x = three.getX(), y = three.getY(), three.getName());
 				}
 				isNull = false;
-				cn.getTextWindow().setCursorPosition(x,y);
+				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 
 				System.out.print(three.getName());
 			}
@@ -79,32 +86,96 @@ public class ConsolePrinter {
 			if (element.equalsIgnoreCase("4")) {
 				Four four = new Four();
 				while (!isNull) {
-					isNull = this.maze.updateMap(x=four.getX(),y= four.getY(), four.getName());
+					isNull = this.maze.updateMaze(x = four.getX(), y = four.getY(), four.getName());
 				}
 				isNull = false;
-				cn.getTextWindow().setCursorPosition(x,y);
+				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 				System.out.print(four.getName());
 			}
 
 			if (element.equalsIgnoreCase("5")) {
 				Five five = new Five();
 				while (!isNull) {
-					isNull = this.maze.updateMap(x=five.getX(),y=five.getY(), five.getName());
+					isNull = this.maze.updateMaze(x = five.getX(), y = five.getY(), five.getName());
 				}
 				isNull = false;
-				cn.getTextWindow().setCursorPosition(x,y);
+				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 
 				System.out.print(five.getName());
 			}
+			if (element.equalsIgnoreCase("C")) {
+				Computer computer = new Computer();
+				computerManager.addComputer(computer);
+				while (!isNull) {
+					isNull = this.maze.updateMaze(x = computer.getX(), y = computer.getY(), computer.getName());
+				}
+				isNull = false;
+				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 
+				System.out.print(computer.getName());
+			}
+			if (element.equalsIgnoreCase("=")) {
+				Trap trap = new Trap();
+				while (!isNull) {
+					isNull = this.maze.updateMaze(x = trap.getX(), y = trap.getY(), trap.getName());
+				}
+				isNull = false;
+				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+
+				System.out.print(trap.getName());
+			}
+			if (element.equalsIgnoreCase("*")) {
+				Wrap wrap = new Wrap();
+				while (!isNull) {
+					isNull = this.maze.updateMaze(x = wrap.getX(), y = wrap.getY(), wrap.getName());
+				}
+				isNull = false;
+				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+
+				System.out.print(wrap.getName());
+			}
 		}
 	}
 
-	public void getCoordinatPoint() {
-		defaultX = cn.getTextWindow().getCursorX();
-		defaultY = cn.getTextWindow().getCursorY();
+	public void generatingQueueElement() {
+		Random random = new Random();
+		boolean flag = true;
+		while (flag) {
+			int x = random.nextInt(41);
+			if (1 <= x && 12 >= x)
+				consoleQueue.enqueue(1); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+			if (13 <= x && 20 >= x)
+				consoleQueue.enqueue(2); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+			if (21 <= x && 26 >= x)
+				consoleQueue.enqueue(3); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+			if (27 <= x && 31 >= x)
+				consoleQueue.enqueue(4); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+			if (32 <= x && 35 >= x)
+				consoleQueue.enqueue(5); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+			if (36 <= x && 37 >= x)
+				consoleQueue.enqueue("="); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+			if (38 == x)
+				consoleQueue.enqueue("*"); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+			if (39 <= x && 40 >= x)
+				consoleQueue.enqueue("C"); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+			if (consoleQueue.isFull())
+				flag = false;
+		}
 	}
+	
+	public void printQueueToField() {
+		Queue tempQueue = new Queue(15);
+		for (int i = 0; i < 15; i++) {
+			Object obj = consoleQueue.dequeue();
+			tempQueue.enqueue(obj);
+			System.out.print(obj);
+		}
+		for (int i = 0; i < 15; i++) {
+			consoleQueue.enqueue(tempQueue.dequeue());
+		}
 
+	}
+	
 	public void template() {
 
 		int x = defaultX + 60;
