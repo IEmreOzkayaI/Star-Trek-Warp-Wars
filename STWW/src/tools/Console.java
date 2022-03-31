@@ -49,8 +49,8 @@ public class Console {
 		Queue que = this.consoleQueue;
 		while(isContinue) {
 			String element = que.dequeue().toString();
-			this.generatingQueueElement();
 			elementDecision(element,computerManager);
+			this.generatingQueueElement();
 			try {
 				cn.getTextWindow().setCursorPosition(60, 3);
 				printQueueToField();
@@ -157,17 +157,16 @@ public class Console {
 			System.out.print(computer.getName());
 		}
 		if (element.equalsIgnoreCase("=")) {
-			Trap trap = new Trap();
+			Trap trap = new Trap(cn,maze);
 			while (!isNull) {
 				isNull = this.maze.updateMaze(x = trap.getX(), y = trap.getY(), trap.getName());
 			}
 			isNull = false;
 			cn.getTextWindow().setCursorPosition(x + 2, y + 1);
-
 			System.out.print(trap.getName());
 		}
 		if (element.equalsIgnoreCase("*")) {
-			Wrap wrap = new Wrap();
+			Wrap wrap = new Wrap(cn,maze);
 			while (!isNull) {
 				isNull = this.maze.updateMaze(x = wrap.getX(), y = wrap.getY(), wrap.getName());
 			}
