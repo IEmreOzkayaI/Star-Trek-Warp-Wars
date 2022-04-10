@@ -20,7 +20,6 @@ public class Trap {
 	public Trap(enigma.console.Console cn, Maze maze) {
 		this.maze = maze;
 		this.cn = cn;
-		representationTime();
 	}
 
 	private void representationTime() {

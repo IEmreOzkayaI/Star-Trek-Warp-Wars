@@ -2,20 +2,20 @@ package tools;
 
 public class Stack
 {
-    private int arr[];
+    private Object arr[];
     private int top;
     private int capacity;
  
     // Constructor to initialize the stack
     Stack(int size)
     {
-        arr = new int[size];
+        arr = new Object[size];
         capacity = size;
         top = -1;
     }
  
     // Utility function to add an element `x` to the stack
-    public void push(int x)
+    public void push(Object x)
     {
         if (isFull())
         {
@@ -28,7 +28,7 @@ public class Stack
     }
  
     // Utility function to pop a top element from the stack
-    public int pop()
+    public Object pop()
     {
         // check for stack underflow
         if (isEmpty())
@@ -44,7 +44,7 @@ public class Stack
     }
  
     // Utility function to return the top element of the stack
-    public int peek()
+    public Object peek()
     {
         if (!isEmpty()) {
             return arr[top];

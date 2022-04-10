@@ -128,7 +128,7 @@ public class Console {
 		}
 
 		if (element.equalsIgnoreCase("4")) {
-			Four four = new Four();
+			Four four = new Four(cn,maze);
 			while (!isNull) {
 				isNull = this.maze.updateMaze(x = four.getX(), y = four.getY(), four.getName());
 			}
@@ -138,7 +138,7 @@ public class Console {
 		}
 
 		if (element.equalsIgnoreCase("5")) {
-			Five five = new Five();
+			Five five = new Five(cn,maze);
 			while (!isNull) {
 				isNull = this.maze.updateMaze(x = five.getX(), y = five.getY(), five.getName());
 			}
