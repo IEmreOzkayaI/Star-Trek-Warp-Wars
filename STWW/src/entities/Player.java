@@ -8,8 +8,11 @@ public class Player {
 	Stack backpack;
 	int life = 5;
 	int energy = 50;
-	private int coordinateX = 0;
-	private int coordinateY = 0;
+	SplittableRandom splittableRandom = new SplittableRandom();
+	int randomX = splittableRandom.nextInt(1, 55);
+	int randomY = splittableRandom.nextInt(1, 23);
+	private int coordinateX = randomX;
+	private int coordinateY = randomY;
 	private final String name = "P";
 	private final int score = 0;
 
@@ -28,22 +31,33 @@ public class Player {
 
 	public void LifeRemove() {
 		this.setLife(this.getLife() - 1);
-		;
 	}
 
-//	public void CoordinateChange(char direction) {
-//		//U UP - R RIGHT - L LEFT- B DOWN
-//		if(direction == 'U') {
-//			this.setCoordinates(this.getCoordinateX(), this.getCoordinateY() + 1);
-//		}else if(direction == 'R') {
-//			this.setCoordinates(this.getCoordinateX() + 1, this.getCoordinateY());
-//		}else if(direction == 'L') {
-//			this.setCoordinates(this.getCoordinateX() - 1 , this.getCoordinateY());
-//		}else if(direction == 'B') {
-//			this.setCoordinates(this.getCoordinateX(), this.getCoordinateY() - 1);
-//		}
-//	}
+	public void CoordinateChange(char direction) {
+		//U UP - R RIGHT - L LEFT - B DOWN
+		if(direction == 'U') {
+			this.setX(this.getX());
+			this.setY(this.getY() + 1);
+		}else if(direction == 'R') {
+			this.setX(this.getX() + 1);
+			this.setY(this.getY());
+		}else if(direction == 'L') {
+			this.setX(this.getX() - 1);
+			this.setY(this.getY());
+		}else if(direction == 'B') {
+			this.setX(this.getX());
+			this.setY(this.getY() - 1);
+		}
+	}
 
+	public void BackpackAdd(int item) {
+		backpack.push(item);
+	}
+	
+	public void BackpackRemove() {
+		backpack.pop();
+	}
+	
 	public Stack getBackpack() {
 		return backpack;
 	}
@@ -69,24 +83,28 @@ public class Player {
 	}
 
 	public int getX() {
-		SplittableRandom splittableRandom = new SplittableRandom();
-		int random = splittableRandom.nextInt(1, 55);
-		coordinateX = random;
 		return coordinateX;
 	}
 
 	public int getY() {
-		SplittableRandom splittableRandom = new SplittableRandom();
-		int random = splittableRandom.nextInt(1, 23);
-		coordinateY = random;
 		return coordinateY;
 
 	}
 
+	public void setX(int coordinateX) {
+		this.coordinateX = coordinateX;
+	}
+	
+	public void setY(int coordinateY) {
+		this.coordinateY = coordinateY;
+	}
+	
 	public String getName() {
 		return name;
 	}
 	public int getScore() {
 		return score;
 	}
+
+
 }
