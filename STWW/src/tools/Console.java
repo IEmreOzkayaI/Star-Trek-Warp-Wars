@@ -32,6 +32,7 @@ public class Console {
 	public static int rkey; // key (for press/release)
 	public KeyListener klis;
 	private boolean isContinue = true;
+	Player player = new Player();
 	
 	public Console(Object[][] map, Computer computer) { // --- Constructor
 		consoleQueue = new Queue(15);
@@ -64,7 +65,6 @@ public class Console {
 	}
 
 	private void printPlayer() {
-		Player player = new Player();
 		boolean isNull = false;
 		int x = 0;
 		int y = 0;
@@ -76,7 +76,35 @@ public class Console {
 		cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 		System.out.print(player.getName());
 	}
-
+	
+	public void MovePlayer() {
+		int x = 0;
+		int y = 0;
+		boolean isNull = false;
+		while(!isNull) {
+			//Buradaki ifler key listenera göre baðlanýcak.
+			if(x == 1) {
+				isNull = this.maze.updateMaze(x = player.getX() + 1, y = player.getY(), player.getName());
+				player.CoordinateChange('R');
+			}
+			else if(x == 2) {
+				isNull = this.maze.updateMaze(x = player.getX() - 1, y = player.getY(), player.getName());
+				player.CoordinateChange('L');
+			}
+			else if(x == 3) {
+				isNull = this.maze.updateMaze(x = player.getX(), y = player.getY() + 1, player.getName());
+				player.CoordinateChange('U');
+			}
+			else if(x == 4) {
+				isNull = this.maze.updateMaze(x = player.getX(), y = player.getY() - 1, player.getName());
+				player.CoordinateChange('B');
+			}
+		}
+		isNull = false;
+		cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+		System.out.print(player.getName());
+	}
+	
 	public void printFirstTwenty(Computer computerManager) {
 		
 		for (int i = 0; i < 20; i++) {

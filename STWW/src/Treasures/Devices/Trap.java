@@ -33,7 +33,7 @@ public class Trap {
 			@Override
 			public void run() {
 
-				if (seconds >= 5) {
+				if (seconds >= 25) {
 					try {
 						Thread.sleep(100);
 					} catch (InterruptedException e) {
