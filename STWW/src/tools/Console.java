@@ -32,7 +32,7 @@ public class Console {
 	public static int rkey; // key (for press/release)
 	public KeyListener klis;
 	private boolean isContinue = true;
-	Player player = new Player();
+	
 	
 	public Console(Object[][] map, Computer computer) { // --- Constructor
 		consoleQueue = new Queue(15);
@@ -55,7 +55,7 @@ public class Console {
 			try {
 				cn.getTextWindow().setCursorPosition(60, 3);
 				printQueueToField();
-				Thread.sleep(3000);
+				Thread.sleep(3005);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -65,6 +65,7 @@ public class Console {
 	}
 
 	private void printPlayer() {
+		Player player = new Player(cn, maze);
 		boolean isNull = false;
 		int x = 0;
 		int y = 0;
@@ -77,33 +78,6 @@ public class Console {
 		System.out.print(player.getName());
 	}
 	
-	public void MovePlayer() {
-		int x = 0;
-		int y = 0;
-		boolean isNull = false;
-		while(!isNull) {
-			//Buradaki ifler key listenera göre baðlanýcak.
-			if(x == 1) {
-				isNull = this.maze.updateMaze(x = player.getX() + 1, y = player.getY(), player.getName());
-				player.CoordinateChange('R');
-			}
-			else if(x == 2) {
-				isNull = this.maze.updateMaze(x = player.getX() - 1, y = player.getY(), player.getName());
-				player.CoordinateChange('L');
-			}
-			else if(x == 3) {
-				isNull = this.maze.updateMaze(x = player.getX(), y = player.getY() + 1, player.getName());
-				player.CoordinateChange('U');
-			}
-			else if(x == 4) {
-				isNull = this.maze.updateMaze(x = player.getX(), y = player.getY() - 1, player.getName());
-				player.CoordinateChange('B');
-			}
-		}
-		isNull = false;
-		cn.getTextWindow().setCursorPosition(x + 2, y + 1);
-		System.out.print(player.getName());
-	}
 	
 	public void printFirstTwenty(Computer computerManager) {
 		
@@ -280,47 +254,47 @@ public class Console {
 
 	}
 
-	public char keyList() {
-
-		klis = new KeyListener() {
-			public void keyTyped(KeyEvent e) {
-			}
-
-			public void keyReleased(KeyEvent e) {
-			}
-
-			public void keyPressed(KeyEvent e) {
-				if (keypr == 0) {
-					keypr = 1;
-					rkey = e.getKeyCode();
-				}
-			}
-		};
-		cn.getTextWindow().addKeyListener(klis);
-
-		while (true) {
-
-			try {
-				Thread.sleep(200);
-			} catch (Exception e) {
-			}
-
-			if (keypr == 1) { // if keyboard button pressed
-				cn.getTextWindow().setCursorPosition(defaultX + 2, defaultY - 1);
-
-				for (int i = 0; i < 1; i++) {
-					if (rkey == KeyEvent.VK_UP)
-						return 'U';
-					if (rkey == KeyEvent.VK_RIGHT)
-						return 'R';
-					if (rkey == KeyEvent.VK_LEFT)
-						return 'L';
-					if (rkey == KeyEvent.VK_DOWN)
-						return 'B';
-				}
-			}
-		}
-	}
+//	public char keyList() {
+//
+//		klis = new KeyListener() {
+//			public void keyTyped(KeyEvent e) {
+//			}
+//
+//			public void keyReleased(KeyEvent e) {
+//			}
+//
+//			public void keyPressed(KeyEvent e) {
+//				if (keypr == 0) {
+//					keypr = 1;
+//					rkey = e.getKeyCode();
+//				}
+//			}
+//		};
+//		cn.getTextWindow().addKeyListener(klis);
+//
+//		while (true) {
+//
+//			try {
+//				Thread.sleep(200);
+//			} catch (Exception e) {
+//			}
+//
+//			if (keypr == 1) { // if keyboard button pressed
+//				cn.getTextWindow().setCursorPosition(defaultX + 2, defaultY - 1);
+//
+//				for (int i = 0; i < 1; i++) {
+//					if (rkey == KeyEvent.VK_UP)
+//						return 'U';
+//					if (rkey == KeyEvent.VK_RIGHT)
+//						return 'R';
+//					if (rkey == KeyEvent.VK_LEFT)
+//						return 'L';
+//					if (rkey == KeyEvent.VK_DOWN)
+//						return 'B';
+//				}
+//			}
+//		}
+//	}
 
 	public void reset() {
 		keypr = 0; // last action
@@ -381,7 +355,7 @@ public class Console {
 
 		};
 
-		timer.schedule(task, 100, 1000);
+		timer.schedule(task, 97, 1000);
 
 	}
 
