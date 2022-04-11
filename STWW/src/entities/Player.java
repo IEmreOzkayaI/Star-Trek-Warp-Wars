@@ -21,10 +21,10 @@ public class Player {
 	Stack backpack;
 	int life = 5;
 	int energy = 50;
-	
+
 	private enigma.console.Console cn;
-    private Maze maze;
-	
+	private Maze maze;
+
 	private int coordinateX = randomX;
 	private int coordinateY = randomY;
 	private final String name = "P";
@@ -53,108 +53,103 @@ public class Player {
 	}
 
 	public Player(enigma.console.Console cn, Maze maze) {
-        this.maze = maze;
-        this.cn = cn;
-        playerMove();
-    }
+		this.maze = maze;
+		this.cn = cn;
+		backpack = new Stack(8);
+		playerMove();
+	}
+
 	public void playerMove() {
 
+		Timer timer = new Timer();
 
-        Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
 
-        TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
 
+				boolean isNull = false;
+				int x = 0;
+				int y = 0;
+				// randMove();
+				while (!isNull) {
+					char direction = keyList();
+					Object[][] mazeMap = maze.getMaze();
+					if (direction == 'R') {
+						isNull = maze.updateMaze(x = coordinateX + 1, y = coordinateY, getName());
+						if (isNull) {
+							mazeMap[coordinateY][coordinateX] = " ";
+							cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
+							System.out.print(" ");
+							coordinateX++;
+						} else if (mazeMap[coordinateY][coordinateX+1] !="#" ) {
+							BackpackAdd(mazeMap[coordinateY][coordinateX+1]);
+							mazeMap[coordinateY][coordinateX+1] = " ";
+							cn.getTextWindow().setCursorPosition(coordinateX +3, coordinateY + 1);
+							System.out.print(" ");
+							cn.getTextWindow().setCursorPosition(67, 13);
+							System.out.print(BackpackRemove());
 
-            @Override
-            public void run() {
+						}
+							reset();
+					} else if (direction == 'L') {
+						isNull = maze.updateMaze(x = coordinateX - 1, y = coordinateY, getName());
+						if (isNull) {
+							mazeMap[coordinateY][coordinateX] = " ";
+							cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
+							System.out.print(" ");
+							coordinateX--;
+						} else if (mazeMap[coordinateY][coordinateX-1] !="#" ) {
+							BackpackAdd(mazeMap[coordinateY][coordinateX-1]);
+							mazeMap[coordinateY][coordinateX-1] = " ";
+							cn.getTextWindow().setCursorPosition(coordinateX +1, coordinateY + 1);
+							System.out.print(" ");
+							cn.getTextWindow().setCursorPosition(67, 13);
+							System.out.print(BackpackRemove());
 
-            	
-                boolean isNull = false;
-                int x = 0;
-                int y = 0;
-                //randMove();
-                char direction = keyList();
-                while (!isNull) {
-                	Object[][] mazeMap = maze.getMaze();
-                    if(direction == 'R') {
-                    	if(mazeMap[coordinateY][coordinateX + 1].equals(" ")) {
-                    		isNull = maze.updateMaze(x = coordinateX + 1, y = coordinateY, getName());
-                    		mazeMap[coordinateY][coordinateX] = " ";
-            				cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
-                            System.out.print(" ");
-            				coordinateX++;
-                    	}
-                    	reset();
-        			}
-        			else if(direction == 'L') {
-        				if(mazeMap[coordinateY][coordinateX - 1].equals(" ")) {
-        					isNull = maze.updateMaze(x = coordinateX - 1, y = coordinateY, getName());
-        					mazeMap[coordinateY][coordinateX] = " ";
-            				cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
-                            System.out.print(" ");
-            				coordinateY--;
-        				}
-        				reset();
-        			}
-        			else if(direction == 'U') {
-        				if(mazeMap[coordinateY - 1][coordinateX].equals(" ")) {
-        					isNull = maze.updateMaze(x = coordinateX, y = coordinateY - 1, getName());
-        					mazeMap[coordinateY][coordinateX] = " ";
-	        				cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
-	                        System.out.print(" ");
-	        				coordinateY--;
-        				}	
-        				reset();
-        			}
-        			else if(direction == 'B') {
-        				if(mazeMap[coordinateY + 1][coordinateX].equals(" ")) {
-        					isNull = maze.updateMaze(x = coordinateX, y = coordinateY + 1, getName());
-        					mazeMap[coordinateY][coordinateX] = " ";
-            				cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
-                            System.out.print(" ");
-            				coordinateY++;
-        				}
-        				reset();
-        			}
-                }
-                isNull = false;
+						}
+						reset();
+					} else if (direction == 'U') {
+						isNull = maze.updateMaze(x = coordinateX, y = coordinateY - 1, getName());
+						if (isNull) {
+							mazeMap[coordinateY][coordinateX] = " ";
+							cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
+							System.out.print(" ");
+							coordinateY--;
+						}
+						reset();
+					} else if (direction == 'B') {
+						isNull = maze.updateMaze(x = coordinateX, y = coordinateY + 1, getName());
+						if (isNull) {
+							mazeMap[coordinateY][coordinateX] = " ";
+							cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
+							System.out.print(" ");
+							coordinateY++;
+						}
+						reset();
+					}
+				}
+				isNull = false;
 
+				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
+				System.out.print(getName());
 
-                cn.getTextWindow().setCursorPosition(x + 2, y + 1);
-                System.out.print(getName());
+			}
 
-            }
+		};
 
-        };
+		timer.schedule(task, 283, 1000);
 
-        timer.schedule(task, 283, 1000);
-
-    }
-	public void CoordinateChange(char direction) {
-		//U UP - R RIGHT - L LEFT - B DOWN
-		if(direction == 'U') {
-			this.setX(this.getX());
-			this.setY(this.getY() + 1);
-		}else if(direction == 'R') {
-			this.setX(this.getX() + 1);
-			this.setY(this.getY());
-		}else if(direction == 'L') {
-			this.setX(this.getX() - 1);
-			this.setY(this.getY());
-		}else if(direction == 'B') {
-			this.setX(this.getX());
-			this.setY(this.getY() - 1);
-		}
 	}
 
-	public void BackpackAdd(int item) {
+	public void BackpackAdd(Object item) {
 		backpack.push(item);
 	}
-	
-	public void BackpackRemove() {
-		backpack.pop();
+
+	public Object BackpackRemove() {
+	return 	backpack.pop();
 	}
-	
+
 	public Stack getBackpack() {
 		return backpack;
 	}
@@ -191,24 +186,25 @@ public class Player {
 	public void setX(int coordinateX) {
 		this.coordinateX = coordinateX;
 	}
-	
+
 	public void setY(int coordinateY) {
 		this.coordinateY = coordinateY;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
+
 	public int getScore() {
 		return score;
 	}
+
 	public void reset() {
 		keypr = 0; // last action
 		rkey = 0;
-		defaultX = 0;
-		defaultY = 0;
 		cn.getTextWindow().removeKeyListener(klis);
 	}
+
 	public char keyList() {
 		rkey = 0;
 		klis = new KeyListener() {
@@ -226,7 +222,7 @@ public class Player {
 			}
 		};
 		cn.getTextWindow().addKeyListener(klis);
-		
+
 		while (true) {
 
 			try {
@@ -252,4 +248,7 @@ public class Player {
 		}
 	}
 
+	public void eating() {
+
+	}
 }

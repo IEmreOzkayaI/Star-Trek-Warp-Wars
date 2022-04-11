@@ -104,6 +104,7 @@ public class Five {
 	}
 
 	public void fiveMove() {
+		Object[][] tempMaze = maze.getMaze();
 
 		Timer timer = new Timer();
 
@@ -118,7 +119,8 @@ public class Five {
 
 				cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
 				System.out.print(" ");
-
+				tempMaze[coordinateY][coordinateX]=" ";
+				
 				randMove();
 
 				while (!isNull) {

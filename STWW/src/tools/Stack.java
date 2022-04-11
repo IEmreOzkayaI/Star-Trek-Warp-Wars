@@ -7,7 +7,7 @@ public class Stack
     private int capacity;
  
     // Constructor to initialize the stack
-    Stack(int size)
+    public Stack(int size)
     {
         arr = new Object[size];
         capacity = size;
@@ -19,11 +19,9 @@ public class Stack
     {
         if (isFull())
         {
-            System.out.println("Overflow\nProgram Terminated\n");
             System.exit(-1);
         }
  
-        System.out.println("Inserting " + x);
         arr[++top] = x;
     }
  
@@ -33,11 +31,9 @@ public class Stack
         // check for stack underflow
         if (isEmpty())
         {
-            System.out.println("Underflow\nProgram Terminated");
             System.exit(-1);
         }
  
-        System.out.println("Removing " + peek());
  
         // decrease stack size by 1 and (optionally) return the popped element
         return arr[top--];

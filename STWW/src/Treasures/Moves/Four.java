@@ -85,7 +85,8 @@ public class Four {
 	}
 	public void fourMove() {
 		
-
+		Object[][] tempMaze = maze.getMaze();
+		
 		Timer timer = new Timer();
 
 		TimerTask task = new TimerTask() {
@@ -101,14 +102,14 @@ public class Four {
 				
 				cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
 				System.out.print(" ");
-				
+				tempMaze[coordinateY][coordinateX]=" ";
+
 				randMove();
 				
 				while (!isNull) {
 					isNull = maze.updateMaze(x = coordinateX, y = coordinateY, getName());
 				}
 				isNull = false;
-
 
 				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
 				System.out.print(getName());
