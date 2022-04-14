@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import entities.Maze;
 import tools.RandomCoordinateGenerator;
+import tools.RandomMovingList;
 
 public class Four {
 	private final String name = "4";
@@ -46,43 +47,37 @@ public class Four {
 
 
 	public void randMove() {
-		boolean isFilledUp=false;
-		boolean isFilledDown=false;
-		boolean isFilledRight=false;
-		boolean isFilledLeft=false;
-		
-		Object[][] mazeArray=maze.getMaze();
-		
-		if(mazeArray[coordinateY][coordinateX+1].equals(" ")) {
-			 isFilledRight=true;
+		Object[][] mazeArray = maze.getMaze();
+		RandomMovingList availableSquares= new RandomMovingList();
+		if (mazeArray[coordinateY][coordinateX + 1].equals(" ")) {
+			availableSquares.Add('R');
 		}
-		if(mazeArray[coordinateY][coordinateX-1].equals(" ")) {
-			isFilledLeft=true;
+		if (mazeArray[coordinateY][coordinateX - 1].equals(" ")) {
+			availableSquares.Add('L');
 		}
-		if(mazeArray[coordinateY+1][coordinateX].equals(" ")) {
-			isFilledDown=true;
+		if (mazeArray[coordinateY + 1][coordinateX].equals(" ")) {
+			availableSquares.Add('D');
 		}
-		if(mazeArray[coordinateY-1][coordinateX].equals(" ")) {
-			isFilledUp=true;
+		if (mazeArray[coordinateY - 1][coordinateX].equals(" ")) {
+			availableSquares.Add('U');
 		}
 		
-		if (isFilledUp) {
-			coordinateY--;
-
-		} else if (isFilledRight) {
+		SplittableRandom splittableRandom = new SplittableRandom();
+		int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
+		char[] arr= availableSquares.getList();
+		char direction=arr[directionNumber];
+		if(direction=='R') {
 			coordinateX++;
-
-		} else if (isFilledDown) {
-			coordinateY++;
-
-		} else if (isFilledLeft) {
-			coordinateX--;
-		} else {
-
 		}
-		
-		
-		
+		else if(direction=='L') {
+			coordinateX--;
+		}
+		else if(direction=='U') {
+			coordinateY--;
+		}
+		else if(direction=='D') {
+			coordinateY++; 
+		}
 	}
 	public void fourMove() {
 		
