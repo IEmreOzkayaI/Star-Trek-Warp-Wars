@@ -49,7 +49,7 @@ public class Console {
 			time++;
 			cn.getTextWindow().setCursorPosition(-1, -1);
 			maze.printMaze(map);
-			player.playerMove();
+//			player.playerMove();
 
 			Thread.sleep(1000);
 

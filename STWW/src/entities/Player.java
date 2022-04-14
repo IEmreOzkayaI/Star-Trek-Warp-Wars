@@ -3,6 +3,8 @@ package entities;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.SplittableRandom;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import tools.RandomCoordinateGenerator;
 import tools.Stack;
@@ -38,6 +40,7 @@ public class Player {
 		setY(coordinate[1]);
         this.maze = maze;
         this.cn=cn;
+        playerMove();
 
     }
 
@@ -50,50 +53,94 @@ public class Player {
 		}
 	}
 	
-	public void playerMove() {
-            	
+	public void playerMove() {	
+
+		Timer timer = new Timer();
+		
+			TimerTask task = new TimerTask() {
+				@Override
+				public void run() {
                 boolean isNull = false;
                 int x = 0;
                 int y = 0;
                 char direction = keyList();
                 while (!isNull) {
                 	Object[][] mazeMap = maze.getMaze();
+                	/*
+                	int coordinateDirection = 0;
+                	if(direction == 'R') {
+                		coordinateDirectionX = 1;
+                		coordinateDirectionY = 0;
+                	}
+                	if(direction == 'L') {
+                		coordinateDirectionX = -1;
+                	}
+                	if(direction == 'U') {
+                		coordinateDirection = 1;
+                	}
+                	if(direction == 'B') {
+                		coordinateDirection = 1;
+                	}
+                	*/
                     if(direction == 'R') {
-                    	if(mazeMap[coordinateY][coordinateX + 1].equals(" ")) {
-                    		isNull = maze.updateMaze(x = coordinateX + 1, y = coordinateY, getName());
+                    	isNull = maze.updateMaze(x = coordinateX + 1, y = coordinateY, getName());
+                    	if(isNull) {
                     		mazeMap[coordinateY][coordinateX] = " ";
             				coordinateX++;
-                    	}
+                    	}else if (mazeMap[coordinateY][coordinateX+1] != "#" && mazeMap[coordinateY][coordinateX+1] != "C") {
+							mazeMap[coordinateY][coordinateX+1] = " ";
+						}else if(mazeMap[coordinateY][coordinateX+1] == "#"){
+							mazeMap[coordinateY][coordinateX] = getName();
+							isNull = true;
+						}
                     	reset();
         			}
         			else if(direction == 'L') {
-        				if(mazeMap[coordinateY][coordinateX - 1].equals(" ")) {
-        					isNull = maze.updateMaze(x = coordinateX - 1, y = coordinateY, getName());
-        					mazeMap[coordinateY][coordinateX] = " ";
+        				isNull = maze.updateMaze(x = coordinateX - 1, y = coordinateY, getName());
+                    	if(isNull) {
+                    		mazeMap[coordinateY][coordinateX] = " ";
             				coordinateX--;
-        				}
-        				reset();
+                    	}else if (mazeMap[coordinateY][coordinateX-1] != "#" && mazeMap[coordinateY][coordinateX-1] != "C") {
+							mazeMap[coordinateY][coordinateX-1] = " ";
+						}else if(mazeMap[coordinateY][coordinateX-1] == "#"){
+							mazeMap[coordinateY][coordinateX] = getName();
+							isNull = true;
+						}
+                    	reset();
         			}
         			else if(direction == 'U') {
-        				if(mazeMap[coordinateY - 1][coordinateX].equals(" ")) {
-        					isNull = maze.updateMaze(x = coordinateX, y = coordinateY - 1, getName());
-        					mazeMap[coordinateY][coordinateX] = " ";
-	        				coordinateY--;
-        				}	
-        				reset();
+        				isNull = maze.updateMaze(x = coordinateX, y = coordinateY - 1, getName());
+                    	if(isNull) {
+                    		mazeMap[coordinateY][coordinateX] = " ";
+            				coordinateY--;
+                    	}else if (mazeMap[coordinateY - 1][coordinateX] != "#" && mazeMap[coordinateY - 1][coordinateX] != "C") {
+							mazeMap[coordinateY - 1][coordinateX] = " ";
+						}else if(mazeMap[coordinateY - 1][coordinateX] == "#"){
+							mazeMap[coordinateY][coordinateX] = getName();
+							isNull = true;
+						}
+                    	reset();
         			}
         			else if(direction == 'B') {
-        				if(mazeMap[coordinateY + 1][coordinateX].equals(" ")) {
-        					isNull = maze.updateMaze(x = coordinateX, y = coordinateY + 1, getName());
-        					mazeMap[coordinateY][coordinateX] = " ";
-
+        				isNull = maze.updateMaze(x = coordinateX, y = coordinateY + 1, getName());
+                    	if(isNull) {
+                    		mazeMap[coordinateY][coordinateX] = " ";
             				coordinateY++;
-        				}
-        				reset();
+                    	}else if (mazeMap[coordinateY + 1][coordinateX] != "#" && mazeMap[coordinateY + 1][coordinateX] != "C") {
+							mazeMap[coordinateY + 1][coordinateX] = " ";
+						}else if(mazeMap[coordinateY + 1][coordinateX] == "#"){
+							mazeMap[coordinateY][coordinateX] = getName();
+							isNull = true;
+						}
+                    	reset();
         			}
                 }
                 isNull = false;
+				}
+                
+        	};
 
+        	timer.schedule(task, 750, 1000);
             }
 
 	public char keyList() {
