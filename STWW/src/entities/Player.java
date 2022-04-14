@@ -2,7 +2,6 @@ package entities;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.SplittableRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,7 +21,7 @@ public class Player {
 	public static int rkey;
 
 
-	Stack backpack;
+	private Stack backpack;
 	int life = 5;
 	int energy = 50;
 	private final String name = "P";
@@ -61,8 +60,6 @@ public class Player {
 				@Override
 				public void run() {
                 boolean isNull = false;
-                int x = 0;
-                int y = 0;
                 char direction = keyList();
                 while (!isNull) {
                 	int coordinateDirectionX = 0;
@@ -85,7 +82,7 @@ public class Player {
                 		coordinateDirectionY = 1;
                 	}
                 	
-					isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,y = coordinateY + coordinateDirectionY, getName());
+					isNull = maze.updateMaze(coordinateX + coordinateDirectionX,coordinateY + coordinateDirectionY, getName());
 					if (isNull) {
 						mazeMap[coordinateY][coordinateX] = " ";
 						coordinateX += coordinateDirectionX;
