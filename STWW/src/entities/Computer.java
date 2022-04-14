@@ -17,7 +17,7 @@ public class Computer {
 	private int coordinateY = 0;
 	public static ComputerList computerList;
 	private static int computerTotalScore = 0;
-
+	private Object obj = this;
 	private enigma.console.Console cn;
 	private Maze maze;
 	private Player player;
@@ -34,7 +34,7 @@ public class Computer {
 	}
 	
 	public Computer(enigma.console.Console cn, Maze maze, Player player) {
-		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(name, maze);
+		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
 		setCoordinateX(coordinate[0]);
 		setCoordinateY(coordinate[1]);
 		this.maze = maze;
@@ -201,7 +201,7 @@ public class Computer {
 				//randMove();
 				goToMove();
 				while (!isNull) {
-					isNull = maze.updateMaze(coordinateX,coordinateY, getName());
+					isNull = maze.updateMaze(coordinateX,coordinateY, obj);
 				}
 			}
 

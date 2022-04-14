@@ -107,7 +107,7 @@ public void playerMove() {
                 
         	};
 
-        	timer.schedule(task, 50, 500);
+        	timer.schedule(task, 50, 1000);
     }
 
 	public char keyList() {
