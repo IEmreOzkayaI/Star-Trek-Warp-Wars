@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import tools.RandomCoordinateGenerator;
+import tools.ScoreDefine;
 import tools.Stack;
 
 
@@ -25,7 +26,7 @@ public class Player {
 	int life = 5;
 	int energy = 50;
 	private final String name = "P";
-	private final int score = 0;
+	private int score = 0;
 	private enigma.console.Console cn;
     private Maze maze;
     
@@ -92,6 +93,7 @@ public void playerMove() {
 					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX] != "#" &&
 							!(mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer"))) {
 						backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
+						score +=  ScoreDefine.scoreDefinder(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
 						mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] = " ";
 					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] == "#" || 
 							mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer")) {
@@ -105,7 +107,7 @@ public void playerMove() {
                 
         	};
 
-        	timer.schedule(task, 750, 1000);
+        	timer.schedule(task, 50, 500);
     }
 
 	public char keyList() {

@@ -184,9 +184,25 @@ public class Console {
 
 		cn.getTextWindow().setCursorPosition(x, y + 3);
 		System.out.println("<<<<<<<<<<<<<<<");
-	
-		
-		while(!player.getBackpack().isEmpty()) {
+		printBackpack(x, y, player);
+		cn.getTextWindow().setCursorPosition(x + 5, y + 13);
+		System.out.println("+---+");
+		cn.getTextWindow().setCursorPosition(x + 3, y + 14);
+		System.out.println("P.Backpack");
+		cn.getTextWindow().setCursorPosition(x, y + 16);
+		System.out.println("P.Energy :");
+		cn.getTextWindow().setCursorPosition(x, y + 17);
+		System.out.println("P.Score  : " + player.getScore());
+		cn.getTextWindow().setCursorPosition(x, y + 18);
+		System.out.println("P.Life   : " + player.getLife());
+		cn.getTextWindow().setCursorPosition(x, y + 20);
+		System.out.println("C.Score  :");
+		cn.getTextWindow().setCursorPosition(x, y + 22);
+		System.out.println("Time     : " + time);
+
+	}
+	public void printBackpack(int x , int y, Player player) {
+        while(!player.getBackpack().isEmpty()) {
             backpackCount++;
             Object temp = player.getBackpack().pop();
             tempBackpack.push(temp);
@@ -199,7 +215,7 @@ public class Console {
         for (int i = backpackCount - 1; i >= 0; i--) {
             cn.getTextWindow().setCursorPosition(x + 5, y + 5 + spaceCount + i);
             Object temp =  player.getBackpack().pop();
-            
+
             System.out.println("| " + ObjeComparator.objComparator(temp) +" |");
             tempBackpack.push(temp);
         }
@@ -207,27 +223,7 @@ public class Console {
             cn.getTextWindow().setCursorPosition(x + 5, y + 5 + i);
             System.out.println("|   |");
         }
-		
-		
-		cn.getTextWindow().setCursorPosition(x + 5, y + 13);
-		System.out.println("+---+");
-		cn.getTextWindow().setCursorPosition(x + 3, y + 14);
-		System.out.println("P.Backpack");
-		cn.getTextWindow().setCursorPosition(x, y + 16);
-		System.out.println("P.Energy :");
-		cn.getTextWindow().setCursorPosition(x, y + 17);
-		System.out.println("P.Score  :");
-		cn.getTextWindow().setCursorPosition(x, y + 18);
-		System.out.println("P.Life   :");
-		cn.getTextWindow().setCursorPosition(x, y + 20);
-		System.out.println("C.Score  :");
-		cn.getTextWindow().setCursorPosition(x, y + 22);
-		System.out.println("Time     :");
-		cn.getTextWindow().setCursorPosition(x + 10, y + 22);
-		System.out.print(time);
-
-	}
-
+    }
 	public char keyList() {
 
 		klis = new KeyListener() {
