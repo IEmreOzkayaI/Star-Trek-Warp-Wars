@@ -38,7 +38,7 @@ public class Console {
 	int time = 1;
 
 	public Console(Object[][] map, Computer computerManager) throws InterruptedException { // --- Constructor
-
+		consoleQueue = new Queue(15);
 		this.generatingQueueElement();
 		maze.printMaze(map);
 		Player player = new Player(maze, cn);
@@ -49,24 +49,18 @@ public class Console {
 			time++;
 			cn.getTextWindow().setCursorPosition(-1, -1);
 			maze.printMaze(map);
-//			player.playerMove();
+			cn.getTextWindow().setCursorPosition(60, 3);
+			this.printQueueToField();
+			if(time%3==0) {
+				this.continueQueue(computerManager);
+			}
 
 			Thread.sleep(1000);
 
 			consoleClear();
 			this.template();
-
 		}
 
-//		consoleQueue = new Queue(15);
-//		maze.printMaze(map);
-//		this.template();
-//		this.generatingQueueElement();
-//		this.printFirstTwenty(computerManager);
-//		this.printPlayer();
-//		cn.getTextWindow().setCursorPosition(60, 3);
-//		this.printQueueToField();
-//		this.continueQueue(computerManager);
 	}
 
 	private void consoleClear() throws InterruptedException {
@@ -79,21 +73,13 @@ public class Console {
 		}
 	}
 
-	private void continueQueue(Computer computerManager) {
+	private void continueQueue(Computer computerManager) throws InterruptedException {
 		Queue que = this.consoleQueue;
-		while (isContinue) {
-			String element = que.dequeue().toString();
-//			elementDecision(element,computerManager);
-			this.generatingQueueElement();
-			try {
-				cn.getTextWindow().setCursorPosition(60, 3);
-				printQueueToField();
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		String element = que.dequeue().toString();
+		elementDecision(element, computerManager);
+		this.generatingQueueElement();
+		cn.getTextWindow().setCursorPosition(60, 3);
+		printQueueToField();
 
 	}
 
@@ -274,77 +260,5 @@ public class Console {
 	public int time() {
 		return time;
 	}
-
-//	public void time() {
-//
-//		Timer timer = new Timer();
-//
-//		TimerTask task = new TimerTask() {
-//
-//			int seconds = 0;
-//
-//			@Override
-//			public void run() {
-//
-//				int x = defaultX + 72;
-//				int y = defaultY + 23;
-//				if (seconds >= 100) {
-//					cn.getTextWindow().setCursorPosition(x, y);
-//					System.out.print(seconds++);
-//
-//					if (rkey == KeyEvent.VK_A || rkey == KeyEvent.VK_B || rkey == KeyEvent.VK_C || rkey == KeyEvent.VK_D
-//							|| rkey == KeyEvent.VK_E) {
-//						timer.cancel();
-//						cn.getTextWindow().setCursorPosition(defaultX - 31, defaultY);
-//
-//					}
-//
-//					if (rkey == KeyEvent.VK_J || rkey == KeyEvent.VK_K) {
-//						cn.getTextWindow().setCursorPosition(defaultX - 31, defaultY + 10);
-//
-//					}
-//				}
-//
-//				if (seconds >= 10) {
-//					cn.getTextWindow().setCursorPosition(x, y);
-//					System.out.print(seconds++);
-//
-//					if (rkey == KeyEvent.VK_A || rkey == KeyEvent.VK_B || rkey == KeyEvent.VK_C || rkey == KeyEvent.VK_D
-//							|| rkey == KeyEvent.VK_E) {
-//						timer.cancel();
-//						cn.getTextWindow().setCursorPosition(defaultX - 31, defaultY);
-//
-//					}
-//
-//					if (rkey == KeyEvent.VK_J || rkey == KeyEvent.VK_K) {
-//						cn.getTextWindow().setCursorPosition(defaultX - 31, defaultY + 10);
-//
-//					}
-//				}
-//
-//				if (seconds < 10) {
-//
-//					cn.getTextWindow().setCursorPosition(x, y);
-//					System.out.print("0" + seconds++);
-//
-//					if (rkey == KeyEvent.VK_A || rkey == KeyEvent.VK_B || rkey == KeyEvent.VK_C || rkey == KeyEvent.VK_D
-//							|| rkey == KeyEvent.VK_E) {
-//						cn.getTextWindow().setCursorPosition(defaultX - 31, defaultY);
-//						timer.cancel();
-//
-//					}
-//					if (rkey == KeyEvent.VK_J || rkey == KeyEvent.VK_K) {
-//						cn.getTextWindow().setCursorPosition(defaultX - 31, defaultY + 10);
-//
-//					}
-//				}
-//
-//			}
-//
-//		};
-//
-//		timer.schedule(task, 123, 1000);
-//
-//	}
 
 }
