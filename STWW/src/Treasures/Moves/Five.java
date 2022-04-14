@@ -12,16 +12,17 @@ public class Five {
 	private final int score = 50;
 	private int coordinateX = 0;
 	private int coordinateY = 0;
+	private Object obj = this;
 
 	private enigma.console.Console cn;
 	private Maze maze;
 
 	public Five(enigma.console.Console cn, Maze maze) {
-		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(name, maze);
-		setX(coordinate[0]);
-		setY(coordinate[1]);
 		this.maze = maze;
 		this.cn = cn;
+		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, this.maze);
+		setX(coordinate[0]);
+		setY(coordinate[1]);
 		fiveMove();
 
 	}
@@ -41,28 +42,6 @@ public class Five {
 	public void setY(int y) {
 		coordinateY = y;
 	}	
-
-//	public void randomMove() {
-//		while (true) {
-//			try {
-//				Thread.sleep(1000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			boolean isNull = false;
-//			int x = 0;
-//			int y = 0;
-//			while (!isNull) {
-//				isNull = this.maze.updateMaze(x = this.getX(), y = this.getY(), this.getName());
-//			}
-//			isNull = false;
-//			cn.getTextWindow().setCursorPosition(x + 2, y + 1);
-//			System.out.print(this.getName());
-//
-//		}
-//
-//	}
 
 	public void randMove() {
 		boolean isFilledUp = false;
@@ -117,7 +96,7 @@ public class Five {
 				tempMaze[coordinateY][coordinateX]=" ";
 				randMove();
 				while (!isNull) {
-					isNull = maze.updateMaze(coordinateX,coordinateY, getName());
+					isNull = maze.updateMaze(coordinateX,coordinateY, obj);
 				}
 			}
 

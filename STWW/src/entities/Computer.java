@@ -25,7 +25,7 @@ public class Computer {
 
 	}
 	public Computer( Maze maze ) {
-		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(name, maze);
+		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
 		setX(coordinate[0]);
 		setY(coordinate[1]);
 	}

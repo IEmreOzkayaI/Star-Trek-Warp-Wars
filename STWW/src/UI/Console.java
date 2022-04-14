@@ -4,6 +4,7 @@ import enigma.core.Enigma;
 import entities.Computer;
 import entities.Maze;
 import entities.Player;
+import tools.ObjeComparator;
 import tools.Queue;
 import tools.Stack;
 
@@ -46,6 +47,7 @@ public class Console {
 		Player player = new Player(maze, cn);
 		this.template(player);
 		this.printFirstTwenty(computerManager);
+
 
 		while (isContinue) {
 			time++;
@@ -96,27 +98,26 @@ public class Console {
 	}
 
 	public void elementDecision(String element, Computer computerManager) throws InterruptedException {
-		boolean isNull = false;
-		int x = 0;
-		int y = 0;
+
 
 		if (element.equalsIgnoreCase("1")) {
-			One one = new One(maze);
+			new One(maze);
+			
 		}
 		if (element.equalsIgnoreCase("2")) {
-			Two two = new Two(maze);
+			new Two(maze);
 		}
 		if (element.equalsIgnoreCase("3")) {
-			Three three = new Three(maze);
+			new Three(maze);
 
 		}
 
 		if (element.equalsIgnoreCase("4")) {
-			Four four = new Four(cn, maze);
+			new Four(cn, maze);
 		}
 
 		if (element.equalsIgnoreCase("5")) {
-			Five five = new Five(cn, maze);
+			new Five(cn, maze);
 
 		}
 		if (element.equalsIgnoreCase("C")) {
@@ -125,11 +126,11 @@ public class Console {
 
 		}
 		if (element.equalsIgnoreCase("=")) {
-			Trap trap = new Trap(cn, maze);
+			 new Trap(cn, maze);
 
 		}
 		if (element.equalsIgnoreCase("*")) {
-			Warp warp = new Warp(cn, maze);
+			new Warp(cn, maze);
 
 		}
 	}
@@ -186,25 +187,26 @@ public class Console {
 	
 		
 		while(!player.getBackpack().isEmpty()) {
-			backpackCount++;
-			Object temp = player.getBackpack().pop();
-			tempBackpack.push(temp);
-		}
-		while(!tempBackpack.isEmpty()) {
-			Object temp = tempBackpack.pop();
-			player.getBackpack().push(temp);
-		}
-		int spaceCount = 8 - backpackCount;
-		for (int i = 0; i < spaceCount; i++) {
-			cn.getTextWindow().setCursorPosition(x + 5, y + 5 + i);
-			System.out.println("|   |");
-		}
-		for (int i = 0; i < backpackCount; i++) {
-			cn.getTextWindow().setCursorPosition(x + 5, y + 5 + spaceCount + i);
-			String temp = (String) player.getBackpack().pop();
-			System.out.println("| " + temp +" |");
-			tempBackpack.push(temp);
-		}
+            backpackCount++;
+            Object temp = player.getBackpack().pop();
+            tempBackpack.push(temp);
+        }
+        while(!tempBackpack.isEmpty()) {
+            Object temp = tempBackpack.pop();
+            player.getBackpack().push(temp);
+        }
+        int spaceCount = 8 - backpackCount;
+        for (int i = backpackCount - 1; i >= 0; i--) {
+            cn.getTextWindow().setCursorPosition(x + 5, y + 5 + spaceCount + i);
+            Object temp =  player.getBackpack().pop();
+            
+            System.out.println("| " + ObjeComparator.objComparator(temp) +" |");
+            tempBackpack.push(temp);
+        }
+        for (int i = 0; i < spaceCount; i++) {
+            cn.getTextWindow().setCursorPosition(x + 5, y + 5 + i);
+            System.out.println("|   |");
+        }
 		
 		
 		cn.getTextWindow().setCursorPosition(x + 5, y + 13);

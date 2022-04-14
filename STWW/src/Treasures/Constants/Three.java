@@ -11,7 +11,7 @@ public class Three {
 	private int coordinateY = 0;
 
 	public Three(Maze maze) {
-		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(name, maze);
+		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
 		setX(coordinate[0]);
 		setY(coordinate[1]);
 	}

@@ -15,7 +15,7 @@ public class Player {
 	
 	private int coordinateX ;
 	private int coordinateY ;
-	
+	private Object obj = this;
 	public int keypr;
 	public KeyListener klis;
 	public static int rkey;
@@ -34,7 +34,7 @@ public class Player {
 
 	public Player(Maze maze,enigma.console.Console cn) throws InterruptedException {
 
-		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(name, maze);
+		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
 		setX(coordinate[0]);
 		setY(coordinate[1]);
         this.maze = maze;
@@ -48,11 +48,11 @@ public class Player {
 		boolean isNull = false;
 
 		while (!isNull) {
-			isNull = this.maze.updateMaze(this.getX(),this.getY(), this.getName());
+			isNull = this.maze.updateMaze(this.getX(),this.getY(), this);
 		}
 	}
 	
-	public void playerMove() {	
+public void playerMove() {	
 		
 		Timer timer = new Timer();
 		
@@ -60,6 +60,8 @@ public class Player {
 				@Override
 				public void run() {
                 boolean isNull = false;
+                int x = 0;
+                int y = 0;
                 char direction = keyList();
                 while (!isNull) {
                 	int coordinateDirectionX = 0;
@@ -82,16 +84,18 @@ public class Player {
                 		coordinateDirectionY = 1;
                 	}
                 	
-					isNull = maze.updateMaze(coordinateX + coordinateDirectionX,coordinateY + coordinateDirectionY, getName());
+					isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,y = coordinateY + coordinateDirectionY, obj);
 					if (isNull) {
 						mazeMap[coordinateY][coordinateX] = " ";
 						coordinateX += coordinateDirectionX;
 						coordinateY += coordinateDirectionY;
-					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX] != "#" && mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX] != "C") {
+					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX] != "#" &&
+							!(mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer"))) {
 						backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
 						mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] = " ";
-					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] == "#") {
-						mazeMap[coordinateY][coordinateX] = getName();
+					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] == "#" || 
+							mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer")) {
+						mazeMap[coordinateY][coordinateX] = obj;
 						isNull = true;
 					}
 					reset();			
