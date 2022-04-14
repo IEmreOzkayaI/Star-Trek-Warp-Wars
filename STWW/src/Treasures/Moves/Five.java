@@ -5,6 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import entities.Maze;
+import tools.RandomCoordinateGenerator;
 
 public class Five {
 	private final String name = "5";
@@ -16,9 +17,13 @@ public class Five {
 	private Maze maze;
 
 	public Five(enigma.console.Console cn, Maze maze) {
+		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(name, maze);
+		setX(coordinate[0]);
+		setY(coordinate[1]);
 		this.maze = maze;
 		this.cn = cn;
 		fiveMove();
+
 	}
 
 	public String getName() {
@@ -29,19 +34,13 @@ public class Five {
 		return score;
 	}
 
-	public int getX() {
-		SplittableRandom splittableRandom = new SplittableRandom();
-		int random = splittableRandom.nextInt(1, 55);
-		coordinateX = random;
-		return coordinateX;
+	public void setX(int x) {
+		coordinateX = x;
 	}
 
-	public int getY() {
-		SplittableRandom splittableRandom = new SplittableRandom();
-		int random = splittableRandom.nextInt(1, 23);
-		coordinateY = random;
-		return coordinateY;
-	}
+	public void setY(int y) {
+		coordinateY = y;
+	}	
 
 //	public void randomMove() {
 //		while (true) {
@@ -104,37 +103,26 @@ public class Five {
 	}
 
 	public void fiveMove() {
+		
 		Object[][] tempMaze = maze.getMaze();
-
+		
 		Timer timer = new Timer();
 
 		TimerTask task = new TimerTask() {
 
 			@Override
 			public void run() {
-
-				boolean isNull = false;
-				int x = 0;
-				int y = 0;
-
-				cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
-				System.out.print(" ");
-				tempMaze[coordinateY][coordinateX]=" ";
 				
+				boolean isNull = false;
+				tempMaze[coordinateY][coordinateX]=" ";
 				randMove();
-
 				while (!isNull) {
-					isNull = maze.updateMaze(x = coordinateX, y = coordinateY, getName());
+					isNull = maze.updateMaze(coordinateX,coordinateY, getName());
 				}
-				isNull = false;
-
-				cn.getTextWindow().setCursorPosition(x + 2, y + 1);
-				System.out.print(getName());
-
 			}
 
 		};
 
-		timer.schedule(task, 71, 1000);
+		timer.schedule(task, 313, 1000);
 	}
 }

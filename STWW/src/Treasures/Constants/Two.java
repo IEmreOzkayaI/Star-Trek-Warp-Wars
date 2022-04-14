@@ -1,12 +1,20 @@
 package Treasures.Constants;
 
-import java.util.SplittableRandom;
+
+import entities.Maze;
+import tools.RandomCoordinateGenerator;
 
 public class Two {
 	private final String name = "2";
 	private final int score = 5;
 	private int coordinateX = 0;
 	private int coordinateY = 0;
+
+	public Two(Maze maze) {
+		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(name, maze);
+		setX(coordinate[0]);
+		setY(coordinate[1]);
+	}
 
 	public String getName() {
 		return name;
@@ -16,18 +24,11 @@ public class Two {
 		return score;
 	}
 
-	public int getX() {
-		SplittableRandom splittableRandom = new SplittableRandom();
-		int random = splittableRandom.nextInt(1, 55);
-		coordinateX = random ;
-		return coordinateX;
+	public void setX(int x) {
+		coordinateX = x;
 	}
 
-	public int getY() {
-		SplittableRandom splittableRandom = new SplittableRandom();
-		int random = splittableRandom.nextInt(1, 23);
-		 coordinateY = random ;
-		 return coordinateY;
-			
+	public void setY(int y) {
+		coordinateY = y;
 	}
 }

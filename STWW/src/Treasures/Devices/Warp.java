@@ -6,7 +6,7 @@ import java.util.TimerTask;
 
 import entities.Maze;
 
-public class Wrap {
+public class Warp {
 	private final String name = "*";
 	private final int score = 0;
 	private int coordinateX = 0;
@@ -15,7 +15,7 @@ public class Wrap {
 	private enigma.console.Console cn;
 	private Maze maze;
 
-	public Wrap(enigma.console.Console cn, Maze maze) {
+	public Warp(enigma.console.Console cn, Maze maze) {
 		this.maze = maze;
 		this.cn = cn;
 	}
