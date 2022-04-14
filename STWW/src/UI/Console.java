@@ -31,7 +31,7 @@ public class Console {
 	public int keypr; // key pressed?
 	private Maze maze = new Maze();
 	private Queue consoleQueue = new Queue(15);
-	
+	Player player;
 	public static int rkey; // key (for press/release)
 	public KeyListener klis;
 	private boolean isContinue = true;
@@ -43,7 +43,7 @@ public class Console {
 		consoleQueue = new Queue(15);
 		this.generatingQueueElement();
 		maze.printMaze(map);
-		Player player = new Player(maze, cn);
+		player = new Player(maze, cn);
 		this.template(player);
 		this.printFirstTwenty(computerManager);
 
@@ -120,7 +120,7 @@ public class Console {
 
 		}
 		if (element.equalsIgnoreCase("C")) {
-			Computer computer = new Computer(maze);
+			Computer computer = new Computer(cn,maze, player);
 			computerManager.addComputer(computer);
 
 		}

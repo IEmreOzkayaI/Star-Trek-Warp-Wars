@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import entities.Maze;
 import tools.RandomCoordinateGenerator;
+import tools.RandomMovingList;
 
 public class Five {
 	private final String name = "5";
@@ -65,41 +66,37 @@ public class Five {
 //	}
 
 	public void randMove() {
-		boolean isFilledUp = false;
-		boolean isFilledDown = false;
-		boolean isFilledRight = false;
-		boolean isFilledLeft = false;
-
 		Object[][] mazeArray = maze.getMaze();
-
+		RandomMovingList availableSquares= new RandomMovingList();
 		if (mazeArray[coordinateY][coordinateX + 1].equals(" ")) {
-			isFilledRight = true;
+			availableSquares.Add('R');
 		}
 		if (mazeArray[coordinateY][coordinateX - 1].equals(" ")) {
-			isFilledLeft = true;
+			availableSquares.Add('L');
 		}
 		if (mazeArray[coordinateY + 1][coordinateX].equals(" ")) {
-			isFilledDown = true;
+			availableSquares.Add('D');
 		}
 		if (mazeArray[coordinateY - 1][coordinateX].equals(" ")) {
-			isFilledUp = true;
+			availableSquares.Add('U');
 		}
-
-		if (isFilledUp) {
-			coordinateY--;
-
-		} else if (isFilledRight) {
+		
+		SplittableRandom splittableRandom = new SplittableRandom();
+		int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
+		char[] arr= availableSquares.getList();
+		char direction=arr[directionNumber];
+		if(direction=='R') {
 			coordinateX++;
-
-		} else if (isFilledDown) {
-			coordinateY++;
-
-		} else if (isFilledLeft) {
-			coordinateX--;
-		} else {
-
 		}
-
+		else if(direction=='L') {
+			coordinateX--;
+		}
+		else if(direction=='U') {
+			coordinateY--;
+		}
+		else if(direction=='D') {
+			coordinateY++; 
+		}
 	}
 
 	public void fiveMove() {
