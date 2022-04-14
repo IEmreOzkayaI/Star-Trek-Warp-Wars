@@ -2,49 +2,45 @@ package tools;
 
 public class Stack
 {
-    private int arr[];
+    private Object arr[];
     private int top;
     private int capacity;
  
     // Constructor to initialize the stack
-    Stack(int size)
+    public Stack(int size)
     {
-        arr = new int[size];
+        arr = new Object[size];
         capacity = size;
         top = -1;
     }
  
     // Utility function to add an element `x` to the stack
-    public void push(int x)
+    public void push(Object x)
     {
         if (isFull())
         {
-            System.out.println("Overflow\nProgram Terminated\n");
             System.exit(-1);
         }
  
-        System.out.println("Inserting " + x);
         arr[++top] = x;
     }
  
     // Utility function to pop a top element from the stack
-    public int pop()
+    public Object pop()
     {
         // check for stack underflow
         if (isEmpty())
         {
-            System.out.println("Underflow\nProgram Terminated");
-            System.exit(-1);
+            return false;
         }
  
-        System.out.println("Removing " + peek());
  
         // decrease stack size by 1 and (optionally) return the popped element
         return arr[top--];
     }
  
     // Utility function to return the top element of the stack
-    public int peek()
+    public Object peek()
     {
         if (!isEmpty()) {
             return arr[top];

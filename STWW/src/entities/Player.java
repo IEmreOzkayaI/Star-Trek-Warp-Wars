@@ -40,8 +40,8 @@ public class Player {
 		setY(coordinate[1]);
         this.maze = maze;
         this.cn=cn;
+        backpack = new Stack(8);
         playerMove();
-
     }
 
 
@@ -91,6 +91,7 @@ public class Player {
 						coordinateX += coordinateDirectionX;
 						coordinateY += coordinateDirectionY;
 					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX] != "#" && mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX] != "C") {
+						backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
 						mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] = " ";
 					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] == "#") {
 						mazeMap[coordinateY][coordinateX] = getName();
@@ -98,14 +99,13 @@ public class Player {
 					}
 					reset();			
                 }
-                
                 isNull = false;
 				}
                 
         	};
 
         	timer.schedule(task, 750, 1000);
-            }
+    }
 
 	public char keyList() {
 		rkey = 0;
@@ -182,14 +182,8 @@ public class Player {
 	public void LifeRemove() {
 		this.setLife(this.getLife() - 1);
 	}
-	
-	public void BackpackAdd(int item) {
-		backpack.push(item);
-	}
-	
-	public void BackpackRemove() {
-		backpack.pop();
-	}
+
+
 	
 	public Stack getBackpack() {
 		return backpack;
