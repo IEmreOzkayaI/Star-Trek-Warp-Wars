@@ -5,6 +5,7 @@ import entities.Computer;
 import entities.Maze;
 import entities.Player;
 import tools.Queue;
+import tools.Stack;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -30,19 +31,20 @@ public class Console {
 	public int keypr; // key pressed?
 	private Maze maze = new Maze();
 	private Queue consoleQueue = new Queue(15);
-
+	
 	public static int rkey; // key (for press/release)
 	public KeyListener klis;
 	private boolean isContinue = true;
 
 	int time = 1;
-
+	Stack tempBackpack = new Stack(8);
+	int backpackCount = 0;
 	public Console(Object[][] map, Computer computerManager) throws InterruptedException { // --- Constructor
 		consoleQueue = new Queue(15);
 		this.generatingQueueElement();
 		maze.printMaze(map);
 		Player player = new Player(maze, cn);
-		this.template();
+		this.template(player);
 		this.printFirstTwenty(computerManager);
 
 		while (isContinue) {
@@ -58,7 +60,7 @@ public class Console {
 			Thread.sleep(1000);
 
 			consoleClear();
-			this.template();
+			this.template(player);
 		}
 
 	}
@@ -171,11 +173,9 @@ public class Console {
 
 	}
 
-	public void template() {
-
+	public void template(Player player) {
 		int x = 60;
 		int y = 1;
-
 		cn.getTextWindow().setCursorPosition(x, y);
 		System.out.println("Input");
 		cn.getTextWindow().setCursorPosition(x, y + 1);
@@ -183,11 +183,30 @@ public class Console {
 
 		cn.getTextWindow().setCursorPosition(x, y + 3);
 		System.out.println("<<<<<<<<<<<<<<<");
-
-		for (int i = 0; i < 8; i++) {
+	
+		
+		while(!player.getBackpack().isEmpty()) {
+			backpackCount++;
+			Object temp = player.getBackpack().pop();
+			tempBackpack.push(temp);
+		}
+		while(!tempBackpack.isEmpty()) {
+			Object temp = tempBackpack.pop();
+			player.getBackpack().push(temp);
+		}
+		int spaceCount = 8 - backpackCount;
+		for (int i = 0; i < spaceCount; i++) {
 			cn.getTextWindow().setCursorPosition(x + 5, y + 5 + i);
 			System.out.println("|   |");
 		}
+		for (int i = 0; i < backpackCount; i++) {
+			cn.getTextWindow().setCursorPosition(x + 5, y + 5 + spaceCount + i);
+			String temp = (String) player.getBackpack().pop();
+			System.out.println("| " + temp +" |");
+			tempBackpack.push(temp);
+		}
+		
+		
 		cn.getTextWindow().setCursorPosition(x + 5, y + 13);
 		System.out.println("+---+");
 		cn.getTextWindow().setCursorPosition(x + 3, y + 14);
