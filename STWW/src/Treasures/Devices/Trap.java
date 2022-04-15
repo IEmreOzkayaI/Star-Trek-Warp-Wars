@@ -18,6 +18,9 @@ public class Trap {
 	private enigma.console.Console cn;
 	private Maze maze;
 
+	public Trap() {
+	}
+
 	public Trap(enigma.console.Console cn, Maze maze) {
 		this.maze = maze;
 		this.cn = cn;
@@ -25,6 +28,7 @@ public class Trap {
 		setX(coordinate[0]);
 		setY(coordinate[1]);
 	}
+	
 	
 
 	public String getName() {

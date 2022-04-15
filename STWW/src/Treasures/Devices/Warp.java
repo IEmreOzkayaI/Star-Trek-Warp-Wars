@@ -16,6 +16,10 @@ public class Warp {
 	private enigma.console.Console cn;
 	private Maze maze;
 
+	public Warp() {
+		
+	}
+	
 	public Warp(enigma.console.Console cn, Maze maze) {
 		this.maze = maze;
 		this.cn = cn;

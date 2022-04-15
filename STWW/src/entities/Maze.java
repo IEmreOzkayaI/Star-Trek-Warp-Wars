@@ -9,8 +9,8 @@ import tools.ObjeComparator;
 public class Maze {
 
 	private Object[][] maze;
-	public static TextAttributes player= new TextAttributes(Color.RED,Color.black);
-	public static TextAttributes computer= new TextAttributes(Color.orange,Color.black);
+	public static TextAttributes player= new TextAttributes(Color.orange,Color.black);
+	public static TextAttributes computer= new TextAttributes(Color.red,Color.black);
 	public static TextAttributes map= new TextAttributes(Color.LIGHT_GRAY,Color.black);
 	public static TextAttributes elements= new TextAttributes(Color.LIGHT_GRAY,Color.black);
 
