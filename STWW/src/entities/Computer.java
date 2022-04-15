@@ -100,6 +100,16 @@ public class Computer {
 		return Math.sqrt(Math.pow(playerX-compX, 2)+ Math.pow(playerY-compY, 2));
 	}
 	
+	public boolean computerUpdateMaze(int x, int y, Object value, Object[][] maze) {
+		if (!maze[y][x].equals("#")) {
+			maze[y][x] = value;
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	
 	public void goToMove() {
 		Object[][] mazeArray = maze.getMaze();
 		RandomMovingList availableSquares= new RandomMovingList();
@@ -107,16 +117,16 @@ public class Computer {
 		int destinationX=player.getX();
 		int destinationY=player.getY();
 		
-		if (mazeArray[coordinateY][coordinateX + 1].equals(" ")) {
+		if (!mazeArray[coordinateY][coordinateX + 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
 			availableSquares.Add('R');
 		}
-		if (mazeArray[coordinateY][coordinateX - 1].equals(" ")) {
+		if (!mazeArray[coordinateY][coordinateX - 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
 			availableSquares.Add('L');
 		}
-		if (mazeArray[coordinateY + 1][coordinateX].equals(" ")) {
+		if (!mazeArray[coordinateY + 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
 			availableSquares.Add('D');
 		}
-		if (mazeArray[coordinateY - 1][coordinateX].equals(" ")) {
+		if (!mazeArray[coordinateY - 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
 			availableSquares.Add('U');
 		}
 		
@@ -158,12 +168,11 @@ public class Computer {
 				
 			}
 		}
-		
-		if(direction=='X') {
-			SplittableRandom splittableRandom = new SplittableRandom();
-			int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
-			direction=arr[directionNumber];
-		}
+//		if(direction=='X') {
+//			SplittableRandom splittableRandom = new SplittableRandom();
+//			int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
+//			direction=arr[directionNumber];
+//		}
 
 		if(direction=='R') {
 			coordinateX++;
@@ -181,7 +190,7 @@ public class Computer {
 	}
 	
 	
-	
+
 	
 	
 	
@@ -200,8 +209,14 @@ public class Computer {
 				tempMaze[coordinateY][coordinateX]=" ";
 				//randMove();
 				goToMove();
+				
+				if(coordinateX==player.getX() && coordinateY==player.getY()) {
+					player.LifeRemove();
+					player.updateCoordinates();
+				}
+				
 				while (!isNull) {
-					isNull = maze.updateMaze(coordinateX,coordinateY, obj);
+					isNull = computerUpdateMaze(coordinateX,coordinateY, obj, tempMaze);
 				}
 			}
 

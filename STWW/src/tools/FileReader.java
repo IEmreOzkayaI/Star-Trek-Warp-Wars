@@ -5,8 +5,9 @@ import java.util.Scanner;
 
 public class FileReader {
 
-	public Object[][] readFile(String fileName) {
+	public Object[][] readFile(String fileName,boolean isMap) {
 		Object[][] map = new Object[23][55]; // detected size before reading
+		Object[][] menu = new Object[8][46]; 
 		int i = 0;
 		try {
 			Scanner file = new Scanner(new File(fileName));
@@ -15,10 +16,12 @@ public class FileReader {
 				char[] line = x.toCharArray();
 			
 				for (int j = 0; j < line.length; j++) {
-					if(line[j]==' ')
-						map[i][j]=" ";
-					if(line[j]=='#')
-						map[i][j]="#";
+					if(isMap)
+						map[i][j]=Character.toString(line[j]);
+					else {
+						menu[i][j]=Character.toString(line[j]);
+
+					}
 				}
 				i++;
 			}
@@ -29,8 +32,10 @@ public class FileReader {
 			System.exit(-1);
 		}
 
-		return map; // return line
+		if(isMap)
+			return map;
+		else
+			return menu;
 	}
-
 
 }
