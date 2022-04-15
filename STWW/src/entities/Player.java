@@ -53,6 +53,36 @@ public class Player {
 		}
 	}
 	
+private void backpackRemover(char direction, int coordinateDirectionX, int coordinateDirectionY, Object backpackObject) {
+	boolean isBackpackRemove = false;
+	if(direction == 'W') {
+		coordinateDirectionX = 0;
+		coordinateDirectionY = -1;
+		backpackObject = backpack.pop();
+		isBackpackRemove = maze.updateMaze(coordinateX + coordinateDirectionX, coordinateY + coordinateDirectionY, backpackObject);
+	}
+	else if(direction == 'S') {
+		coordinateDirectionX = 0;
+		coordinateDirectionY = 1;
+		backpackObject = backpack.pop();
+		isBackpackRemove = maze.updateMaze(coordinateX + coordinateDirectionX, coordinateY + coordinateDirectionY, backpackObject);
+	}
+	else if(direction == 'D') {
+		coordinateDirectionX = 1;
+		coordinateDirectionY = 0;
+		backpackObject = backpack.pop();
+		isBackpackRemove = maze.updateMaze(coordinateX + coordinateDirectionX, coordinateY + coordinateDirectionY, backpackObject);
+	}
+	else if(direction == 'A') {
+		coordinateDirectionX = -1;
+		coordinateDirectionY = 0;
+		backpackObject = backpack.pop();
+		isBackpackRemove = maze.updateMaze(coordinateX + coordinateDirectionX, coordinateY + coordinateDirectionY, backpackObject);
+	}
+	if(!isBackpackRemove) {
+		backpack.push(backpackObject);
+	}
+}
 public void playerMove() {	
 		
 		Timer timer = new Timer();
@@ -61,42 +91,57 @@ public void playerMove() {
 				@Override
 				public void run() {
                 boolean isNull = false;
+                boolean isBackpackRemoverWorked = false;
+                Object backpackObject = 0;
+                
                 int x = 0;
                 int y = 0;
                 char direction = keyList();
+                
                 while (!isNull) {
+                	
                 	int coordinateDirectionX = 0;
             		int coordinateDirectionY = 0;
                 	Object[][] mazeMap = maze.getMaze();
                 	if(direction == 'R') {
                 		coordinateDirectionX = 1;
                 		coordinateDirectionY = 0;
+                		isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,y = coordinateY + coordinateDirectionY, obj);
                 	}
                 	else if(direction == 'L') {
                 		coordinateDirectionX = -1;
                 		coordinateDirectionY = 0;
+                		isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,y = coordinateY + coordinateDirectionY, obj);
                 	}
                 	else if(direction == 'U') {
                 		coordinateDirectionX = 0;
                 		coordinateDirectionY = -1;
+                		isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,y = coordinateY + coordinateDirectionY, obj);
                 	}
                 	else if(direction == 'B') {
                 		coordinateDirectionX = 0;
                 		coordinateDirectionY = 1;
+                		isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,y = coordinateY + coordinateDirectionY, obj);
                 	}
-                	
-					isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,y = coordinateY + coordinateDirectionY, obj);
+                	else {
+                		backpackRemover(direction, coordinateDirectionX, coordinateDirectionY, backpackObject);
+                		isBackpackRemoverWorked = true;
+                	}
 					if (isNull) {
 						mazeMap[coordinateY][coordinateX] = " ";
 						coordinateX += coordinateDirectionX;
 						coordinateY += coordinateDirectionY;
-					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX] != "#" &&
-							!(mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer"))) {
+					}
+					else if(isBackpackRemoverWorked) {
+						isNull = true;
+					}
+					else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX] != "#" &&
+							!(mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer")) && !isBackpackRemoverWorked) {
 						backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
 						score +=  ScoreDefine.scoreDefinder(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
 						mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] = " ";
 					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] == "#" || 
-							mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer")) {
+							mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer")  && !isBackpackRemoverWorked) {
 						mazeMap[coordinateY][coordinateX] = obj;
 						isNull = true;
 					}
@@ -146,6 +191,14 @@ public void playerMove() {
 						return 'L';
 					if (rkey == KeyEvent.VK_DOWN) 
 						return 'B';
+					if (rkey == KeyEvent.VK_W)
+						return 'W';
+					if (rkey == KeyEvent.VK_A)
+						return 'A';
+					if (rkey == KeyEvent.VK_D)
+						return 'D';
+					if (rkey == KeyEvent.VK_S)
+						return 'S';
 				}
 				keypr = 0;
 			}
