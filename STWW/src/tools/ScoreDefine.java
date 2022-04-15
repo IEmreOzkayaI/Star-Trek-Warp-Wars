@@ -3,6 +3,8 @@ package tools;
 import Treasures.Constants.One;
 import Treasures.Constants.Three;
 import Treasures.Constants.Two;
+import Treasures.Devices.Trap;
+import Treasures.Devices.Warp;
 import Treasures.Moves.Five;
 import Treasures.Moves.Four;
 
@@ -29,6 +31,14 @@ public class ScoreDefine {
 		if(obje.getClass().getSimpleName().toString().equalsIgnoreCase("Five")) {
 			Five five = (Five) obje;
 			return five.getScore();
+		}
+		if(obje.getClass().getSimpleName().toString().equalsIgnoreCase("Trap")) {
+			Trap trap = (Trap) obje;
+			return trap.getScore();
+		}
+		if(obje.getClass().getSimpleName().toString().equalsIgnoreCase("Warp")) {
+			Warp warp = (Warp) obje;
+			return warp.getScore();
 		}
 		return 0;
 	}

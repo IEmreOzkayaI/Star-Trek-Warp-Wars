@@ -359,6 +359,7 @@ public class Console {
 	}
 
 	public void printBackpack(int x, int y, Player player) {
+		backpackCount=0;
 		while (!player.getBackpack().isEmpty()) {
 			backpackCount++;
 			Object temp = player.getBackpack().pop();
@@ -369,7 +370,8 @@ public class Console {
 			player.getBackpack().push(temp);
 		}
 		int spaceCount = 8 - backpackCount;
-		for (int i = backpackCount - 1; i >= 0; i--) {
+		
+		for (int i = 0; i < backpackCount; i++) {
 			cn.getTextWindow().setCursorPosition(x + 5, y + 5 + spaceCount + i);
 			Object temp = player.getBackpack().pop();
 
@@ -379,6 +381,10 @@ public class Console {
 		for (int i = 0; i < spaceCount; i++) {
 			cn.getTextWindow().setCursorPosition(x + 5, y + 5 + i);
 			System.out.println("|   |");
+		}
+		while (!tempBackpack.isEmpty()) {
+			Object temp = tempBackpack.pop();
+			player.getBackpack().push(temp);
 		}
 	}
 
