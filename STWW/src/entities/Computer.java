@@ -169,11 +169,11 @@ public class Computer {
 				
 			}
 		}
-		if(direction=='X') {
-			SplittableRandom splittableRandom = new SplittableRandom();
-			int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
-			direction=arr[directionNumber];
-		}
+//		if(direction=='X') {
+//			SplittableRandom splittableRandom = new SplittableRandom();
+//			int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
+//			direction=arr[directionNumber];
+//		}
 
 		if(direction=='R') {
 			coordinateX++;
