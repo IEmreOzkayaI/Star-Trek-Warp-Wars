@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,50 +31,67 @@ public class Console {
 
 	public static enigma.console.Console cn = Enigma.getConsole("Console", 80, 25, 30);
 	
-	int defaultX;
-	int defaultY;
-	public int keypr; // key pressed?
+//	static int selection = 1 ;
+
+	static int defaultX;
+	static int defaultY;
+	public static int keypr; // key pressed?
 	private static Maze maze = new Maze();
 	private Queue consoleQueue = new Queue(15);
 	private Player player;
 	Computer computer;
 	public static int rkey; // key (for press/release)
-	public KeyListener klis;
+	public static KeyListener klis;
 	private boolean isContinue = true;
 
 	int time = 1;
 	Stack tempBackpack = new Stack(8);
 	int backpackCount = 0;
-
+	static Scanner scan = new Scanner(System.in);
+	
 	public Console(Object[][] map, Computer computerManager) throws InterruptedException { // --- Constructor
 
-//		menuScreen(new FileReader().readFile("menu.txt", false));
-		consoleQueue = new Queue(15);
-		this.generatingQueueElement();
-		maze.printMaze(map,cn);
-		player = new Player(maze, cn); // First and Single Player
-		computer=new Computer(cn,maze,player); // First Computer
-		this.template(player);
-		this.printFirstTwenty(computerManager);
-
-
-		while (player.getLife()>0) { 
-			time++;
-			cn.getTextWindow().setCursorPosition(-1, -1);
-			maze.printMaze(map,cn);
-			cn.getTextWindow().setCursorPosition(60, 3);
-			this.printQueueToField();
-			if(time%3==0) {
-				this.continueQueue(computerManager);
-			}
-
-			Thread.sleep(1000);  
-
-			consoleClear();
-			this.template(player);
-		}
 		
-		endScreen();
+//		int menuSelection = menuScreen(new FileReader().readFile("menu.txt", false));
+		int menuSelection=1;
+		switch (menuSelection) {
+		case 1: 
+			consoleClear();
+			templateClear();
+			consoleQueue = new Queue(15);
+			this.generatingQueueElement();
+			maze.printMaze(map,cn);
+			player = new Player(maze, cn); // First and Single Player
+			computer=new Computer(cn,maze,player); // First Computer
+			this.template(player);
+			this.printFirstTwenty(computerManager);
+
+
+			while (player.getLife()>0) { 
+				time++;
+				cn.getTextWindow().setCursorPosition(-1, -1);
+				maze.printMaze(map,cn);
+				cn.getTextWindow().setCursorPosition(60, 3);
+				this.printQueueToField();
+				if(time%3==0) {
+					this.continueQueue(computerManager);
+				}
+
+				Thread.sleep(1000);  
+
+				consoleClear();
+				this.template(player);
+			}
+			
+			endScreen();
+			break;
+		case 2:
+				System.out.println("Burada oyunun nasýl oynandýðý anlatýlacak");
+			break;
+		default:
+			System.out.println("Unexpected value: " + menuSelection);
+		}
+	
 
 	}
 
@@ -176,15 +194,24 @@ public class Console {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+
 						}
 					}
+					
 
 				}
+				int num = 0 ; 
+				num = keyList();
+				reset();
+				if(num!=0)
+					timer.cancel();
+
 			}
 
 		};
-
+		
 		timer.schedule(task, 1, 10);
+
 	}
 
 	private void consoleClear() throws InterruptedException {
@@ -355,7 +382,7 @@ public class Console {
 		}
 	}
 
-	public char keyList() {
+	public static char keyList() {
 
 		klis = new KeyListener() {
 			public void keyTyped(KeyEvent e) {
@@ -381,23 +408,19 @@ public class Console {
 			}
 
 			if (keypr == 1) { // if keyboard button pressed
-				cn.getTextWindow().setCursorPosition(defaultX + 2, defaultY - 1);
+				cn.getTextWindow().setCursorPosition(cn.getTextWindow().getCursorX(),cn.getTextWindow().getCursorY());
 
 				for (int i = 0; i < 1; i++) {
-					if (rkey == KeyEvent.VK_UP)
-						return 'U';
-					if (rkey == KeyEvent.VK_RIGHT)
-						return 'R';
-					if (rkey == KeyEvent.VK_LEFT)
-						return 'L';
-					if (rkey == KeyEvent.VK_DOWN)
-						return 'B';
+					if (rkey == KeyEvent.VK_1)
+						return '1';
+					if (rkey == KeyEvent.VK_2)
+						return '2';
 				}
 			}
 		}
 	}
 
-	public void reset() {
+	public static void reset() {
 		keypr = 0; // last action
 		rkey = 0;
 		defaultX = 0;

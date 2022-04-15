@@ -9,106 +9,110 @@ import tools.RandomCoordinateGenerator;
 import tools.ScoreDefine;
 import tools.Stack;
 
-
-
-
 public class Player {
-	
-	private int coordinateX ;
-	private int coordinateY ;
+
+	private int coordinateX;
+	private int coordinateY;
 	private Object obj = this;
 	public int keypr;
 	public KeyListener klis;
 	public static int rkey;
-
-
+	int[] coordinate;
 	private Stack backpack;
 	int life = 5;
 	int energy = 50;
 	private final String name = "P";
 	private int score = 0;
 	private enigma.console.Console cn;
-    private Maze maze;
-    
-	public Player() {}
-	
+	private Maze maze;
 
-	public Player(Maze maze,enigma.console.Console cn) throws InterruptedException {
+	public Player() {
+	}
 
-		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
-		setX(coordinate[0]);
-		setY(coordinate[1]);
-        this.maze = maze;
-        this.cn=cn;
-        backpack = new Stack(8);
-        playerMove();
-    }
+	public Player(Maze maze, enigma.console.Console cn) throws InterruptedException {
 
+		this.maze = maze;
+		this.cn = cn;
+		updateCoordinates();
+		backpack = new Stack(8);
+		playerMove();
+	}
 
 	public void printPlayer() {
 		boolean isNull = false;
 
 		while (!isNull) {
-			isNull = this.maze.updateMaze(this.getX(),this.getY(), this);
+			isNull = this.maze.updateMaze(this.getX(), this.getY(), this);
 		}
 	}
-	
-public void playerMove() {	
-		
-		Timer timer = new Timer();
-		
-			TimerTask task = new TimerTask() {
-				@Override
-				public void run() {
-                boolean isNull = false;
-                int x = 0;
-                int y = 0;
-                char direction = keyList();
-                while (!isNull) {
-                	int coordinateDirectionX = 0;
-            		int coordinateDirectionY = 0;
-                	Object[][] mazeMap = maze.getMaze();
-                	if(direction == 'R') {
-                		coordinateDirectionX = 1;
-                		coordinateDirectionY = 0;
-                	}
-                	else if(direction == 'L') {
-                		coordinateDirectionX = -1;
-                		coordinateDirectionY = 0;
-                	}
-                	else if(direction == 'U') {
-                		coordinateDirectionX = 0;
-                		coordinateDirectionY = -1;
-                	}
-                	else if(direction == 'B') {
-                		coordinateDirectionX = 0;
-                		coordinateDirectionY = 1;
-                	}
-                	
-					isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,y = coordinateY + coordinateDirectionY, obj);
-					if (isNull) {
-						mazeMap[coordinateY][coordinateX] = " ";
-						coordinateX += coordinateDirectionX;
-						coordinateY += coordinateDirectionY;
-					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX] != "#" &&
-							!(mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer"))) {
-						backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
-						score +=  ScoreDefine.scoreDefinder(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
-						mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] = " ";
-					} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] == "#" || 
-							mazeMap[coordinateY + coordinateDirectionY][coordinateX+ coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer")) {
-						mazeMap[coordinateY][coordinateX] = obj;
-						isNull = true;
-					}
-					reset();			
-                }
-                isNull = false;
-				}
-                
-        	};
 
-        	timer.schedule(task, 50, 1000);
-    }
+	public void playerMove() {
+
+		Timer timer = new Timer();
+
+		TimerTask task = new TimerTask() {
+			
+			boolean playerExist = false;
+
+			public void run() {
+				boolean isNull = false;
+				int x = 0;
+				int y = 0;
+				char direction = keyList();
+				while (!isNull) {
+					int coordinateDirectionX = 0;
+					int coordinateDirectionY = 0;
+					Object[][] mazeMap = maze.getMaze();
+					playerExist = mazeMap[coordinateY][coordinateX].getClass().getSimpleName().toString()
+							.equals("Player");
+
+					if (playerExist) {
+
+						if (direction == 'R') {
+							coordinateDirectionX = 1;
+							coordinateDirectionY = 0;
+						} else if (direction == 'L') {
+							coordinateDirectionX = -1;
+							coordinateDirectionY = 0;
+						} else if (direction == 'U') {
+							coordinateDirectionX = 0;
+							coordinateDirectionY = -1;
+						} else if (direction == 'B') {
+							coordinateDirectionX = 0;
+							coordinateDirectionY = 1;
+						}
+
+						isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,
+								y = coordinateY + coordinateDirectionY, obj);
+						if (isNull) {
+							mazeMap[coordinateY][coordinateX] = " ";
+							coordinateX += coordinateDirectionX;
+							coordinateY += coordinateDirectionY;
+						} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX
+								+ coordinateDirectionX] != "#"
+								&& !(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]
+										.getClass().getSimpleName().toString().equalsIgnoreCase("Computer"))) {
+							backpack.push(
+									mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
+							score += ScoreDefine.scoreDefinder(
+									mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
+							mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] = " ";
+						} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX
+								+ coordinateDirectionX] == "#"
+								|| mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]
+										.getClass().getSimpleName().toString().equalsIgnoreCase("Computer")) {
+							mazeMap[coordinateY][coordinateX] = obj;
+							isNull = true;
+						}
+						reset();
+					}
+				}
+			}
+
+		};
+
+		timer.schedule(task, 50, 1000);
+	}
 
 	public char keyList() {
 		rkey = 0;
@@ -127,7 +131,7 @@ public void playerMove() {
 			}
 		};
 		cn.getTextWindow().addKeyListener(klis);
-		
+
 		while (true) {
 
 			try {
@@ -144,14 +148,14 @@ public void playerMove() {
 						return 'R';
 					if (rkey == KeyEvent.VK_LEFT)
 						return 'L';
-					if (rkey == KeyEvent.VK_DOWN) 
+					if (rkey == KeyEvent.VK_DOWN)
 						return 'B';
 				}
 				keypr = 0;
 			}
 		}
 	}
-	
+
 	public void reset() {
 		keypr = 0; // last action
 		rkey = 0;
@@ -159,24 +163,22 @@ public void playerMove() {
 		cn.getTextWindow().removeKeyListener(klis);
 	}
 
-	
 	public int getX() {
 		return coordinateX;
 	}
 
 	public int getY() {
 		return coordinateY;
-	
+
 	}
 
 	public void setX(int coordinateX) {
 		this.coordinateX = coordinateX;
 	}
-	
+
 	public void setY(int coordinateY) {
 		this.coordinateY = coordinateY;
 	}
-	
 
 	public void EnergyAdd(int energyValue) {
 		this.setEnergy(energyValue + this.getEnergy());
@@ -186,8 +188,6 @@ public void playerMove() {
 		this.setLife(this.getLife() - 1);
 	}
 
-
-	
 	public Stack getBackpack() {
 		return backpack;
 	}
@@ -212,13 +212,18 @@ public void playerMove() {
 		this.energy = energy;
 	}
 
-
-
 	public String getName() {
 		return name;
 	}
+
 	public int getScore() {
 		return score;
 	}
 
+	public void updateCoordinates() {
+		coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
+		setX(coordinate[0]);
+		setY(coordinate[1]);
+	}
+	
 }

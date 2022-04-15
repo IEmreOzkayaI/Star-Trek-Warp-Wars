@@ -100,10 +100,9 @@ public class Computer {
 		return Math.sqrt(Math.pow(playerX-compX, 2)+ Math.pow(playerY-compY, 2));
 	}
 	
-	public boolean computerUpdateMaze(int x, int y, Object value, Maze maze) {
-		Object[][] maze2 = maze.getMaze();
-		if (!maze2[y][x].equals("#")) {
-			maze2[y][x] = value;
+	public boolean computerUpdateMaze(int x, int y, Object value, Object[][] maze) {
+		if (!maze[y][x].equals("#")) {
+			maze[y][x] = value;
 			return true;
 		} else {
 			return false;
@@ -213,13 +212,11 @@ public class Computer {
 				
 				if(coordinateX==player.getX() && coordinateY==player.getY()) {
 					player.LifeRemove();
+					player.updateCoordinates();
 				}
 				
 				while (!isNull) {
-					isNull = computerUpdateMaze(coordinateX,coordinateY, obj, maze);
-					if(isNull) {
-						
-					}
+					isNull = computerUpdateMaze(coordinateX,coordinateY, obj, tempMaze);
 				}
 			}
 
