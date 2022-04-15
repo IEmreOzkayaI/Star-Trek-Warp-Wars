@@ -49,7 +49,7 @@ public class Console {
 		this.printFirstTwenty(computerManager);
 
 
-		while (isContinue) {
+		while (player.getLife()>0) {
 			time++;
 			cn.getTextWindow().setCursorPosition(-1, -1);
 			maze.printMaze(map);
@@ -59,7 +59,7 @@ public class Console {
 				this.continueQueue(computerManager);
 			}
 
-			Thread.sleep(1000);
+			Thread.sleep(200);
 
 			consoleClear();
 			this.template(player);
