@@ -36,10 +36,11 @@ public class Console {
 	public KeyListener klis;
 	private boolean isContinue = true;
 
-	int time = 1;
+	public static int time = 1;
 	Stack tempBackpack = new Stack(8);
 	int backpackCount = 0;
 	public Console(Object[][] map, Computer computerManager) throws InterruptedException { // --- Constructor
+<<<<<<< Updated upstream
 		consoleQueue = new Queue(15);
 		this.generatingQueueElement();
 		maze.printMaze(map);
@@ -55,6 +56,39 @@ public class Console {
 			this.printQueueToField();
 			if(time%3==0) {
 				this.continueQueue(computerManager);
+=======
+
+		
+//		int menuSelection = menuScreen(new FileReader().readFile("menu.txt", false));
+		int menuSelection=1;
+		switch (menuSelection) {
+		case 1: 
+			consoleClear();
+			templateClear();
+			consoleQueue = new Queue(15);
+			this.generatingQueueElement();
+			maze.printMaze(map,cn);
+			player = new Player(maze, cn); // First and Single Player
+			computer=new Computer(cn,maze,player); // First Computer
+			this.template(player);
+			this.printFirstTwenty(computerManager);
+
+
+			while (player.getLife()>0) { 
+				time++;
+				cn.getTextWindow().setCursorPosition(-1, -1);
+				maze.printMaze(map,cn);
+				cn.getTextWindow().setCursorPosition(60, 3);
+				this.printQueueToField();
+				if(time%3==0) {
+					this.continueQueue(computerManager);
+				}
+
+				Thread.sleep(250);  
+
+				consoleClear();
+				this.template(player);
+>>>>>>> Stashed changes
 			}
 
 			Thread.sleep(1000);

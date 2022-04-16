@@ -21,7 +21,8 @@ public class Computer {
 	private enigma.console.Console cn;
 	private Maze maze;
 	private Player player;
-	
+	private boolean isEscapeNeeded=false;
+	private int compScore=0;
 	public Computer() {
 
 
@@ -96,8 +97,17 @@ public class Computer {
 		}
 	}
 	
-	public double calculateDistance(int compX, int compY, int playerX, int playerY) {
-		return Math.sqrt(Math.pow(playerX-compX, 2)+ Math.pow(playerY-compY, 2));
+	public int calculateDistance(int compX, int compY, int playerX, int playerY) {
+		//return (int)Math.sqrt(Math.pow(playerX-compX, 2)+ Math.pow(playerY-compY, 2));
+		int y= compY-playerY;
+		if(y<0) {
+			y*=-1;
+		}
+		int x= compX-playerX;
+		if(x<0) {
+			x*=-1;
+		}
+		return x+y;
 	}
 	
 	public void goToMove() {
@@ -106,7 +116,10 @@ public class Computer {
 		char direction='X';
 		int destinationX=player.getX();
 		int destinationY=player.getY();
+		int[] distances=new  int[4];
+		char[] distanceChar= new char[4];
 		
+<<<<<<< Updated upstream
 		if (mazeArray[coordinateY][coordinateX + 1].equals(" ")) {
 			availableSquares.Add('R');
 		}
@@ -144,26 +157,63 @@ public class Computer {
 			if(arr[i]=='R' && minDistanceChar=='R') {
 					direction='R';
 				
+=======
+			// 0=up, 1=right, 2=down, 3=left
+
+			distances[0]=calculateDistance(coordinateX, coordinateY-1, destinationX, destinationY);
+			distanceChar[0]='U';
+			distances[1]=calculateDistance(coordinateX+1, coordinateY, destinationX, destinationY);
+			distanceChar[1]='R';
+			distances[2]=calculateDistance(coordinateX, coordinateY+1, destinationX, destinationY);
+			distanceChar[2]='D';
+			distances[3]=calculateDistance(coordinateX-1, coordinateY, destinationX, destinationY);
+			distanceChar[3]='L';
+
+			for (int i = 0; i <distances.length; i++){  
+				for (int j = i + 1; j < distances.length; j++){  
+					int tmp = 0;  
+					char holder;
+					if (distances[i] > distances[j]){  
+						tmp = distances[i]; 
+						holder=distanceChar[i];
+						
+						distances[i] = distances[j]; 
+						distanceChar[i]=distanceChar[j];
+						
+						distances[j] = tmp;  
+						distanceChar[j]=holder;
+					}  
+				}  
+>>>>>>> Stashed changes
 			}
-			if(arr[i]=='L'  && minDistanceChar=='L') {
-					direction='L';
-				
+			
+		for(int i=0; i<distanceChar.length; i++) {
+			if(distanceChar[i]=='U' && !mazeArray[coordinateY - 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+				direction='U';
+				break;
 			}
-			if(arr[i]=='D' && minDistanceChar=='D') {
-					direction='D';
-				
+			if (distanceChar[i]=='R' && !mazeArray[coordinateY][coordinateX + 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+				direction='R';
+				break;
 			}
-			if(arr[i]=='U'  && minDistanceChar=='U') {
-					direction='U';
-				
+			if (distanceChar[i]=='D' && !mazeArray[coordinateY + 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+				direction='D';
+				break;
+			}
+			if (distanceChar[i]=='L' && !mazeArray[coordinateY][coordinateX - 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+				direction='L';
+				break;
 			}
 		}
+<<<<<<< Updated upstream
 		
 		if(direction=='X') {
 			SplittableRandom splittableRandom = new SplittableRandom();
 			int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
 			direction=arr[directionNumber];
 		}
+=======
+>>>>>>> Stashed changes
 
 		if(direction=='R') {
 			coordinateX++;
@@ -180,8 +230,32 @@ public class Computer {
 		
 	}
 	
+<<<<<<< Updated upstream
 	
 	
+=======
+//	public String decideDirection() {
+//		double tanValue=(player.getY())/();
+//		if(coordinateX==player.getX() && coordinateY<player.getY()) {
+//			return "down";
+//		}
+//		if(coordinateX==player.getX() && coordinateY>player.getY()) {
+//			return "up";
+//		}
+//		if(coordinateY==player.getY() && coordinateX<player.getX()) {
+//			return "right";
+//		}
+//		if(coordinateY==player.getY() && coordinateX>player.getX()) {
+//			return "left";
+//		}
+//		
+//	}
+//	
+	public void escapeFunction() {
+		
+	}
+
+>>>>>>> Stashed changes
 	
 	
 	
@@ -198,8 +272,18 @@ public class Computer {
 				
 				boolean isNull = false;
 				tempMaze[coordinateY][coordinateX]=" ";
+<<<<<<< Updated upstream
 				//randMove();
 				goToMove();
+=======
+					goToMove();
+				
+				if(coordinateX==player.getX() && coordinateY==player.getY()) {
+					player.LifeRemove();
+					player.updateCoordinates();
+				}
+				
+>>>>>>> Stashed changes
 				while (!isNull) {
 					isNull = maze.updateMaze(coordinateX,coordinateY, getName());
 				}

@@ -4,6 +4,7 @@ import java.util.SplittableRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import UI.Console;
 import entities.Maze;
 import tools.RandomCoordinateGenerator;
 import tools.RandomMovingList;
@@ -17,6 +18,7 @@ public class Five {
 	private enigma.console.Console cn;
 	private Maze maze;
 
+	
 	public Five(enigma.console.Console cn, Maze maze) {
 		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(name, maze);
 		setX(coordinate[0]);
@@ -81,9 +83,12 @@ public class Five {
 			availableSquares.Add('U');
 		}
 		
-		SplittableRandom splittableRandom = new SplittableRandom();
-		int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
+//		SplittableRandom splittableRandom = new SplittableRandom();
+//		int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
+		
+		
 		char[] arr= availableSquares.getList();
+		int directionNumber= Console.time % arr.length;
 		char direction=arr[directionNumber];
 		if(direction=='R') {
 			coordinateX++;
@@ -98,6 +103,9 @@ public class Five {
 			coordinateY++; 
 		}
 	}
+	
+	
+	
 
 	public void fiveMove() {
 		
@@ -113,6 +121,7 @@ public class Five {
 				boolean isNull = false;
 				tempMaze[coordinateY][coordinateX]=" ";
 				randMove();
+				
 				while (!isNull) {
 					isNull = maze.updateMaze(coordinateX,coordinateY, getName());
 				}
