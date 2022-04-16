@@ -44,7 +44,7 @@ public class Console {
 	public static KeyListener klis;
 	private boolean isContinue = true;
 
-	public static int time = 1;
+	int time = 1;
 	Stack tempBackpack = new Stack(8);
 	int backpackCount = 0;
 	static Scanner scan = new Scanner(System.in);
