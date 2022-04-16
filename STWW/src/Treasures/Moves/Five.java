@@ -4,6 +4,7 @@ import java.util.SplittableRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import UI.Console;
 import entities.Maze;
 import tools.RandomCoordinateGenerator;
 import tools.RandomMovingList;

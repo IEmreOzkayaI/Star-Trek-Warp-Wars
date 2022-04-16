@@ -24,7 +24,6 @@ public class Computer {
 	private Maze maze;
 	private Player player;
 	private boolean isEscapeNeeded=false;
-
 	
 	public Computer() {
 
@@ -100,8 +99,17 @@ public class Computer {
 		}
 	}
 	
-	public double calculateDistance(int compX, int compY, int playerX, int playerY) {
-		return Math.sqrt(Math.pow(playerX-compX, 2)+ Math.pow(playerY-compY, 2));
+	public int calculateDistance(int compX, int compY, int playerX, int playerY) {
+		//return (int)Math.sqrt(Math.pow(playerX-compX, 2)+ Math.pow(playerY-compY, 2));
+		int y= compY-playerY;
+		if(y<0) {
+			y*=-1;
+		}
+		int x= compX-playerX;
+		if(x<0) {
+			x*=-1;
+		}
+		return x+y;
 	}
 	
 	public boolean computerUpdateMaze(int x, int y, Object value, Object[][] maze) {
@@ -120,7 +128,6 @@ public class Computer {
 		int destinationX=player.getX();
 		int destinationY=player.getY();
 		
-
 		int[] distances=new int[4];
 		char[] distancesChar= new char[4];
 		
@@ -157,17 +164,21 @@ public class Computer {
 				direction='R';
 				break;
 			}
-			if (distancesChar[i]=='L' && !mazeArray[coordinateY][coordinateX - 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+			if (distancesChar[i]=='L' && !mazeArray[coordinateY][coordinateX - 1].equals("#") && !mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Computer")) {
 				direction='L';
 				break;
 			}
-			if (distancesChar[i]=='D' && !mazeArray[coordinateY + 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+			if (distancesChar[i]=='D' && !mazeArray[coordinateY + 1][coordinateX].equals("#") && !mazeArray[coordinateY+ 1][coordinateX ].getClass().getSimpleName().equals("Computer")) {
 				direction='D';
 				break;
 			}
-			if (distancesChar[i]=='U' && !mazeArray[coordinateY - 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+			if (distancesChar[i]=='U' && !mazeArray[coordinateY - 1][coordinateX].equals("#") && !mazeArray[coordinateY- 1][coordinateX ].getClass().getSimpleName().equals("Computer")) {
 				direction='U';
-				break;			
+				break;
+			}
+			
+		}
+			
 		
 			if(direction=='R') {
 				scoreFunction('R');
@@ -185,84 +196,46 @@ public class Computer {
 				scoreFunction('D');
 				coordinateY++; 
 			}
-
-		if(direction=='R') {
-			coordinateX++;
 		}
+	
+	
+	
+	
 	
 	public void scoreFunction(char direction) {
 		Object[][] mazeArray = maze.getMaze();
 		if(direction=='U') {
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("One")) {
-				setComputerTotalScore(2);
-			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Two")) {
-				setComputerTotalScore(10);
-			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Three")) {
-				setComputerTotalScore(30);
-			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Warp")) {
+
+			if(mazeArray[coordinateY-1][coordinateX].getClass().getSimpleName().equals("Warp") ||mazeArray[coordinateY-1][coordinateX].getClass().getSimpleName().equals("Trap")) {
 				setComputerTotalScore(300);
+			}else {
+				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY-1][coordinateX])*2);
 			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Trap")) {
-				setComputerTotalScore(300);
-			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Player")) {
+			if(mazeArray[coordinateY-1][coordinateX].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
 				player.getBackpack().pop();
 			}
 		}
 		
 		if(direction=='R') {
-			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("One")) {
-				setComputerTotalScore(2);
-			}
-			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Two")) {
-				setComputerTotalScore(10);
-			}
-			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Three")) {
-				setComputerTotalScore(30);
-			}
-			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Four")) {
-				setComputerTotalScore(100);
-			}
-			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Five")) {
+			
+			if(mazeArray[coordinateY][coordinateX+1].getClass().getSimpleName().equals("Warp") ||mazeArray[coordinateY][coordinateX+1].getClass().getSimpleName().equals("Trap")) {
 				setComputerTotalScore(300);
-			}
-			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Warp")) {
-				setComputerTotalScore(300);
-			}
-			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Trap")) {
-				setComputerTotalScore(300);
+			}else {
+				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY][coordinateX+1])*2);
 			}
 			if(mazeArray[coordinateY][coordinateX+1].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
 				player.getBackpack().pop();
 			}
+			
 		}
 		
 		if(direction=='D') {
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("One")) {
-				setComputerTotalScore(2);
-			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Two")) {
-				setComputerTotalScore(10);
-			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Three")) {
-				setComputerTotalScore(30);
-			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Four")) {
-				setComputerTotalScore(100);
-			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Five")) {
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Warp") ||mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Trap")) {
 				setComputerTotalScore(300);
-			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Warp")) {
-				setComputerTotalScore(300);
-			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Trap")) {
-				setComputerTotalScore(300);
+			}else {
+				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY+1][coordinateX])*2);
 			}
 			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
@@ -271,26 +244,11 @@ public class Computer {
 		}
 		
 		if(direction=='L') {
-			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("One")) {
-				setComputerTotalScore(2);
-			}
-			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Two")) {
-				setComputerTotalScore(10);
-			}
-			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Three")) {
-				setComputerTotalScore(30);
-			}
-			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Four")) {
-				setComputerTotalScore(100);
-			}
-			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Five")) {
+			
+			if(mazeArray[coordinateY][coordinateX-1].getClass().getSimpleName().equals("Warp") ||mazeArray[coordinateY][coordinateX-1].getClass().getSimpleName().equals("Trap")) {
 				setComputerTotalScore(300);
-			}
-			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Warp")) {
-				setComputerTotalScore(300);
-			}
-			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Trap")) {
-				setComputerTotalScore(300);
+			}else {
+				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY][coordinateX-1])*2);
 			}
 			if(mazeArray[coordinateY][coordinateX-1].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
@@ -322,7 +280,6 @@ public class Computer {
 //		
 //	}
 
-
 	
 	
 	
@@ -341,12 +298,13 @@ public class Computer {
 				tempMaze[coordinateY][coordinateX]=" ";
 				//randMove();
 				goToMove();
+
 				
 				if(coordinateX==player.getX() && coordinateY==player.getY()) {
 					player.LifeRemove();
 					player.updateCoordinates();
 				}
-				
+
 				while (!isNull) {
 					isNull = computerUpdateMaze(coordinateX,coordinateY, obj, tempMaze);
 				}

@@ -13,8 +13,7 @@ public class Main {
 		
 		
 		FileReader reader = new FileReader();
-		Computer computer = new Computer(true);
-		Console console = new Console(reader.readFile("maze.txt",true),computer);
+		Console console = new Console(reader.readFile("maze.txt",true));
 
 
 	}

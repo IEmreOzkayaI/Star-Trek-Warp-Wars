@@ -44,12 +44,12 @@ public class Console {
 	public static KeyListener klis;
 	private boolean isContinue = true;
 
-	int time = 1;
+	public static int time = 1;
 	Stack tempBackpack = new Stack(8);
 	int backpackCount = 0;
 	static Scanner scan = new Scanner(System.in);
 	
-	public Console(Object[][] map, Computer computerManager) throws InterruptedException { // --- Constructor
+	public Console(Object[][] map) throws InterruptedException { // --- Constructor
 
 		
 //		int menuSelection = menuScreen(new FileReader().readFile("menu.txt", false));
@@ -64,20 +64,20 @@ public class Console {
 			player = new Player(maze, cn); // First and Single Player
 			computer=new Computer(cn,maze,player); // First Computer
 			this.template(player);
-			this.printFirstTwenty(computerManager);
+			this.printFirstTwenty();
 
 
-			while (player.getLife()>0) { 
+			while (player.getLife()>4) { 
 				time++;
 				cn.getTextWindow().setCursorPosition(-1, -1);
 				maze.printMaze(map,cn);
 				cn.getTextWindow().setCursorPosition(60, 3);
 				this.printQueueToField();
 				if(time%3==0) {
-					this.continueQueue(computerManager);
+					this.continueQueue();
 				}
 
-				Thread.sleep(300);  
+				Thread.sleep(1000);  
 
 				consoleClear();
 				this.template(player);
@@ -100,12 +100,8 @@ public class Console {
 		templateClear();
 
 		// Detection of Winer
-		Computer[] numberOfComputer = Computer.getComputerList();
-		int totalComputerScore = 0;
-		for (int i = 0; i < numberOfComputer.length; i++) {
-			totalComputerScore += numberOfComputer[i].getScore();
-		}
-		int winnerScore = player.getScore() - totalComputerScore;
+
+		int winnerScore = player.getScore() - Computer.getComputerTotalScore();
 
 		cn.getTextWindow().setCursorPosition(30, 10);
 		System.out.println("Winner and Their Score");
@@ -114,7 +110,7 @@ public class Console {
 		System.out.println("----------------------");
 		cn.getTextWindow().setCursorPosition(30, 12);
 		if (winnerScore < 0)
-			System.out.println("Computer " + " : " + totalComputerScore);
+			System.out.println("Computer " + " : " + Computer.getComputerTotalScore());
 		else
 			System.out.println("Player " + " : " + player.getScore());
 
@@ -234,27 +230,27 @@ public class Console {
 		}
 	}
 
-	private void continueQueue(Computer computerManager) throws InterruptedException {
+	private void continueQueue() throws InterruptedException {
 		Queue que = this.consoleQueue;
 		String element = que.dequeue().toString();
-		elementDecision(element, computerManager);
+		elementDecision(element);
 		this.generatingQueueElement();
 		cn.getTextWindow().setCursorPosition(60, 3);
 		printQueueToField();
 
 	}
 
-	public void printFirstTwenty(Computer computerManager) throws InterruptedException {
+	public void printFirstTwenty( ) throws InterruptedException {
 
 		for (int i = 0; i < 20; i++) {
 			Queue qu = this.consoleQueue;
 			String element = qu.dequeue().toString();
 			this.generatingQueueElement();
-			elementDecision(element, computerManager);
+			elementDecision(element);
 		}
 	}
 
-	public void elementDecision(String element, Computer computerManager) throws InterruptedException {
+	public void elementDecision(String element ) throws InterruptedException {
 
 		if (element.equalsIgnoreCase("1")) {
 			new One(maze);
@@ -277,8 +273,7 @@ public class Console {
 
 		}
 		if (element.equalsIgnoreCase("C")) {
-			Computer computer = new Computer(cn, maze, player);
-			computerManager.addComputer(computer);
+			new Computer(cn, maze, player);
 
 		}
 		if (element.equalsIgnoreCase("=")) {
