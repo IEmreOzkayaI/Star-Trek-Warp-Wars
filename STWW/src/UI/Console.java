@@ -49,7 +49,7 @@ public class Console {
 	int backpackCount = 0;
 	static Scanner scan = new Scanner(System.in);
 	
-	public Console(Object[][] map, Computer computerManager) throws InterruptedException { // --- Constructo
+	public Console(Object[][] map, Computer computerManager) throws InterruptedException { // --- Constructor
 
 		
 //		int menuSelection = menuScreen(new FileReader().readFile("menu.txt", false));
@@ -70,7 +70,6 @@ public class Console {
 			while (player.getLife()>0) { 
 				time++;
 				cn.getTextWindow().setCursorPosition(-1, -1);
-
 				maze.printMaze(map,cn);
 				cn.getTextWindow().setCursorPosition(60, 3);
 				this.printQueueToField();
@@ -78,7 +77,7 @@ public class Console {
 					this.continueQueue(computerManager);
 				}
 
-				Thread.sleep(1000);  
+				Thread.sleep(300);  
 
 				consoleClear();
 				this.template(player);
@@ -87,7 +86,7 @@ public class Console {
 			endScreen();
 			break;
 		case 2:
-				System.out.println("Burada oyunun nas√Ωl oynand√Ω√∞√Ω anlat√Ωlacak");
+				System.out.println("Burada oyunun nas˝l oynand˝˝ anlat˝lacak");
 			break;
 		default:
 			System.out.println("Unexpected value: " + menuSelection);
@@ -298,21 +297,21 @@ public class Console {
 		while (flag) {
 			int x = random.nextInt(41);
 			if (1 <= x && 12 >= x)
-				consoleQueue.enqueue(1); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
+				consoleQueue.enqueue(1); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
 			if (13 <= x && 20 >= x)
-				consoleQueue.enqueue(2); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
+				consoleQueue.enqueue(2); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
 			if (21 <= x && 26 >= x)
-				consoleQueue.enqueue(3); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
+				consoleQueue.enqueue(3); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
 			if (27 <= x && 31 >= x)
-				consoleQueue.enqueue(4); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
+				consoleQueue.enqueue(4); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
 			if (32 <= x && 35 >= x)
-				consoleQueue.enqueue(5); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
+				consoleQueue.enqueue(5); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
 			if (36 <= x && 37 >= x)
-				consoleQueue.enqueue("="); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
+				consoleQueue.enqueue("="); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
 			if (38 == x)
-				consoleQueue.enqueue("*"); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
+				consoleQueue.enqueue("*"); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
 			if (39 <= x && 40 >= x)
-				consoleQueue.enqueue("C"); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
+				consoleQueue.enqueue("C"); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
 			if (consoleQueue.isFull())
 				flag = false;
 		}
@@ -347,13 +346,13 @@ public class Console {
 		cn.getTextWindow().setCursorPosition(x + 3, y + 14);
 		System.out.println("P.Backpack");
 		cn.getTextWindow().setCursorPosition(x, y + 16);
-		System.out.println("P.Energy : " + player.getEnergy());
+		System.out.println("P.Energy :");
 		cn.getTextWindow().setCursorPosition(x, y + 17);
 		System.out.println("P.Score  : " + player.getScore());
 		cn.getTextWindow().setCursorPosition(x, y + 18);
 		System.out.println("P.Life   : " + player.getLife());
 		cn.getTextWindow().setCursorPosition(x, y + 20);
-		System.out.println("C.Score  :");
+		System.out.println("C.Score  :"+ Computer.getComputerTotalScore());
 		cn.getTextWindow().setCursorPosition(x, y + 22);
 		System.out.println("Time     : " + time);
 

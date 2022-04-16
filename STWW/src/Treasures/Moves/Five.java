@@ -67,6 +67,7 @@ public class Five {
 		
 		
 		char[] arr= availableSquares.getList();
+		if(arr.length!=0) {
 		int directionNumber= Console.time % arr.length;
 		char direction=arr[directionNumber];
 		if(direction=='R') {
@@ -80,6 +81,7 @@ public class Five {
 		}
 		else if(direction=='D') {
 			coordinateY++; 
+		}
 		}
 	}
 	
