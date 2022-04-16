@@ -14,16 +14,17 @@ public class Four {
 	private final int score = 50;
 	private int coordinateX = 0;
 	private int coordinateY = 0;
+	private Object obj = this;
 
 	private enigma.console.Console cn;
 	private Maze maze;
 	
 	public Four(enigma.console.Console cn, Maze maze) throws InterruptedException {
-		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(name, maze);
-		setX(coordinate[0]);
-		setY(coordinate[1]);
 		this.maze = maze;
 		this.cn = cn;
+		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, this.maze);
+		setX(coordinate[0]);
+		setY(coordinate[1]);
 		fourMove();
 
 
@@ -99,7 +100,7 @@ public class Four {
 				tempMaze[coordinateY][coordinateX]=" ";
 				randMove();
 				while (!isNull) {
-					isNull = maze.updateMaze(coordinateX,coordinateY, getName());
+					isNull = maze.updateMaze(coordinateX,coordinateY,obj);
 				}
 			}
 

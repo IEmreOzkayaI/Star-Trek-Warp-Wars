@@ -17,7 +17,7 @@ public class Computer {
 	private int coordinateY = 0;
 	public static ComputerList computerList;
 	private static int computerTotalScore = 0;
-
+	private Object obj = this;
 	private enigma.console.Console cn;
 	private Maze maze;
 	private Player player;
@@ -35,7 +35,7 @@ public class Computer {
 	}
 	
 	public Computer(enigma.console.Console cn, Maze maze, Player player) {
-		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(name, maze);
+		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
 		setCoordinateX(coordinate[0]);
 		setCoordinateY(coordinate[1]);
 		this.maze = maze;
@@ -110,6 +110,16 @@ public class Computer {
 		return x+y;
 	}
 	
+	public boolean computerUpdateMaze(int x, int y, Object value, Object[][] maze) {
+		if (!maze[y][x].equals("#")) {
+			maze[y][x] = value;
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	
 	public void goToMove() {
 		Object[][] mazeArray = maze.getMaze();
 		RandomMovingList availableSquares= new RandomMovingList();
@@ -119,17 +129,17 @@ public class Computer {
 		int[] distances=new  int[4];
 		char[] distanceChar= new char[4];
 		
-<<<<<<< Updated upstream
-		if (mazeArray[coordinateY][coordinateX + 1].equals(" ")) {
+
+		if (!mazeArray[coordinateY][coordinateX + 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
 			availableSquares.Add('R');
 		}
-		if (mazeArray[coordinateY][coordinateX - 1].equals(" ")) {
+		if (!mazeArray[coordinateY][coordinateX - 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
 			availableSquares.Add('L');
 		}
-		if (mazeArray[coordinateY + 1][coordinateX].equals(" ")) {
+		if (!mazeArray[coordinateY + 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
 			availableSquares.Add('D');
 		}
-		if (mazeArray[coordinateY - 1][coordinateX].equals(" ")) {
+		if (!mazeArray[coordinateY - 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
 			availableSquares.Add('U');
 		}
 		
@@ -157,7 +167,6 @@ public class Computer {
 			if(arr[i]=='R' && minDistanceChar=='R') {
 					direction='R';
 				
-=======
 			// 0=up, 1=right, 2=down, 3=left
 
 			distances[0]=calculateDistance(coordinateX, coordinateY-1, destinationX, destinationY);
@@ -184,8 +193,7 @@ public class Computer {
 						distanceChar[j]=holder;
 					}  
 				}  
->>>>>>> Stashed changes
-			}
+      }
 			
 		for(int i=0; i<distanceChar.length; i++) {
 			if(distanceChar[i]=='U' && !mazeArray[coordinateY - 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
@@ -205,15 +213,6 @@ public class Computer {
 				break;
 			}
 		}
-<<<<<<< Updated upstream
-		
-		if(direction=='X') {
-			SplittableRandom splittableRandom = new SplittableRandom();
-			int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
-			direction=arr[directionNumber];
-		}
-=======
->>>>>>> Stashed changes
 
 		if(direction=='R') {
 			coordinateX++;
@@ -230,10 +229,8 @@ public class Computer {
 		
 	}
 	
-<<<<<<< Updated upstream
+
 	
-	
-=======
 //	public String decideDirection() {
 //		double tanValue=(player.getY())/();
 //		if(coordinateX==player.getX() && coordinateY<player.getY()) {
@@ -255,7 +252,6 @@ public class Computer {
 		
 	}
 
->>>>>>> Stashed changes
 	
 	
 	
@@ -272,20 +268,17 @@ public class Computer {
 				
 				boolean isNull = false;
 				tempMaze[coordinateY][coordinateX]=" ";
-<<<<<<< Updated upstream
 				//randMove();
 				goToMove();
-=======
-					goToMove();
+
 				
 				if(coordinateX==player.getX() && coordinateY==player.getY()) {
 					player.LifeRemove();
 					player.updateCoordinates();
 				}
-				
->>>>>>> Stashed changes
+
 				while (!isNull) {
-					isNull = maze.updateMaze(coordinateX,coordinateY, getName());
+					isNull = computerUpdateMaze(coordinateX,coordinateY, obj, tempMaze);
 				}
 			}
 

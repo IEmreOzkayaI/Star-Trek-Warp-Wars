@@ -15,11 +15,15 @@ public class One   {
 	private int coordinateY = 0;
 
 	public One(Maze maze) {
-		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(name, maze);
+		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
 		setX(coordinate[0]);
 		setY(coordinate[1]);
 	}
 	
+	public One() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getName() {
 		return name;
 	}
