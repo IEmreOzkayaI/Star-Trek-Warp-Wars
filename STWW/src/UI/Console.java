@@ -44,12 +44,12 @@ public class Console {
 	public static KeyListener klis;
 	private boolean isContinue = true;
 
-	int time = 1;
+	public static int time = 1;
 	Stack tempBackpack = new Stack(8);
 	int backpackCount = 0;
 	static Scanner scan = new Scanner(System.in);
 	
-	public Console(Object[][] map, Computer computerManager) throws InterruptedException { // --- Constructor
+	public Console(Object[][] map, Computer computerManager) throws InterruptedException { // --- Constructo
 
 		
 //		int menuSelection = menuScreen(new FileReader().readFile("menu.txt", false));
@@ -87,7 +87,7 @@ public class Console {
 			endScreen();
 			break;
 		case 2:
-				System.out.println("Burada oyunun nas˝l oynand˝˝ anlat˝lacak");
+				System.out.println("Burada oyunun nas√Ωl oynand√Ω√∞√Ω anlat√Ωlacak");
 			break;
 		default:
 			System.out.println("Unexpected value: " + menuSelection);
@@ -298,21 +298,21 @@ public class Console {
 		while (flag) {
 			int x = random.nextInt(41);
 			if (1 <= x && 12 >= x)
-				consoleQueue.enqueue(1); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
+				consoleQueue.enqueue(1); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
 			if (13 <= x && 20 >= x)
-				consoleQueue.enqueue(2); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
+				consoleQueue.enqueue(2); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
 			if (21 <= x && 26 >= x)
-				consoleQueue.enqueue(3); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
+				consoleQueue.enqueue(3); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
 			if (27 <= x && 31 >= x)
-				consoleQueue.enqueue(4); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
+				consoleQueue.enqueue(4); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
 			if (32 <= x && 35 >= x)
-				consoleQueue.enqueue(5); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
+				consoleQueue.enqueue(5); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
 			if (36 <= x && 37 >= x)
-				consoleQueue.enqueue("="); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
+				consoleQueue.enqueue("="); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
 			if (38 == x)
-				consoleQueue.enqueue("*"); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
+				consoleQueue.enqueue("*"); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
 			if (39 <= x && 40 >= x)
-				consoleQueue.enqueue("C"); // BU YAPILAR CLASSLAR OLUﬁTURULDU–UNDA DE–›ﬁT›R›LMEL›
+				consoleQueue.enqueue("C"); // BU YAPILAR CLASSLAR OLU√ûTURULDU√êUNDA DE√ê√ù√ûT√ùR√ùLMEL√ù
 			if (consoleQueue.isFull())
 				flag = false;
 		}

@@ -4,6 +4,7 @@ import java.util.SplittableRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import UI.Console;
 import entities.Maze;
 import tools.RandomCoordinateGenerator;
 import tools.RandomMovingList;
@@ -17,7 +18,7 @@ public class Four {
 
 	private enigma.console.Console cn;
 	private Maze maze;
-
+	
 	public Four(enigma.console.Console cn, Maze maze) throws InterruptedException {
 		this.maze = maze;
 		this.cn = cn;
@@ -62,9 +63,12 @@ public class Four {
 			availableSquares.Add('U');
 		}
 		
-		SplittableRandom splittableRandom = new SplittableRandom();
-		int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
+//		SplittableRandom splittableRandom = new SplittableRandom();
+//		int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
+		
+		
 		char[] arr= availableSquares.getList();
+		int directionNumber= Console.time % arr.length;
 		char direction=arr[directionNumber];
 		if(direction=='R') {
 			coordinateX++;
@@ -79,6 +83,8 @@ public class Four {
 			coordinateY++; 
 		}
 	}
+	
+	
 	public void fourMove() {
 		
 		Object[][] tempMaze = maze.getMaze();
