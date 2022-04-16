@@ -62,9 +62,9 @@ public class Four {
 			availableSquares.Add('U');
 		}
 		
-		SplittableRandom splittableRandom = new SplittableRandom();
-		int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
 		char[] arr= availableSquares.getList();
+		if(arr.length!=0) {
+		int directionNumber= Console.time % arr.length;
 		char direction=arr[directionNumber];
 		if(direction=='R') {
 			coordinateX++;
@@ -77,6 +77,7 @@ public class Four {
 		}
 		else if(direction=='D') {
 			coordinateY++; 
+		}
 		}
 	}
 	public void fourMove() {

@@ -4,8 +4,10 @@ import java.util.SplittableRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import Treasures.Constants.One;
 import UI.Console;
 import tools.RandomMovingList;
+import tools.ScoreDefine;
 import tools.ComputerList;
 import tools.RandomCoordinateGenerator;
 
@@ -21,6 +23,8 @@ public class Computer {
 	private enigma.console.Console cn;
 	private Maze maze;
 	private Player player;
+	private boolean isEscapeNeeded=false;
+
 	
 	public Computer() {
 
@@ -112,84 +116,212 @@ public class Computer {
 	
 	public void goToMove() {
 		Object[][] mazeArray = maze.getMaze();
-		RandomMovingList availableSquares= new RandomMovingList();
 		char direction='X';
 		int destinationX=player.getX();
 		int destinationY=player.getY();
 		
-		if (!mazeArray[coordinateY][coordinateX + 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
-			availableSquares.Add('R');
-		}
-		if (!mazeArray[coordinateY][coordinateX - 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
-			availableSquares.Add('L');
-		}
-		if (!mazeArray[coordinateY + 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
-			availableSquares.Add('D');
-		}
-		if (!mazeArray[coordinateY - 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
-			availableSquares.Add('U');
-		}
-		
-		double minDistance=100000;
-		char minDistanceChar='X';
-		if(calculateDistance(coordinateX+1, coordinateY, destinationX, destinationY)<minDistance) {
-			minDistance=calculateDistance(coordinateX, coordinateY, destinationX, destinationY);
-			minDistanceChar='R';
 
-		}
-		if(calculateDistance(coordinateX-1, coordinateY, destinationX, destinationY)<minDistance) {
-			minDistance=calculateDistance(coordinateX, coordinateY, destinationX, destinationY);
-			minDistanceChar='L';
-		}
-		if(calculateDistance(this.coordinateX, this.coordinateY+1, destinationX, destinationY)<minDistance) {
-			minDistance=calculateDistance(coordinateX, coordinateY, destinationX, destinationY);
-			minDistanceChar='D';
-		}
-		if(calculateDistance(this.coordinateX, this.coordinateY-1, destinationX, destinationY)<minDistance) {
-			minDistance=calculateDistance(coordinateX, coordinateY, destinationX, destinationY);
-			minDistanceChar='U';
-		}
-		char[] arr= availableSquares.getList();
-		for(int i=0; i<arr.length; i++) {
-			if(arr[i]=='R' && minDistanceChar=='R') {
-					direction='R';
-				
+		int[] distances=new int[4];
+		char[] distancesChar= new char[4];
+		
+		// 0=up, 1=right, 2=down , 3=left
+		distances[0]=calculateDistance(coordinateX, coordinateY-1, destinationX, destinationY);
+		distancesChar[0]='U';
+		distances[1]=calculateDistance(coordinateX+1, coordinateY,destinationX, destinationY);
+		distancesChar[1]='R';
+		distances[2]=calculateDistance(coordinateX, coordinateY+1, destinationX, destinationY);
+		distancesChar[2]='D';
+		distances[3]=calculateDistance(coordinateX-1, coordinateY, destinationX, destinationY);
+		distancesChar[3]='L';
+		
+		for (int i = 0; i < distances.length; i++){  
+			for (int j = i + 1; j < distances.length; j++){  
+				int tmp = 0;  
+				char holder;
+				if (distances[i] > distances[j]){  
+					tmp = distances[i];  
+					holder=distancesChar[i];
+					
+					distances[i] = distances[j];  
+					distancesChar[i]=distancesChar[j];
+					
+					distances[j] = tmp;
+					distancesChar[j]=holder;
+				}  
+			}  
+		}	
+			
+		
+		for(int i=0; i<distancesChar.length; i++) {
+			if (distancesChar[i]=='R' && !mazeArray[coordinateY][coordinateX + 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+				direction='R';
+				break;
 			}
-			if(arr[i]=='L'  && minDistanceChar=='L') {
-					direction='L';
-				
+			if (distancesChar[i]=='L' && !mazeArray[coordinateY][coordinateX - 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+				direction='L';
+				break;
 			}
-			if(arr[i]=='D' && minDistanceChar=='D') {
-					direction='D';
-				
+			if (distancesChar[i]=='D' && !mazeArray[coordinateY + 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+				direction='D';
+				break;
 			}
-			if(arr[i]=='U'  && minDistanceChar=='U') {
-					direction='U';
-				
+			if (distancesChar[i]=='U' && !mazeArray[coordinateY - 1][coordinateX].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+				direction='U';
+				break;			
+		
+			if(direction=='R') {
+				scoreFunction('R');
+				coordinateX++;
 			}
-		}
-//		if(direction=='X') {
-//			SplittableRandom splittableRandom = new SplittableRandom();
-//			int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
-//			direction=arr[directionNumber];
-//		}
+			else if(direction=='L') {
+				scoreFunction('L');
+				coordinateX--;
+			}
+			else if(direction=='U') {
+				scoreFunction('U');
+				coordinateY--;
+			}
+			else if(direction=='D') {
+				scoreFunction('D');
+				coordinateY++; 
+			}
 
 		if(direction=='R') {
 			coordinateX++;
 		}
-		else if(direction=='L') {
-			coordinateX--;
-		}
-		else if(direction=='U') {
-			coordinateY--;
-		}
-		else if(direction=='D') {
-			coordinateY++; 
+	
+	public void scoreFunction(char direction) {
+		Object[][] mazeArray = maze.getMaze();
+		if(direction=='U') {
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("One")) {
+				setComputerTotalScore(2);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Two")) {
+				setComputerTotalScore(10);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Three")) {
+				setComputerTotalScore(30);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Warp")) {
+				setComputerTotalScore(300);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Trap")) {
+				setComputerTotalScore(300);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Player")) {
+				player.getBackpack().pop();
+				player.getBackpack().pop();
+			}
 		}
 		
+		if(direction=='R') {
+			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("One")) {
+				setComputerTotalScore(2);
+			}
+			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Two")) {
+				setComputerTotalScore(10);
+			}
+			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Three")) {
+				setComputerTotalScore(30);
+			}
+			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Four")) {
+				setComputerTotalScore(100);
+			}
+			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Five")) {
+				setComputerTotalScore(300);
+			}
+			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Warp")) {
+				setComputerTotalScore(300);
+			}
+			if(mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Trap")) {
+				setComputerTotalScore(300);
+			}
+			if(mazeArray[coordinateY][coordinateX+1].getClass().getSimpleName().equals("Player")) {
+				player.getBackpack().pop();
+				player.getBackpack().pop();
+			}
+		}
+		
+		if(direction=='D') {
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("One")) {
+				setComputerTotalScore(2);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Two")) {
+				setComputerTotalScore(10);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Three")) {
+				setComputerTotalScore(30);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Four")) {
+				setComputerTotalScore(100);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Five")) {
+				setComputerTotalScore(300);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Warp")) {
+				setComputerTotalScore(300);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Trap")) {
+				setComputerTotalScore(300);
+			}
+			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Player")) {
+				player.getBackpack().pop();
+				player.getBackpack().pop();
+			}
+		}
+		
+		if(direction=='L') {
+			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("One")) {
+				setComputerTotalScore(2);
+			}
+			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Two")) {
+				setComputerTotalScore(10);
+			}
+			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Three")) {
+				setComputerTotalScore(30);
+			}
+			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Four")) {
+				setComputerTotalScore(100);
+			}
+			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Five")) {
+				setComputerTotalScore(300);
+			}
+			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Warp")) {
+				setComputerTotalScore(300);
+			}
+			if(mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Trap")) {
+				setComputerTotalScore(300);
+			}
+			if(mazeArray[coordinateY][coordinateX-1].getClass().getSimpleName().equals("Player")) {
+				player.getBackpack().pop();
+				player.getBackpack().pop();
+			}
+		}
 	}
 	
-	
+
+
+//	public String decideDirection() {
+//		double tanValue=(player.getY())/();
+//		if(coordinateX==player.getX() && coordinateY<player.getY()) {
+//			return "down";
+//		}
+//		if(coordinateX==player.getX() && coordinateY>player.getY()) {
+//			return "up";
+//		}
+//		if(coordinateY==player.getY() && coordinateX<player.getX()) {
+//			return "right";
+//		}
+//		if(coordinateY==player.getY() && coordinateX>player.getX()) {
+//			return "left";
+//		}
+//		
+//	}
+//	
+//	public void escapeFunction() {
+//		
+//	}
+
 
 	
 	
@@ -222,7 +354,7 @@ public class Computer {
 
 		};
 
-		timer.schedule(task, 313, 1000);
+		timer.schedule(task, 100, 1000);
 	}
 	
 	public int getCoordinateX() {

@@ -70,7 +70,6 @@ public class Console {
 			while (player.getLife()>0) { 
 				time++;
 				cn.getTextWindow().setCursorPosition(-1, -1);
-
 				maze.printMaze(map,cn);
 				cn.getTextWindow().setCursorPosition(60, 3);
 				this.printQueueToField();
@@ -78,7 +77,7 @@ public class Console {
 					this.continueQueue(computerManager);
 				}
 
-				Thread.sleep(1000);  
+				Thread.sleep(300);  
 
 				consoleClear();
 				this.template(player);
@@ -347,13 +346,13 @@ public class Console {
 		cn.getTextWindow().setCursorPosition(x + 3, y + 14);
 		System.out.println("P.Backpack");
 		cn.getTextWindow().setCursorPosition(x, y + 16);
-		System.out.println("P.Energy : " + player.getEnergy());
+		System.out.println("P.Energy :");
 		cn.getTextWindow().setCursorPosition(x, y + 17);
 		System.out.println("P.Score  : " + player.getScore());
 		cn.getTextWindow().setCursorPosition(x, y + 18);
 		System.out.println("P.Life   : " + player.getLife());
 		cn.getTextWindow().setCursorPosition(x, y + 20);
-		System.out.println("C.Score  :");
+		System.out.println("C.Score  :"+ Computer.getComputerTotalScore());
 		cn.getTextWindow().setCursorPosition(x, y + 22);
 		System.out.println("Time     : " + time);
 
