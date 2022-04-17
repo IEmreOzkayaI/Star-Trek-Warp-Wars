@@ -30,8 +30,8 @@ import Treasures.Moves.Four;
 public class Console {
 
 	public static enigma.console.Console cn = Enigma.getConsole("Console", 80, 25, 30);
-	
-	static int selection = 0 ;
+
+	static int selection = 0;
 
 	static int defaultX;
 	static int defaultY;
@@ -49,57 +49,61 @@ public class Console {
 	Stack tempBackpack = new Stack(8);
 	int backpackCount = 0;
 	static Scanner scan = new Scanner(System.in);
-	
+boolean isClose = false;
 	public Console(Object[][] map) throws InterruptedException { // --- Constructor
 
-		
-		menuScreen(new FileReader().readFile("menu.txt", false));
-		selection = keyList();
-		switch (selection) {
-		case 1: 
-			consoleClear();
-			templateClear();
-			consoleQueue = new Queue(15);
-			this.generatingQueueElement();
-			cn.getTextWindow().setCursorPosition(-1, -1);
-			maze.printMaze(map,cn);
-			player = new Player(maze, cn); // First and Single Player
-			computer=new Computer(cn,maze,player); // First Computer
-			this.template(player);
-			this.printFirstTwenty();
-
-
-			while (player.getLife()>0) { 
-				time++;
-				cn.getTextWindow().setCursorPosition(-1, -1);				
-				maze.printMaze(map,cn);
-				Thread.sleep(500);  
-				cn.getTextWindow().setCursorPosition(60, 3);
-				this.printQueueToField();
-				if(time%3==0) {
-					this.continueQueue();
-				}
-				if(player.getEnergy() > 0) {
-					cn.getTextWindow().setCursorPosition(-1, -1);
-					maze.printMaze(map,cn);
-					player.EnergyAdd(-1);
-				}
-				Thread.sleep(500);  	
+		while(!isClose) {
+			menuScreen(new FileReader().readFile("menu.txt", false));
+			selection = keyList();
+			reset();
+			switch (selection) {
+			case 1:
 				consoleClear();
+				templateClear();
+				consoleQueue = new Queue(15);
+				this.generatingQueueElement();
+				cn.getTextWindow().setCursorPosition(-1, -1);
+				maze.printMaze(map, cn);
+				player = new Player(maze, cn); // First and Single Player
+				computer = new Computer(cn, maze, player); // First Computer
 				this.template(player);
-			}
-			
-			endScreen();
-			break;
-		case 2:
+				this.printFirstTwenty();
+
+				while (player.getLife() > 5) {
+					time++;
+					cn.getTextWindow().setCursorPosition(-1, -1);
+					maze.printMaze(map, cn);
+					Thread.sleep(500);
+					cn.getTextWindow().setCursorPosition(60, 3);
+					this.printQueueToField();
+					if (time % 3 == 0) {
+						this.continueQueue();
+					}
+					if (player.getEnergy() > 0) {
+						cn.getTextWindow().setCursorPosition(-1, -1);
+						maze.printMaze(map, cn);
+						player.EnergyAdd(-1);
+					}
+					Thread.sleep(500);
+					consoleClear();
+					this.template(player);
+				}
+
+				endScreen();
+				break;
+			case 2:
 				System.out.println("Burada oyunun nasýl oynandýðý anlatýlacak");
-			break;
-		default:
-			System.out.println("0");
+				break;
+			case 3:
+				isClose=true;
+	            System.exit(-1);
+			default:
+				System.out.println("0");
+			}
 		}
-	
 
 	}
+
 	public void endScreen() throws InterruptedException {
 		consoleClear();
 		templateClear();
@@ -128,108 +132,45 @@ public class Console {
 		System.out.print("1 - PLAY");
 		cn.getTextWindow().setCursorPosition(34, 11);
 		System.out.print("2 - HOW TO PLAY");
-		
-		Timer timer = new Timer();
 
-		TimerTask task = new TimerTask() {
+		for (int i = 0; i < dashBoard.length; i++) {
+			for (int j = 0; j < dashBoard[1].length; j++) {
 
-			@Override
-			public void run() {
-				if(selection != 0) {
-					timer.cancel();
-					menuStop = true;
-				}
-					
-				for (int i = 0; i < dashBoard.length; i++) {
-					if(menuStop) {
-						break;
+				if ((i == 0 || i == dashBoard.length - 1) && !menuStop) {
+					cn.getTextWindow().setCursorPosition(17 + j, 7 + i);
+					System.out.print(dashBoard[i][j].toString());
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					for (int j = 0; j < dashBoard[1].length; j++) {
-						if(menuStop) {
-							break;
-						}
-						if (i == 0 || i == dashBoard.length - 1) {
-							cn.getTextWindow().setCursorPosition(17 + j, 7 + i);
-							System.out.print(dashBoard[i][j].toString());
-							try {
-								Thread.sleep(10);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-
-						}
-
-						if (j == 0 || j == dashBoard[1].length - 1) {
-							cn.getTextWindow().setCursorPosition(17 + j, 7 + i);
-							System.out.print(dashBoard[i][j].toString());
-							try {
-								Thread.sleep(10);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-
-					}
-					System.out.println();
-				}
-				for (int i = 0; i < dashBoard.length; i++) {
-					if(menuStop) {
-						break;
-					}
-					for (int j = 1; j < dashBoard[1].length; j++) {
-						if(menuStop) {
-							break;
-						}
-						
-						if (i == 0 || i == dashBoard.length - 1) {
-
-							cn.getTextWindow().setCursorPosition(17 + j - 1, 7 + i);
-							System.out.print(" ");
-							try {
-								Thread.sleep(10);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-
-							cn.getTextWindow().setCursorPosition(17 + j, 7 + i);
-							System.out.print(dashBoard[i][j].toString());
-							try {
-								Thread.sleep(10);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-
-							cn.getTextWindow().setCursorPosition(17 + j - 1, 7 + i);
-							System.out.print(dashBoard[i][j - 1].toString());
-							try {
-								Thread.sleep(10);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-
-						}
-					}
-					
 
 				}
 
+				if ((j == 0 || j == dashBoard[1].length - 1) && !menuStop) {
+					cn.getTextWindow().setCursorPosition(17 + j, 7 + i);
+					System.out.print(dashBoard[i][j].toString());
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 
-				
 			}
+			System.out.println();
+		}
+		if (selection != 0) {
+			menuStop = true;
+		}
 
-		};
-		
-		timer.schedule(task, 1, 10);
 	}
 
 	private void consoleClear() throws InterruptedException {
 		for (int i = 1; i < 24; i++) {
-			for (int j = 2; j < 57; j++) {
+			for (int j = 2; j < 60; j++) {
 				cn.getTextWindow().setCursorPosition(j, i);
 				System.out.print(" ");
 			}
@@ -257,7 +198,7 @@ public class Console {
 
 	}
 
-	public void printFirstTwenty( ) throws InterruptedException {
+	public void printFirstTwenty() throws InterruptedException {
 
 		for (int i = 0; i < 20; i++) {
 			Queue qu = this.consoleQueue;
@@ -267,7 +208,7 @@ public class Console {
 		}
 	}
 
-	public void elementDecision(String element ) throws InterruptedException {
+	public void elementDecision(String element) throws InterruptedException {
 
 		if (element.equalsIgnoreCase("1")) {
 			new One(maze);
@@ -364,14 +305,14 @@ public class Console {
 		cn.getTextWindow().setCursorPosition(x, y + 18);
 		System.out.println("P.Life   : " + player.getLife());
 		cn.getTextWindow().setCursorPosition(x, y + 20);
-		System.out.println("C.Score  :"+ Computer.getComputerTotalScore());
+		System.out.println("C.Score  :" + Computer.getComputerTotalScore());
 		cn.getTextWindow().setCursorPosition(x, y + 22);
 		System.out.println("Time     : " + time);
 
 	}
 
 	public void printBackpack(int x, int y, Player player) {
-		backpackCount=0;
+		backpackCount = 0;
 		while (!player.getBackpack().isEmpty()) {
 			backpackCount++;
 			Object temp = player.getBackpack().pop();
@@ -382,7 +323,7 @@ public class Console {
 			player.getBackpack().push(temp);
 		}
 		int spaceCount = 8 - backpackCount;
-		
+
 		for (int i = 0; i < backpackCount; i++) {
 			cn.getTextWindow().setCursorPosition(x + 5, y + 5 + spaceCount + i);
 			Object temp = player.getBackpack().pop();
@@ -426,7 +367,7 @@ public class Console {
 			}
 
 			if (keypr == 1) { // if keyboard button pressed
-				cn.getTextWindow().setCursorPosition(cn.getTextWindow().getCursorX(),cn.getTextWindow().getCursorY());
+				cn.getTextWindow().setCursorPosition(cn.getTextWindow().getCursorX(), cn.getTextWindow().getCursorY());
 
 				for (int i = 0; i < 1; i++) {
 					if (rkey == KeyEvent.VK_1)
