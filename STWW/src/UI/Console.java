@@ -160,7 +160,7 @@ boolean isClose = false;
 		for (int i = 0; i < dashBoard.length; i++) {
 			for (int j = 0; j < dashBoard[1].length; j++) {
 
-				if ((i == 0 || i == dashBoard.length - 1) && !menuStop) {
+				if ((i == 0 || i == dashBoard.length - 1)) {
 					cn.getTextWindow().setCursorPosition(17 + j, 7 + i);
 					System.out.print(dashBoard[i][j].toString());
 					try {
@@ -172,7 +172,7 @@ boolean isClose = false;
 
 				}
 
-				if ((j == 0 || j == dashBoard[1].length - 1) && !menuStop) {
+				if ((j == 0 || j == dashBoard[1].length - 1)) {
 					cn.getTextWindow().setCursorPosition(17 + j, 7 + i);
 					System.out.print(dashBoard[i][j].toString());
 					try {
@@ -185,9 +185,6 @@ boolean isClose = false;
 
 			}
 			System.out.println();
-		}
-		if (selection != 0) {
-			menuStop = true;
 		}
 
 	}
