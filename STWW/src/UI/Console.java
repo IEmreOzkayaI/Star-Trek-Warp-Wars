@@ -31,7 +31,7 @@ public class Console {
 
 	public static enigma.console.Console cn = Enigma.getConsole("Console", 80, 25, 30);
 	
-//	static int selection = 1 ;
+	static int selection = 0 ;
 
 	static int defaultX;
 	static int defaultY;
@@ -52,14 +52,18 @@ public class Console {
 	public Console(Object[][] map) throws InterruptedException { // --- Constructor
 
 		
-//		int menuSelection = menuScreen(new FileReader().readFile("menu.txt", false));
-		int menuSelection=1;
-		switch (menuSelection) {
+//		while(selection!=1 || selection != 0){
+//			selection = menuScreen(new FileReader().readFile("menu.txt", false));
+//			Thread.sleep(10000);
+//		}
+		selection=1;
+		switch (selection) {
 		case 1: 
 			consoleClear();
 			templateClear();
 			consoleQueue = new Queue(15);
 			this.generatingQueueElement();
+			cn.getTextWindow().setCursorPosition(-1, -1);
 			maze.printMaze(map,cn);
 			player = new Player(maze, cn); // First and Single Player
 			computer=new Computer(cn,maze,player); // First Computer
@@ -67,7 +71,7 @@ public class Console {
 			this.printFirstTwenty();
 
 
-			while (player.getLife()>4) { 
+			while (player.getLife()>0) { 
 				time++;
 				cn.getTextWindow().setCursorPosition(-1, -1);
 				maze.printMaze(map,cn);
@@ -89,7 +93,6 @@ public class Console {
 				System.out.println("Burada oyunun nasýl oynandýðý anlatýlacak");
 			break;
 		default:
-			System.out.println("Unexpected value: " + menuSelection);
 		}
 	
 
@@ -112,11 +115,11 @@ public class Console {
 		if (winnerScore < 0)
 			System.out.println("Computer " + " : " + Computer.getComputerTotalScore());
 		else
-			System.out.println("Player " + " : " + player.getScore());
+			System.out.println("Player " + " : " + (player.getScore() - Computer.getComputerTotalScore()));
 
 	}
 
-	public static void menuScreen(Object[][] dashBoard) throws InterruptedException {
+	public static int menuScreen(Object[][] dashBoard) throws InterruptedException {
 		cn.getTextWindow().setCursorPosition(38, 6);
 		System.out.print("MENU");
 		cn.getTextWindow().setCursorPosition(34, 10);
@@ -196,17 +199,17 @@ public class Console {
 					
 
 				}
-				int num = 0 ; 
-				num = keyList();
-				reset();
-				if(num!=0)
-					timer.cancel();
 
+
+				selection = scan.nextInt();
+				if(selection!=0)
+					timer.cancel();
 			}
 
 		};
 		
 		timer.schedule(task, 1, 10);
+		return selection;
 
 	}
 

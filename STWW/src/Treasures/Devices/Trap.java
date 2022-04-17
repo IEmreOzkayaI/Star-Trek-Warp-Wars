@@ -5,7 +5,10 @@ import java.util.SplittableRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import Treasures.Moves.Five;
+import Treasures.Moves.Four;
 import UI.Console;
+import entities.Computer;
 import entities.Maze;
 import tools.RandomCoordinateGenerator;
 
@@ -27,6 +30,7 @@ public class Trap {
 		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
 		setX(coordinate[0]);
 		setY(coordinate[1]);
+		representationTime();
 	}
 	
 	
@@ -53,37 +57,57 @@ public class Trap {
 		this.isActivated = isActivated;
 	}
 	
+	public void traping(int second) {
+		int referencePointX = coordinateX;
+		int referencePointY = coordinateY;
+		Object[][] tempMaze = this.maze.getMaze();
+		int[] arr = { 0, 1, 0, -1, -1, 0, 1, 0, 0, 2, 0, -2, 2, 0, -2, 0 };
+		for (int i = 0; i < arr.length-1; i++) {
+			Object object = tempMaze[referencePointY - arr[i]][referencePointX - arr[i + 1]];
+			Object objectPackage = object.getClass().getPackage().getName();
+			Object objectName = object.getClass().getSimpleName().toString();
+			if ( objectPackage.equals("Treasures.Moves") || objectPackage.equals("entities")){
+				
+				if(objectName.equals("Four")) {
+					Four four =(Four) object;
+					four.numberFreeze(second);
+				}
+				if(objectName.equals("Five")) {
+					Five five =(Five) object;
+					five.numberFreeze(second);
+				}
+				if(objectName.equals("Computer")) {
+					Computer computer = (Computer) object;
+					computer.computerFreeze(second);
+				}
+			}
+		}
+	}
 	
-//	private void representationTime() {
-//		Timer timer = new Timer();
-//
-//		TimerTask task = new TimerTask() {
-//
-//			int seconds = 0;
-//
-//			@Override
-//			public void run() {
-//
-//				if (seconds >= 25) {
-//					try {
-//						Thread.sleep(100);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					cn.getTextWindow().setCursorPosition(coordinateX + 2, coordinateY + 1);
-//					maze.updateMaze(getX(), getY(), " ");
-//					System.out.print(" ");
-//					timer.cancel();
-//
-//				}
-//				seconds++;
-//			}
-//
-//		};
-//
-//		timer.schedule(task, 100, 1000);
-//
-//	}
+	private void representationTime() {
+	Timer timer = new Timer();
+
+	TimerTask task = new TimerTask() {
+
+		int seconds = 0;
+
+		@Override
+		public void run() {
+
+			if(isActivated()) {
+				seconds++;
+				traping(seconds);
+				if(seconds == 25) {
+					maze.updateTreasur(coordinateX, coordinateY, " ");
+					timer.cancel();
+				}
+			}
+			
+		}
+	};
+
+	timer.schedule(task, 100, 1000);
+
+}
 
 }
