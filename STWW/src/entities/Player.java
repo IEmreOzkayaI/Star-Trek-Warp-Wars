@@ -34,7 +34,6 @@ public class Player {
 	}
 
 	public Player(Maze maze, enigma.console.Console cn) throws InterruptedException {
-
 		this.maze = maze;
 		this.cn = cn;
 		updateCoordinates();
@@ -62,16 +61,20 @@ public class Player {
 			if(object1.getClass().getSimpleName().toString().equals("Two")) {
 				EnergyAdd(30);
 			}
-			if(object1.getClass().getSimpleName().toString().equals("Three")) {
+			else if(object1.getClass().getSimpleName().toString().equals("Three")) {
 				backpack.push(new Trap());
 			}
-			if(object1.getClass().getSimpleName().toString().equals("Four")) {
+			else if(object1.getClass().getSimpleName().toString().equals("Four")) {
 				EnergyAdd(240);
 			}
-			if(object1.getClass().getSimpleName().toString().equals("Five")) {
+			else if(object1.getClass().getSimpleName().toString().equals("Five")) {
 				backpack.push(new Warp());
 			}
-			
+			else {
+				backpack.push(object2);
+				backpack.push(object1);
+				
+			}
 		}else {
 			if(!(object2.getClass().getSimpleName().toString().equals("Integer")))  {
 				backpack.push(object2);
@@ -82,7 +85,7 @@ public class Player {
 		}
 	}
 	private void backpackRemover(char direction, int coordinateDirectionX, int coordinateDirectionY,
-			Object backpackObject, Object[][] mazeMap) {
+		Object backpackObject, Object[][] mazeMap) {
 		boolean isBackpackRemove = false;
 		backpackObject = backpack.pop();
 
@@ -180,6 +183,7 @@ public class Player {
 							backpackRemover(direction, coordinateDirectionX, coordinateDirectionY, backpackObject,
 									mazeMap);
 							isBackpackRemoverWorked = true;
+							
 						}
 						if (isNull) {
 							mazeMap[coordinateY][coordinateX] = " ";
