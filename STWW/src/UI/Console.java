@@ -69,7 +69,7 @@ boolean isClose = false;
 				this.template(player);
 				this.printFirstTwenty();
 
-				while (player.getLife() > 5) {
+				while (player.getLife() > 0) {
 					time++;
 					cn.getTextWindow().setCursorPosition(-1, -1);
 					maze.printMaze(map, cn);
@@ -92,7 +92,31 @@ boolean isClose = false;
 				endScreen();
 				break;
 			case 2:
-				System.out.println("Burada oyunun nasýl oynandýðý anlatýlacak");
+				consoleClear();
+				templateClear();
+				cn.getTextWindow().setCursorPosition(-1, -1);
+				System.out.print("\n\n");
+				System.out.print("\t\t\t\t\t   _____ _______ _________          __\r\n"
+						+ "\t\t\t\t\t  / ____|__   __|__   __\\ \\        / /\r\n"
+						+ "\t\t\t\t\t | (___    | |     | |   \\ \\  /\\  / / \r\n"
+						+ "\t\t\t\t\t  \\___ \\   | |     | |    \\ \\/  \\/ /  \r\n"
+						+ "\t\t\t\t\t  ____) |  | |     | |     \\  /\\  /   \r\n"
+						+ "\t\t\t\t\t |_____/   |_|     |_|      \\/  \\/    ");
+				System.out.print("\n\n\n\n");
+				System.out.println("   - Your character represented by the character \"P\" and the enemies are \n\t the \"C\" characters which is a represantation of Computer.");
+				System.out.println("   - Player can move using the cursor keys.");
+				System.out.println("   - Player has 5 life.");
+				System.out.println("   - Computer characters try to catch the player. When they catch the \n\t player, it's health reduced by one.");
+				System.out.println("   - There is also numbers, trap and warp devices waiting for to be \n\t collected by the player. Once you collect them you gain points.");
+				System.out.println("   - Trap and warp devices can be used to keep computers away from the \n\t player.");
+				System.out.println("   - Player can place the devices by using the WASD keys.");
+				System.out.println("   - Devices have a 3x3 effect area and they keep active for 25 seconds \n\t once the player place them to the map.");
+				
+				System.out.print("\n\t\t\t\tPlease press 1 or 2 to return to the menu");
+				selection = keyList();
+				reset();
+				allConsoleClear();
+				templateClear();
 				break;
 			case 3:
 				isClose=true;
@@ -177,7 +201,17 @@ boolean isClose = false;
 			System.out.println();
 		}
 	}
-
+	private void allConsoleClear() throws InterruptedException{
+		for (int i = 0; i < 25; i++) {
+			for (int j = 0; j < 60; j++) {
+				cn.getTextWindow().setCursorPosition(j, i);
+				System.out.print(" ");
+			}
+			if(i != 24) {
+				System.out.println();
+			}
+		}
+	}
 	private void templateClear() throws InterruptedException {
 		for (int i = 1; i < 24; i++) {
 			for (int j = 60; j < 75; j++) {
@@ -374,6 +408,8 @@ boolean isClose = false;
 						return 1;
 					if (rkey == KeyEvent.VK_2)
 						return 2;
+					if (rkey == KeyEvent.VK_ESCAPE)
+						return 3;
 				}
 			}
 		}

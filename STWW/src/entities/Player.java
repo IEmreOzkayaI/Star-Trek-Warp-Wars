@@ -50,39 +50,37 @@ public class Player {
 	}
 	public void backpackCheck() {	
 		Object object1 = 0;
-		Object object2 = 0;
-		if(!backpack.isEmpty()) {
-			object1 = backpack.pop();
-		}
-		if(!backpack.isEmpty()) {
-			object2 = backpack.pop();
-		}
-		if(object1.getClass().getSimpleName().toString().equals(object2.getClass().getSimpleName().toString())) {
-			if(object1.getClass().getSimpleName().toString().equals("Two")) {
-				EnergyAdd(30);
-			}
-			else if(object1.getClass().getSimpleName().toString().equals("Three")) {
-				backpack.push(new Trap());
-			}
-			else if(object1.getClass().getSimpleName().toString().equals("Four")) {
-				EnergyAdd(240);
-			}
-			else if(object1.getClass().getSimpleName().toString().equals("Five")) {
-				backpack.push(new Warp());
-			}
-			else {
-				backpack.push(object2);
-				backpack.push(object1);
-				
-			}
-		}else {
-			if(!(object2.getClass().getSimpleName().toString().equals("Integer")))  {
-				backpack.push(object2);
-			}
-			if(!(object1.getClass().getSimpleName().toString().equals("Integer"))) {
-				backpack.push(object1);
-			}
-		}
+        Object object2 = 0;
+        if (!backpack.isEmpty()) {
+            object1 = backpack.pop();
+        }
+        if (!backpack.isEmpty()) {
+            object2 = backpack.pop();
+        }
+
+        if (!(object1.getClass().getPackageName().equals("Treasures.Devices"))
+                && !(object2.getClass().getPackageName().equals("Treasures.Devices"))) {
+            if (object1.getClass().getSimpleName().toString().equals(object2.getClass().getSimpleName().toString())) {
+                if (object1.getClass().getSimpleName().toString().equals("Two")) {
+                    EnergyAdd(30);
+                } else if (object1.getClass().getSimpleName().toString().equals("Three")) {
+                    backpack.push(new Trap());
+                } else if (object1.getClass().getSimpleName().toString().equals("Four")) {
+                    EnergyAdd(240);
+                } else if (object1.getClass().getSimpleName().toString().equals("Five")) {
+                    backpack.push(new Warp());
+                }
+            } else {
+                if (!object1.getClass().getSimpleName().equals("Integer")) {
+                    if (object2.getClass().getSimpleName().equals("Integer"))
+                        backpack.push(object1);
+                }
+            }
+        } else {
+            backpack.push(object2);
+            backpack.push(object1);
+
+        }
 	}
 	private void backpackRemover(char direction, int coordinateDirectionX, int coordinateDirectionY,
 		Object backpackObject, Object[][] mazeMap) {
@@ -225,8 +223,10 @@ public class Player {
 									isObjeActive = true;
 							}
 							if(!isObjeActive) {
-								backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
-								backpackCheck();
+								if(!(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX].getClass().getSimpleName().toString().equals("One"))) {
+									backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
+									backpackCheck();
+								}
 								score += ScoreDefine.scoreDefinder(
 										mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
 								mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] = " ";
