@@ -77,5 +77,15 @@ public class Maze {
 		}
 
 	}
+	public boolean updateTreasur(int x, int y, Object value) {
+
+		if (maze[y][x].getClass().getSimpleName().toString().equals("Trap") || maze[y][x].getClass().getSimpleName().toString().equals("Warp") ) {
+			maze[y][x] = value;
+			return true;
+		} else {
+			return false;
+		}
+
+	}
 
 }

@@ -15,9 +15,11 @@ public class Five {
 	private int coordinateX = 0;
 	private int coordinateY = 0;
 	private Object obj = this;
-
+	private boolean live =true;
+	private boolean isFreeze = false;
 	private enigma.console.Console cn;
 	private Maze maze;
+	private int freezingTime = 0;
 
 	public Five(enigma.console.Console cn, Maze maze) {
 		this.maze = maze;
@@ -80,6 +82,21 @@ public class Five {
 		}
 		}
 	}
+	public void numberDie() {
+		live = false;
+	}
+	
+	public void numberFreeze(int freezeTime) {
+		this.freezingTime=freezeTime;
+		isFreeze=true;
+	}
+	
+	public boolean isLiving() {
+		return live;
+	}
+	public boolean isFreeze() {
+		return isFreeze;
+	}
 
 	public void fiveMove() {
 		
@@ -88,15 +105,28 @@ public class Five {
 		Timer timer = new Timer();
 
 		TimerTask task = new TimerTask() {
+			int second = 0 ;
 
 			@Override
 			public void run() {
 				
-				boolean isNull = false;
-				tempMaze[coordinateY][coordinateX]=" ";
-				randMove();
-				while (!isNull) {
-					isNull = maze.updateMaze(coordinateX,coordinateY, obj);
+				if(isLiving()) {
+					if(!isFreeze()) {
+						boolean isNull = false;
+						tempMaze[coordinateY][coordinateX]=" ";
+						randMove();
+						while (!isNull) {
+							isNull = maze.updateMaze(coordinateX,coordinateY,obj);
+						}
+					}else {
+						if(25-freezingTime == second) {
+							isFreeze=false;
+						}
+						
+					}
+				}
+				else {
+					timer.cancel();
 				}
 			}
 

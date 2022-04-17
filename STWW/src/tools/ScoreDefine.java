@@ -7,6 +7,7 @@ import Treasures.Devices.Trap;
 import Treasures.Devices.Warp;
 import Treasures.Moves.Five;
 import Treasures.Moves.Four;
+import entities.Computer;
 
 public class ScoreDefine {
 	
@@ -39,6 +40,12 @@ public class ScoreDefine {
 		if(obje.getClass().getSimpleName().toString().equalsIgnoreCase("Warp")) {
 			Warp warp = (Warp) obje;
 			return warp.getScore();
+		}
+		if(obje.getClass().getSimpleName().toString().equalsIgnoreCase("Computer")) {
+			Computer computer = (Computer) obje;
+			computer.setCoordinateX(-1);
+			computer.setCoordinateY(-1);
+			return computer.getScore();
 		}
 		return 0;
 	}

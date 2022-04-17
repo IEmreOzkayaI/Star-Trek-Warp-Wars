@@ -14,7 +14,8 @@ import tools.RandomCoordinateGenerator;
 public class Computer {
 
 	private final String name = "C";
-	private final int score = 0;
+	private final int currentScore = 0;
+	private final int score = 300;
 	private int coordinateX = 0;
 	private int coordinateY = 0;
 	public static ComputerList computerList;
@@ -23,10 +24,11 @@ public class Computer {
 	private enigma.console.Console cn;
 	private Maze maze;
 	private Player player;
-	private boolean isEscapeNeeded=false;
-	
+	private boolean isEscapeNeeded = false;
+	private boolean live = true;
+	private boolean isFreeze = false;
+	private int freezingTime = 0 ;
 	public Computer() {
-
 
 	}
 
@@ -35,39 +37,36 @@ public class Computer {
 		computerList = new ComputerList();
 
 	}
-	
+
 	public Computer(enigma.console.Console cn, Maze maze, Player player) {
 		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
 		setCoordinateX(coordinate[0]);
 		setCoordinateY(coordinate[1]);
 		this.maze = maze;
 		this.cn = cn;
-		this.player=player;
+		this.player = player;
 		computerMove();
 	}
 
-
 	public int[] findPlayer() {
-		int[] arr= new int[2];
-		Object[][] mazeArr=maze.getMaze();
-		
-		for(int j=0; j<mazeArr.length; j++) {
-			for(int i=0; i<mazeArr[j].length; i++) {
-				if(mazeArr[j][i].equals("P")) {
-					arr[0]=j;
-					arr[1]=i;
+		int[] arr = new int[2];
+		Object[][] mazeArr = maze.getMaze();
+
+		for (int j = 0; j < mazeArr.length; j++) {
+			for (int i = 0; i < mazeArr[j].length; i++) {
+				if (mazeArr[j][i].equals("P")) {
+					arr[0] = j;
+					arr[1] = i;
 					return arr;
 				}
 			}
 		}
 		return arr;
 	}
-	
 
-	
 	public void randMove() {
 		Object[][] mazeArray = maze.getMaze();
-		RandomMovingList availableSquares= new RandomMovingList();
+		RandomMovingList availableSquares = new RandomMovingList();
 		if (mazeArray[coordinateY][coordinateX + 1].equals(" ")) {
 			availableSquares.Add('R');
 		}
@@ -80,38 +79,36 @@ public class Computer {
 		if (mazeArray[coordinateY - 1][coordinateX].equals(" ")) {
 			availableSquares.Add('U');
 		}
-		
+
 		SplittableRandom splittableRandom = new SplittableRandom();
-		int directionNumber=splittableRandom.nextInt(0, availableSquares.length());
-		char[] arr= availableSquares.getList();
-		char direction=arr[directionNumber];
-		if(direction=='R') {
+		int directionNumber = splittableRandom.nextInt(0, availableSquares.length());
+		char[] arr = availableSquares.getList();
+		char direction = arr[directionNumber];
+		if (direction == 'R') {
 			coordinateX++;
-		}
-		else if(direction=='L') {
+		} else if (direction == 'L') {
 			coordinateX--;
-		}
-		else if(direction=='U') {
+		} else if (direction == 'U') {
 			coordinateY--;
-		}
-		else if(direction=='D') {
-			coordinateY++; 
+		} else if (direction == 'D') {
+			coordinateY++;
 		}
 	}
-	
+
 	public int calculateDistance(int compX, int compY, int playerX, int playerY) {
-		//return (int)Math.sqrt(Math.pow(playerX-compX, 2)+ Math.pow(playerY-compY, 2));
-		int y= compY-playerY;
-		if(y<0) {
-			y*=-1;
+		// return (int)Math.sqrt(Math.pow(playerX-compX, 2)+ Math.pow(playerY-compY,
+		// 2));
+		int y = compY - playerY;
+		if (y < 0) {
+			y *= -1;
 		}
-		int x= compX-playerX;
-		if(x<0) {
-			x*=-1;
+		int x = compX - playerX;
+		if (x < 0) {
+			x *= -1;
 		}
-		return x+y;
+		return x + y;
 	}
-	
+
 	public boolean computerUpdateMaze(int x, int y, Object value, Object[][] maze) {
 		if (!maze[y][x].equals("#")) {
 			maze[y][x] = value;
@@ -121,143 +118,140 @@ public class Computer {
 		}
 
 	}
-	
+
 	public void goToMove() {
 		Object[][] mazeArray = maze.getMaze();
-		char direction='X';
-		int destinationX=player.getX();
-		int destinationY=player.getY();
-		
-		int[] distances=new int[4];
-		char[] distancesChar= new char[4];
-		
+		char direction = 'X';
+		int destinationX = player.getX();
+		int destinationY = player.getY();
+
+		int[] distances = new int[4];
+		char[] distancesChar = new char[4];
+
 		// 0=up, 1=right, 2=down , 3=left
-		distances[0]=calculateDistance(coordinateX, coordinateY-1, destinationX, destinationY);
-		distancesChar[0]='U';
-		distances[1]=calculateDistance(coordinateX+1, coordinateY,destinationX, destinationY);
-		distancesChar[1]='R';
-		distances[2]=calculateDistance(coordinateX, coordinateY+1, destinationX, destinationY);
-		distancesChar[2]='D';
-		distances[3]=calculateDistance(coordinateX-1, coordinateY, destinationX, destinationY);
-		distancesChar[3]='L';
-		
-		for (int i = 0; i < distances.length; i++){  
-			for (int j = i + 1; j < distances.length; j++){  
-				int tmp = 0;  
+		distances[0] = calculateDistance(coordinateX, coordinateY - 1, destinationX, destinationY);
+		distancesChar[0] = 'U';
+		distances[1] = calculateDistance(coordinateX + 1, coordinateY, destinationX, destinationY);
+		distancesChar[1] = 'R';
+		distances[2] = calculateDistance(coordinateX, coordinateY + 1, destinationX, destinationY);
+		distancesChar[2] = 'D';
+		distances[3] = calculateDistance(coordinateX - 1, coordinateY, destinationX, destinationY);
+		distancesChar[3] = 'L';
+
+		for (int i = 0; i < distances.length; i++) {
+			for (int j = i + 1; j < distances.length; j++) {
+				int tmp = 0;
 				char holder;
-				if (distances[i] > distances[j]){  
-					tmp = distances[i];  
-					holder=distancesChar[i];
-					
-					distances[i] = distances[j];  
-					distancesChar[i]=distancesChar[j];
-					
+				if (distances[i] > distances[j]) {
+					tmp = distances[i];
+					holder = distancesChar[i];
+
+					distances[i] = distances[j];
+					distancesChar[i] = distancesChar[j];
+
 					distances[j] = tmp;
-					distancesChar[j]=holder;
-				}  
-			}  
-		}	
-			
-		
-		for(int i=0; i<distancesChar.length; i++) {
-			if (distancesChar[i]=='R' && !mazeArray[coordinateY][coordinateX + 1].equals("#") && !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
-				direction='R';
-				break;
-			}
-			if (distancesChar[i]=='L' && !mazeArray[coordinateY][coordinateX - 1].equals("#") && !mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Computer")) {
-				direction='L';
-				break;
-			}
-			if (distancesChar[i]=='D' && !mazeArray[coordinateY + 1][coordinateX].equals("#") && !mazeArray[coordinateY+ 1][coordinateX ].getClass().getSimpleName().equals("Computer")) {
-				direction='D';
-				break;
-			}
-			if (distancesChar[i]=='U' && !mazeArray[coordinateY - 1][coordinateX].equals("#") && !mazeArray[coordinateY- 1][coordinateX ].getClass().getSimpleName().equals("Computer")) {
-				direction='U';
-				break;
-			}
-			
-		}
-			
-		
-			if(direction=='R') {
-				scoreFunction('R');
-				coordinateX++;
-			}
-			else if(direction=='L') {
-				scoreFunction('L');
-				coordinateX--;
-			}
-			else if(direction=='U') {
-				scoreFunction('U');
-				coordinateY--;
-			}
-			else if(direction=='D') {
-				scoreFunction('D');
-				coordinateY++; 
+					distancesChar[j] = holder;
+				}
 			}
 		}
-	
-	
-	
-	
-	
+
+		for (int i = 0; i < distancesChar.length; i++) {
+			if (distancesChar[i] == 'R' && !mazeArray[coordinateY][coordinateX + 1].equals("#")
+					&& !mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Computer")) {
+				direction = 'R';
+				break;
+			}
+			if (distancesChar[i] == 'L' && !mazeArray[coordinateY][coordinateX - 1].equals("#")
+					&& !mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Computer")) {
+				direction = 'L';
+				break;
+			}
+			if (distancesChar[i] == 'D' && !mazeArray[coordinateY + 1][coordinateX].equals("#")
+					&& !mazeArray[coordinateY + 1][coordinateX].getClass().getSimpleName().equals("Computer")) {
+				direction = 'D';
+				break;
+			}
+			if (distancesChar[i] == 'U' && !mazeArray[coordinateY - 1][coordinateX].equals("#")
+					&& !mazeArray[coordinateY - 1][coordinateX].getClass().getSimpleName().equals("Computer")) {
+				direction = 'U';
+				break;
+			}
+
+		}
+
+		if (direction == 'R') {
+			scoreFunction('R');
+			coordinateX++;
+		} else if (direction == 'L') {
+			scoreFunction('L');
+			coordinateX--;
+		} else if (direction == 'U') {
+			scoreFunction('U');
+			coordinateY--;
+		} else if (direction == 'D') {
+			scoreFunction('D');
+			coordinateY++;
+		}
+	}
+
 	public void scoreFunction(char direction) {
 		Object[][] mazeArray = maze.getMaze();
-		if(direction=='U') {
+		if (direction == 'U') {
 
-			if(mazeArray[coordinateY-1][coordinateX].getClass().getSimpleName().equals("Warp") ||mazeArray[coordinateY-1][coordinateX].getClass().getSimpleName().equals("Trap")) {
+			if (mazeArray[coordinateY - 1][coordinateX].getClass().getSimpleName().equals("Warp")
+					|| mazeArray[coordinateY - 1][coordinateX].getClass().getSimpleName().equals("Trap")) {
 				setComputerTotalScore(300);
-			}else {
-				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY-1][coordinateX])*2);
+			} else {
+				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY - 1][coordinateX]) * 2);
 			}
-			if(mazeArray[coordinateY-1][coordinateX].getClass().getSimpleName().equals("Player")) {
+			if (mazeArray[coordinateY - 1][coordinateX].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
 				player.getBackpack().pop();
 			}
 		}
-		
-		if(direction=='R') {
-			
-			if(mazeArray[coordinateY][coordinateX+1].getClass().getSimpleName().equals("Warp") ||mazeArray[coordinateY][coordinateX+1].getClass().getSimpleName().equals("Trap")) {
+
+		if (direction == 'R') {
+
+			if (mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Warp")
+					|| mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Trap")) {
 				setComputerTotalScore(300);
-			}else {
-				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY][coordinateX+1])*2);
+			} else {
+				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY][coordinateX + 1]) * 2);
 			}
-			if(mazeArray[coordinateY][coordinateX+1].getClass().getSimpleName().equals("Player")) {
+			if (mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
 				player.getBackpack().pop();
 			}
-			
+
 		}
-		
-		if(direction=='D') {
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Warp") ||mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Trap")) {
+
+		if (direction == 'D') {
+			if (mazeArray[coordinateY + 1][coordinateX].getClass().getSimpleName().equals("Warp")
+					|| mazeArray[coordinateY + 1][coordinateX].getClass().getSimpleName().equals("Trap")) {
 				setComputerTotalScore(300);
-			}else {
-				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY+1][coordinateX])*2);
+			} else {
+				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY + 1][coordinateX]) * 2);
 			}
-			if(mazeArray[coordinateY+1][coordinateX].getClass().getSimpleName().equals("Player")) {
+			if (mazeArray[coordinateY + 1][coordinateX].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
 				player.getBackpack().pop();
 			}
 		}
-		
-		if(direction=='L') {
-			
-			if(mazeArray[coordinateY][coordinateX-1].getClass().getSimpleName().equals("Warp") ||mazeArray[coordinateY][coordinateX-1].getClass().getSimpleName().equals("Trap")) {
+
+		if (direction == 'L') {
+
+			if (mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Warp")
+					|| mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Trap")) {
 				setComputerTotalScore(300);
-			}else {
-				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY][coordinateX-1])*2);
+			} else {
+				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY][coordinateX - 1]) * 2);
 			}
-			if(mazeArray[coordinateY][coordinateX-1].getClass().getSimpleName().equals("Player")) {
+			if (mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
 				player.getBackpack().pop();
 			}
 		}
 	}
-	
-
 
 //	public String decideDirection() {
 //		double tanValue=(player.getY())/();
@@ -280,33 +274,40 @@ public class Computer {
 //		
 //	}
 
-	
-	
-	
 	public void computerMove() {
-		
+
 		Object[][] tempMaze = maze.getMaze();
-		
+
 		Timer timer = new Timer();
 
 		TimerTask task = new TimerTask() {
+			int second = 0;
 
 			@Override
 			public void run() {
-				
-				boolean isNull = false;
-				tempMaze[coordinateY][coordinateX]=" ";
-				//randMove();
-				goToMove();
 
-				
-				if(coordinateX==player.getX() && coordinateY==player.getY()) {
-					player.LifeRemove();
-					player.updateCoordinates();
-				}
+				if (isLiving()) {
+					if (!isFreeze()) {
+						boolean isNull = false;
+						tempMaze[coordinateY][coordinateX] = " ";
+						// randMove();
+						goToMove();
 
-				while (!isNull) {
-					isNull = computerUpdateMaze(coordinateX,coordinateY, obj, tempMaze);
+						if (coordinateX == player.getX() && coordinateY == player.getY()) {
+							player.LifeRemove();
+							player.updateCoordinates();
+						}
+
+						while (!isNull) {
+							isNull = computerUpdateMaze(coordinateX, coordinateY, obj, tempMaze);
+						}
+					} else {
+						if(25-freezingTime == second) {
+							isFreeze = false;
+						}
+					}
+				} else {
+					timer.cancel();
 				}
 			}
 
@@ -314,7 +315,25 @@ public class Computer {
 
 		timer.schedule(task, 100, 1000);
 	}
-	
+
+	public void computerDie() {
+		live = false;
+	}
+
+	public boolean isLiving() {
+		return live;
+	}
+
+	public void computerFreeze(int freezeTime) {
+		this.freezingTime = freezeTime;
+		isFreeze = true;
+
+	}
+
+	public boolean isFreeze() {
+		return isFreeze;
+	}
+
 	public int getCoordinateX() {
 		return coordinateX;
 	}
@@ -370,6 +389,5 @@ public class Computer {
 	public static void setComputerTotalScore(int computerScore) {
 		computerTotalScore += computerScore;
 	}
-
 
 }

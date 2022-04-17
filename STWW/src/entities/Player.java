@@ -7,6 +7,8 @@ import java.util.TimerTask;
 
 import Treasures.Devices.Trap;
 import Treasures.Devices.Warp;
+import Treasures.Moves.Five;
+import Treasures.Moves.Four;
 import tools.RandomCoordinateGenerator;
 import tools.ScoreDefine;
 import tools.Stack;
@@ -24,7 +26,7 @@ public class Player {
 	int life = 5;
 	int energy = 50;
 	private final String name = "P";
-	private int score = 0;
+	public static int score = 0;
 	private enigma.console.Console cn;
 	private Maze maze;
 
@@ -104,26 +106,27 @@ public class Player {
 		int destinationX = coordinateX + coordinateDirectionX;
 		int destinationY =coordinateY + coordinateDirectionY;
 		
-		if(backpackObject.getClass().getSimpleName().toString().equals("Trap") || backpackObject.getClass().getSimpleName().toString().equals("Warp"))
+		if(backpackObject.getClass().getSimpleName().toString().equals("Trap"))
 		{
 			isBackpackRemove = maze.updateMaze(destinationX, destinationY,backpackObject);
-		}else {
+			Trap trap = (Trap) backpackObject;
+			trap.setX(destinationX);
+			trap.setY(destinationY);
+			trap.setActivated(true);
+			
+		}else if(backpackObject.getClass().getSimpleName().toString().equals("Warp")) {
+			isBackpackRemove = maze.updateMaze(destinationX, destinationY,backpackObject);
+			Warp warp = (Warp) backpackObject;
+			warp.setX(destinationX);
+			warp.setY(destinationY);
+			warp.setActivated(true);
+		}
+		else {
 			isBackpackRemove = maze.updateMaze(destinationX, destinationY," ");
 		}
 		
 		if (!isBackpackRemove) {
 			backpack.push(backpackObject);
-		}else {
-			if (backpackObject.getClass().getSimpleName().toString().equals("Trap")) {
-				Trap trap = (Trap) backpackObject;
-				trap.setX(destinationX);
-				trap.setY(destinationY);
-			}
-			if (backpackObject.getClass().getSimpleName().toString().equals("Warp")) {
-				Warp warp = (Warp) backpackObject;
-				warp.setX(destinationX);
-				warp.setY(destinationY);
-			}
 		}
 	}
 
@@ -186,6 +189,19 @@ public class Player {
 							isNull = true;
 						} else if (!(mazeMap[coordinateY + coordinateDirectionY][coordinateX+coordinateDirectionX].equals("#"))
 								&& !(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer"))) {
+							Object object = mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX];
+							Object objectPackage = object.getClass().getPackage().getName();
+							Object objectName = object.getClass().getSimpleName().toString();
+							if(objectPackage.equals("Treasures.Moves")){
+								if(objectName.equals("Four")) {
+									Four four = (Four) object;
+									four.numberDie();
+								}
+								if(objectName.equals("Five")) {
+									Five five = (Five) object;
+									five.numberDie();
+								}
+							}
 							backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
 							backpackCheck();
 							score += ScoreDefine.scoreDefinder(
