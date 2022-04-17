@@ -43,6 +43,7 @@ public class Console {
 	public static int rkey; // key (for press/release)
 	public static KeyListener klis;
 	private boolean isContinue = true;
+	static boolean menuStop = false;
 
 	public static int time = 1;
 	Stack tempBackpack = new Stack(8);
@@ -52,11 +53,8 @@ public class Console {
 	public Console(Object[][] map) throws InterruptedException { // --- Constructor
 
 		
-//		while(selection!=1 || selection != 0){
-//			selection = menuScreen(new FileReader().readFile("menu.txt", false));
-//			Thread.sleep(10000);
-//		}
-		selection=1;
+		menuScreen(new FileReader().readFile("menu.txt", false));
+		selection = keyList();
 		switch (selection) {
 		case 1: 
 			consoleClear();
@@ -73,16 +71,20 @@ public class Console {
 
 			while (player.getLife()>0) { 
 				time++;
-				cn.getTextWindow().setCursorPosition(-1, -1);
+				cn.getTextWindow().setCursorPosition(-1, -1);				
 				maze.printMaze(map,cn);
+				Thread.sleep(500);  
 				cn.getTextWindow().setCursorPosition(60, 3);
 				this.printQueueToField();
 				if(time%3==0) {
 					this.continueQueue();
 				}
-
-				Thread.sleep(1000);  
-
+				if(player.getEnergy() > 0) {
+					cn.getTextWindow().setCursorPosition(-1, -1);
+					maze.printMaze(map,cn);
+					player.EnergyAdd(-1);
+				}
+				Thread.sleep(500);  	
 				consoleClear();
 				this.template(player);
 			}
@@ -93,11 +95,11 @@ public class Console {
 				System.out.println("Burada oyunun nasýl oynandýðý anlatýlacak");
 			break;
 		default:
+			System.out.println("0");
 		}
 	
 
 	}
-
 	public void endScreen() throws InterruptedException {
 		consoleClear();
 		templateClear();
@@ -119,23 +121,33 @@ public class Console {
 
 	}
 
-	public static int menuScreen(Object[][] dashBoard) throws InterruptedException {
+	public static void menuScreen(Object[][] dashBoard) throws InterruptedException {
 		cn.getTextWindow().setCursorPosition(38, 6);
 		System.out.print("MENU");
 		cn.getTextWindow().setCursorPosition(34, 10);
 		System.out.print("1 - PLAY");
 		cn.getTextWindow().setCursorPosition(34, 11);
 		System.out.print("2 - HOW TO PLAY");
+		
 		Timer timer = new Timer();
 
 		TimerTask task = new TimerTask() {
 
 			@Override
 			public void run() {
-
+				if(selection != 0) {
+					timer.cancel();
+					menuStop = true;
+				}
+					
 				for (int i = 0; i < dashBoard.length; i++) {
+					if(menuStop) {
+						break;
+					}
 					for (int j = 0; j < dashBoard[1].length; j++) {
-
+						if(menuStop) {
+							break;
+						}
 						if (i == 0 || i == dashBoard.length - 1) {
 							cn.getTextWindow().setCursorPosition(17 + j, 7 + i);
 							System.out.print(dashBoard[i][j].toString());
@@ -163,8 +175,14 @@ public class Console {
 					System.out.println();
 				}
 				for (int i = 0; i < dashBoard.length; i++) {
+					if(menuStop) {
+						break;
+					}
 					for (int j = 1; j < dashBoard[1].length; j++) {
-
+						if(menuStop) {
+							break;
+						}
+						
 						if (i == 0 || i == dashBoard.length - 1) {
 
 							cn.getTextWindow().setCursorPosition(17 + j - 1, 7 + i);
@@ -201,16 +219,12 @@ public class Console {
 				}
 
 
-				selection = scan.nextInt();
-				if(selection!=0)
-					timer.cancel();
+				
 			}
 
 		};
 		
 		timer.schedule(task, 1, 10);
-		return selection;
-
 	}
 
 	private void consoleClear() throws InterruptedException {
@@ -344,7 +358,7 @@ public class Console {
 		cn.getTextWindow().setCursorPosition(x + 3, y + 14);
 		System.out.println("P.Backpack");
 		cn.getTextWindow().setCursorPosition(x, y + 16);
-		System.out.println("P.Energy :");
+		System.out.println("P.Energy : " + player.getEnergy() + " ");
 		cn.getTextWindow().setCursorPosition(x, y + 17);
 		System.out.println("P.Score  : " + player.getScore());
 		cn.getTextWindow().setCursorPosition(x, y + 18);
@@ -386,7 +400,7 @@ public class Console {
 		}
 	}
 
-	public static char keyList() {
+	public static int keyList() {
 
 		klis = new KeyListener() {
 			public void keyTyped(KeyEvent e) {
@@ -416,9 +430,9 @@ public class Console {
 
 				for (int i = 0; i < 1; i++) {
 					if (rkey == KeyEvent.VK_1)
-						return '1';
+						return 1;
 					if (rkey == KeyEvent.VK_2)
-						return '2';
+						return 2;
 				}
 			}
 		}

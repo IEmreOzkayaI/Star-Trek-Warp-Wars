@@ -132,7 +132,15 @@ public class Player {
 			backpack.push(backpackObject);
 		}
 	}
-
+	public int energyCheck() {
+		int timerNum = 1000;
+		if(getEnergy() > 0) {
+			timerNum = 500;
+		}else {
+			timerNum = 1000;
+		}
+		return timerNum;
+	}
 	public void playerMove() {
 
 		Timer timer = new Timer();
@@ -144,6 +152,7 @@ public class Player {
 			public void run() {
 				boolean isNull = false;
 				boolean isBackpackRemoverWorked = false;
+				boolean isObjeActive = false;
 				Object backpackObject = 0;
 
 				int x = 0;
@@ -151,7 +160,6 @@ public class Player {
 				char direction = keyList();
 
 				while (!isNull) {
-					
 					int coordinateDirectionX = 0;
 					int coordinateDirectionY = 0;
 					Object[][] mazeMap = maze.getMaze();
@@ -206,11 +214,26 @@ public class Player {
 									five.numberDie();
 								}
 							}
-							backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
-							backpackCheck();
-							score += ScoreDefine.scoreDefinder(
-									mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
-							mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] = " ";
+							if(objectName.equals("Trap")) {
+								Trap trap = (Trap) object;
+								if(trap.isActivated())
+									isObjeActive = true;
+							}
+							if(objectName.equals("Warp")) {
+								Warp warp = (Warp) object;
+								if(warp.isActivated())
+									isObjeActive = true;
+							}
+							if(!isObjeActive) {
+								backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
+								backpackCheck();
+								score += ScoreDefine.scoreDefinder(
+										mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
+								mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] = " ";
+							}
+							else {
+								isNull = true;
+							}
 						} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX
 								+ coordinateDirectionX].equals("#")
 								|| mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]
@@ -226,7 +249,7 @@ public class Player {
 
 		};
 
-		timer.schedule(task, 50, 500);
+		timer.schedule(task, 50, energyCheck());
 	}
 
 	public char keyList() {
