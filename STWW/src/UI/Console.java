@@ -58,6 +58,7 @@ boolean isClose = false;
 			reset();
 			switch (selection) {
 			case 1:
+				isClose = true;
 				consoleClear();
 				templateClear();
 				consoleQueue = new Queue(15);
@@ -306,7 +307,12 @@ boolean isClose = false;
 		for (int i = 0; i < 15; i++) {
 			Object obj = consoleQueue.dequeue();
 			tempQueue.enqueue(obj);
-			System.out.print(obj);
+			if(i == 0) {
+				cn.getTextWindow().output(obj.toString(),maze.computer);
+			}
+			else {
+				cn.getTextWindow().output(obj.toString(),maze.white);
+			}
 		}
 		for (int i = 0; i < 15; i++) {
 			consoleQueue.enqueue(tempQueue.dequeue());
@@ -321,7 +327,6 @@ boolean isClose = false;
 		System.out.println("Input");
 		cn.getTextWindow().setCursorPosition(x, y + 1);
 		System.out.println("<<<<<<<<<<<<<<<");
-
 		cn.getTextWindow().setCursorPosition(x, y + 3);
 		System.out.println("<<<<<<<<<<<<<<<");
 		printBackpack(x, y, player);
@@ -368,7 +373,9 @@ boolean isClose = false;
 			cn.getTextWindow().setCursorPosition(x + 5, y + 5 + spaceCount + i);
 			Object temp = player.getBackpack().pop();
 
-			System.out.println("| " + ObjeComparator.objComparator(temp) + " |");
+			System.out.print("| ");
+			cn.getTextWindow().output(ObjeComparator.objComparator(temp),maze.timer);
+			System.out.print(" |\n");
 			tempBackpack.push(temp);
 		}
 		for (int i = 0; i < spaceCount; i++) {

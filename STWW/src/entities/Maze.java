@@ -16,6 +16,7 @@ public class Maze {
 	public static TextAttributes movingNumbers= new TextAttributes(Color.green,Color.black);
 	public static TextAttributes map= new TextAttributes(Color.LIGHT_GRAY,Color.black);
 	public static TextAttributes elements= new TextAttributes(Color.LIGHT_GRAY,Color.black);
+	public static TextAttributes white= new TextAttributes(Color.white,Color.black);
 	public Maze() {
 
 	}
