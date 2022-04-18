@@ -77,8 +77,13 @@ public class Player {
                 }
             }
         } else {
-            backpack.push(object2);
-            backpack.push(object1);
+        	if(!(object2.getClass().getSimpleName().equals("Integer"))){
+        		backpack.push(object2);
+                backpack.push(object1);
+        	}
+        	else {
+        		backpack.push(object1);
+        	}
 
         }
 	}
