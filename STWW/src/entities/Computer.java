@@ -295,7 +295,11 @@ public class Computer {
 
 						if (coordinateX == player.getX() && coordinateY == player.getY()) {
 							player.LifeRemove();
+							player.setEnergy(50);
 							player.updateCoordinates();
+							while(!player.getBackpack().isEmpty()) {
+								player.getBackpack().pop();
+							}
 						}
 
 						while (!isNull) {
