@@ -5,6 +5,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import Treasures.Constants.One;
+import Treasures.Moves.Five;
+import Treasures.Moves.Four;
 import UI.Console;
 import tools.RandomMovingList;
 import tools.ScoreDefine;
@@ -96,8 +98,7 @@ public class Computer {
 	}
 
 	public int calculateDistance(int compX, int compY, int playerX, int playerY) {
-		// return (int)Math.sqrt(Math.pow(playerX-compX, 2)+ Math.pow(playerY-compY,
-		// 2));
+
 		int y = compY - playerY;
 		if (y < 0) {
 			y *= -1;
@@ -182,16 +183,21 @@ public class Computer {
 		if (direction == 'R') {
 			scoreFunction('R');
 			coordinateX++;
+
 		} else if (direction == 'L') {
 			scoreFunction('L');
 			coordinateX--;
+
 		} else if (direction == 'U') {
 			scoreFunction('U');
 			coordinateY--;
+
 		} else if (direction == 'D') {
 			scoreFunction('D');
 			coordinateY++;
+
 		}
+
 	}
 
 	public void scoreFunction(char direction) {
@@ -203,8 +209,22 @@ public class Computer {
 				setComputerTotalScore(300);
 			} else {
 				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY - 1][coordinateX]) * 2);
+				
+				Object object = mazeArray[coordinateY-1][coordinateX];
+				Object objectPackage = object.getClass().getPackage().getName();
+				Object objectName = object.getClass().getSimpleName().toString();
+				if(objectPackage.equals("Treasures.Moves")){
+					if(objectName.equals("Four")) {
+						Four four = (Four) object;
+						four.numberDie();
+					}
+					if(objectName.equals("Five")) {
+						Five five = (Five) object;
+						five.numberDie();
+					}
+				}
 			}
-			if (mazeArray[coordinateY - 1][coordinateX].getClass().getSimpleName().equals("Player")) {
+			if (mazeArray[coordinateY - 2][coordinateX].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
 				player.getBackpack().pop();
 			}
@@ -217,8 +237,22 @@ public class Computer {
 				setComputerTotalScore(300);
 			} else {
 				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY][coordinateX + 1]) * 2);
+				
+				Object object = mazeArray[coordinateY][coordinateX+1];
+				Object objectPackage = object.getClass().getPackage().getName();
+				Object objectName = object.getClass().getSimpleName().toString();
+				if(objectPackage.equals("Treasures.Moves")){
+					if(objectName.equals("Four")) {
+						Four four = (Four) object;
+						four.numberDie();
+					}
+					if(objectName.equals("Five")) {
+						Five five = (Five) object;
+						five.numberDie();
+					}
+				}
 			}
-			if (mazeArray[coordinateY][coordinateX + 1].getClass().getSimpleName().equals("Player")) {
+			if (mazeArray[coordinateY][coordinateX + 2].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
 				player.getBackpack().pop();
 			}
@@ -231,8 +265,22 @@ public class Computer {
 				setComputerTotalScore(300);
 			} else {
 				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY + 1][coordinateX]) * 2);
+				
+				Object object = mazeArray[coordinateY+1][coordinateX];
+				Object objectPackage = object.getClass().getPackage().getName();
+				Object objectName = object.getClass().getSimpleName().toString();
+				if(objectPackage.equals("Treasures.Moves")){
+					if(objectName.equals("Four")) {
+						Four four = (Four) object;
+						four.numberDie();
+					}
+					if(objectName.equals("Five")) {
+						Five five = (Five) object;
+						five.numberDie();
+					}
+				}
 			}
-			if (mazeArray[coordinateY + 1][coordinateX].getClass().getSimpleName().equals("Player")) {
+			if (mazeArray[coordinateY + 2][coordinateX].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
 				player.getBackpack().pop();
 			}
@@ -245,34 +293,29 @@ public class Computer {
 				setComputerTotalScore(300);
 			} else {
 				setComputerTotalScore(ScoreDefine.scoreDefinder(mazeArray[coordinateY][coordinateX - 1]) * 2);
+				
+				Object object = mazeArray[coordinateY][coordinateX-1];
+				Object objectPackage = object.getClass().getPackage().getName();
+				Object objectName = object.getClass().getSimpleName().toString();
+				if(objectPackage.equals("Treasures.Moves")){
+					if(objectName.equals("Four")) {
+						Four four = (Four) object;
+						four.numberDie();
+					}
+					if(objectName.equals("Five")) {
+						Five five = (Five) object;
+						five.numberDie();
+					}
+				}
 			}
-			if (mazeArray[coordinateY][coordinateX - 1].getClass().getSimpleName().equals("Player")) {
+			if (mazeArray[coordinateY][coordinateX - 2].getClass().getSimpleName().equals("Player")) {
 				player.getBackpack().pop();
 				player.getBackpack().pop();
 			}
 		}
 	}
 
-//	public String decideDirection() {
-//		double tanValue=(player.getY())/();
-//		if(coordinateX==player.getX() && coordinateY<player.getY()) {
-//			return "down";
-//		}
-//		if(coordinateX==player.getX() && coordinateY>player.getY()) {
-//			return "up";
-//		}
-//		if(coordinateY==player.getY() && coordinateX<player.getX()) {
-//			return "right";
-//		}
-//		if(coordinateY==player.getY() && coordinateX>player.getX()) {
-//			return "left";
-//		}
-//		
-//	}
-//	
-//	public void escapeFunction() {
-//		
-//	}
+
 
 	public void computerMove() {
 
@@ -289,8 +332,10 @@ public class Computer {
 				if (isLiving()) {
 					if (!isFreeze()) {
 						boolean isNull = false;
-						tempMaze[coordinateY][coordinateX] = " ";
-						// randMove();
+						if(tempMaze[coordinateY][coordinateX].getClass().getSimpleName().equals("Computer")) {
+							tempMaze[coordinateY][coordinateX] = " ";
+						}
+
 						goToMove();
 
 						if (coordinateX == player.getX() && coordinateY == player.getY()) {

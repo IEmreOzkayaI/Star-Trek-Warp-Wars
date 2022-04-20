@@ -254,7 +254,7 @@ public class Player {
 
 		};
 
-		timer.schedule(task, 50, energyCheck());
+		timer.schedule(task, 100, energyCheck());
 	}
 
 	public char keyList() {
