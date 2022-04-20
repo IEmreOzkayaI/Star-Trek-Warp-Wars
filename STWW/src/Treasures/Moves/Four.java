@@ -134,6 +134,6 @@ public class Four {
 
 		};
 
-		timer.schedule(task, 1200, 1000);
+		timer.schedule(task, 100, 1000);
 	}
 }

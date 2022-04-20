@@ -132,6 +132,6 @@ public class Five {
 
 		};
 
-		timer.schedule(task, 313, 1000);
+		timer.schedule(task, 100, 1000);
 	}
 }

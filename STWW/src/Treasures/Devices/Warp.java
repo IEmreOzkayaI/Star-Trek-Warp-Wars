@@ -64,9 +64,9 @@ public class Warp {
 		int referencePointX = coordinateX;
 		int referencePointY = coordinateY;
 		Object[][] tempMaze = this.maze.getMaze();
-		int[] arr = { 0, 1, 0, -1, -1, 0, 1, 0, 0, 2, 0, -2, 2, 0, -2, 0 };
-		for (int i = 0; i < arr.length-1; i++) {
-			Object object = tempMaze[referencePointY - arr[i]][referencePointX - arr[i + 1]];
+		int[] arr = { -1,-1,-1,0,-1,1,0,-1,0,1,1,-1,1,0,1,1};
+		for (int i = 0; i < arr.length-1; i+=2) {
+			Object object = tempMaze[referencePointY + arr[i+1]][referencePointX + arr[i]];
 			Object objectPackage = object.getClass().getPackage().getName();
 			Object objectName = object.getClass().getSimpleName().toString();
 			if (objectPackage.equals("Treasures.Constants") || objectPackage.equals("Treasures.Moves")
@@ -80,11 +80,11 @@ public class Warp {
 					five.numberDie();
 				}
 				Player.score += ScoreDefine.scoreDefinder(object);
-				tempMaze[referencePointY - arr[i]][referencePointX - arr[i + 1]]=" ";
+				tempMaze[referencePointY + arr[i+1]][referencePointX + arr[i]]=" ";
 			}
 			if(objectName.equals("Computer")) {
 				Player.score += ScoreDefine.scoreDefinder(object);
-				tempMaze[referencePointY - arr[i]][referencePointX - arr[i + 1]]=" ";
+				tempMaze[referencePointY + arr[i+1]][referencePointX + arr[i]]=" ";
 				Computer computer = (Computer) object;
 				computer.computerDie();
 			}
