@@ -1,6 +1,5 @@
 package UI;
 
-import enigma.console.TextAttributes;
 import enigma.core.Enigma;
 import entities.Computer;
 import entities.Maze;
@@ -10,14 +9,10 @@ import tools.ObjeComparator;
 import tools.Queue;
 import tools.Stack;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import Treasures.Constants.One;
 import Treasures.Constants.Three;
@@ -29,7 +24,7 @@ import Treasures.Moves.Four;
 
 public class Console {
 
-	public static enigma.console.Console cn = Enigma.getConsole("Console", 80, 25, 30);
+	public static enigma.console.Console cn = Enigma.getConsole("STAR TREK WARP WARS", 80, 25, 30);
 
 	static int selection = 0;
 
@@ -42,7 +37,6 @@ public class Console {
 	Computer computer;
 	public static int rkey; // key (for press/release)
 	public static KeyListener klis;
-	private boolean isContinue = true;
 	static boolean menuStop = false;
 
 	public static int time = 1;
@@ -308,10 +302,10 @@ boolean isClose = false;
 			Object obj = consoleQueue.dequeue();
 			tempQueue.enqueue(obj);
 			if(i == 0) {
-				cn.getTextWindow().output(obj.toString(),maze.computer);
+				cn.getTextWindow().output(obj.toString(),Maze.computer);
 			}
 			else {
-				cn.getTextWindow().output(obj.toString(),maze.white);
+				cn.getTextWindow().output(obj.toString(),Maze.white);
 			}
 		}
 		for (int i = 0; i < 15; i++) {
@@ -336,23 +330,23 @@ boolean isClose = false;
 		System.out.println("P.Backpack");
 		cn.getTextWindow().setCursorPosition(x, y + 16);
 		System.out.print("P.Energy : ");
-		cn.getTextWindow().output(String.valueOf(player.getEnergy()),maze.template);
+		cn.getTextWindow().output(String.valueOf(player.getEnergy()),Maze.template);
 		System.out.print(" \n");
 		cn.getTextWindow().setCursorPosition(x, y + 17);
 		System.out.print("P.Score  : ");
-		cn.getTextWindow().output(String.valueOf(player.getScore()),maze.player);
+		cn.getTextWindow().output(String.valueOf(player.getScore()),Maze.player);
 		System.out.print("\n");
 		cn.getTextWindow().setCursorPosition(x, y + 18);
 		System.out.print("P.Life   : ");
-		cn.getTextWindow().output(String.valueOf(player.getLife()),maze.movingNumbers);
+		cn.getTextWindow().output(String.valueOf(player.getLife()),Maze.movingNumbers);
 		System.out.print("\n");
 		cn.getTextWindow().setCursorPosition(x, y + 20);
 		System.out.print("C.Score  : ");
-		cn.getTextWindow().output(String.valueOf(Computer.getComputerTotalScore()),maze.computer);
+		cn.getTextWindow().output(String.valueOf(Computer.getComputerTotalScore()),Maze.computer);
 		System.out.print("\n");
 		cn.getTextWindow().setCursorPosition(x, y + 22);
 		System.out.print("Time     : ");
-		cn.getTextWindow().output(String.valueOf(time),maze.timer);
+		cn.getTextWindow().output(String.valueOf(time),Maze.timer);
 		System.out.print("\n");
 	}
 
@@ -374,7 +368,7 @@ boolean isClose = false;
 			Object temp = player.getBackpack().pop();
 
 			System.out.print("| ");
-			cn.getTextWindow().output(ObjeComparator.objComparator(temp),maze.timer);
+			cn.getTextWindow().output(ObjeComparator.objComparator(temp),Maze.timer);
 			System.out.print(" |\n");
 			tempBackpack.push(temp);
 		}

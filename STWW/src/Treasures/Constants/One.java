@@ -1,6 +1,5 @@
 package Treasures.Constants;
 
-import java.util.SplittableRandom;
 
 import entities.Maze;
 import tools.RandomCoordinateGenerator;

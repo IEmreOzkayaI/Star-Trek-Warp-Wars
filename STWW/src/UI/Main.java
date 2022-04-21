@@ -1,7 +1,5 @@
  package UI;
 
-import Treasures.Constants.One;
-import entities.Computer;
 import tools.FileReader;
 
 public class Main {

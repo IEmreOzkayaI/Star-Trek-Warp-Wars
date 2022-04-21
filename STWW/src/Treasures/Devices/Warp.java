@@ -1,6 +1,5 @@
 package Treasures.Devices;
 
-import java.util.SplittableRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,7 +17,6 @@ public class Warp {
 	private int coordinateX = 0;
 	private int coordinateY = 0;
 	private boolean isActivated = false;
-	private enigma.console.Console cn;
 	private Maze maze;
 
 	public Warp() {
@@ -27,7 +25,6 @@ public class Warp {
 
 	public Warp(enigma.console.Console cn, Maze maze) {
 		this.maze = maze;
-		this.cn = cn;
 		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
 		setX(coordinate[0]);
 		setY(coordinate[1]);

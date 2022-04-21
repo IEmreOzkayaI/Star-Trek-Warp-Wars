@@ -10,7 +10,6 @@ import Treasures.Moves.Four;
 
 import tools.RandomMovingList;
 import tools.ScoreDefine;
-import tools.ComputerList;
 import tools.RandomCoordinateGenerator;
 
 public class Computer {
@@ -19,10 +18,8 @@ public class Computer {
 	private final int score = 300;
 	private int coordinateX = 0;
 	private int coordinateY = 0;
-	public static ComputerList computerList;
 	private static int computerTotalScore = 0;
 	private Object obj = this;
-	private enigma.console.Console cn;
 	private Maze maze;
 	private Player player;
 	private boolean live = true;
@@ -32,18 +29,13 @@ public class Computer {
 
 	}
 
-	public Computer(boolean isManager) {
 
-		computerList = new ComputerList();
-
-	}
 
 	public Computer(enigma.console.Console cn, Maze maze, Player player) {
 		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
 		setCoordinateX(coordinate[0]);
 		setCoordinateY(coordinate[1]);
 		this.maze = maze;
-		this.cn = cn;
 		this.player = player;
 		computerMove();
 	}
@@ -418,15 +410,6 @@ public class Computer {
 		coordinateY = random;
 		return coordinateY;
 
-	}
-
-	public void addComputer(Computer computer) {
-		computerList.Add(computer);
-
-	}
-
-	public static Computer[] getComputerList() {
-		return computerList.getList();
 	}
 
 	public static int getComputerTotalScore() {

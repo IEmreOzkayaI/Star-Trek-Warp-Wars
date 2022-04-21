@@ -1,13 +1,11 @@
 package Treasures.Devices;
 
-import java.awt.event.KeyEvent;
-import java.util.SplittableRandom;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 import Treasures.Moves.Five;
 import Treasures.Moves.Four;
-import UI.Console;
 import entities.Computer;
 import entities.Maze;
 import tools.RandomCoordinateGenerator;
@@ -18,7 +16,6 @@ public class Trap {
 	private int coordinateX = 0;
 	private int coordinateY = 0;
 	private boolean isActivated = false;
-	private enigma.console.Console cn;
 	private Maze maze;
 
 	public Trap() {
@@ -26,7 +23,6 @@ public class Trap {
 
 	public Trap(enigma.console.Console cn, Maze maze) {
 		this.maze = maze;
-		this.cn = cn;
 		int[] coordinate = RandomCoordinateGenerator.generateRandomCoordinates(this, maze);
 		setX(coordinate[0]);
 		setY(coordinate[1]);
