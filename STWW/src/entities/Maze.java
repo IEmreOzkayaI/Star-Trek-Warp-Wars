@@ -10,13 +10,13 @@ public class Maze {
 
 	private Object[][] maze;
 	public static TextAttributes player= new TextAttributes(Color.blue,Color.black);
-	public static TextAttributes computer= new TextAttributes(Color.red,Color.black);
-	public static TextAttributes template= new TextAttributes(Color.orange,Color.black);
-	public static TextAttributes timer= new TextAttributes(Color.cyan,Color.black);
-	public static TextAttributes movingNumbers= new TextAttributes(Color.green,Color.black);
-	public static TextAttributes map= new TextAttributes(Color.LIGHT_GRAY,Color.black);
-	public static TextAttributes elements= new TextAttributes(Color.LIGHT_GRAY,Color.black);
-	public static TextAttributes white= new TextAttributes(Color.white,Color.black);
+    public static TextAttributes computer= new TextAttributes(Color.red,Color.black);
+    public static TextAttributes template= new TextAttributes(Color.orange,Color.black);
+    public static TextAttributes timer= new TextAttributes(Color.cyan,Color.black);
+    public static TextAttributes movingNumbers= new TextAttributes(Color.green,Color.black);
+    public static TextAttributes map= new TextAttributes(Color.LIGHT_GRAY,Color.black);
+    public static TextAttributes elements= new TextAttributes(Color.LIGHT_GRAY,Color.black);
+    public static TextAttributes white= new TextAttributes(Color.white,Color.black);
 	public Maze() {
 
 	}
