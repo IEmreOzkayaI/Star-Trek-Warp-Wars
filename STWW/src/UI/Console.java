@@ -276,21 +276,21 @@ boolean isClose = false;
 		while (flag) {
 			int x = random.nextInt(41);
 			if (1 <= x && 12 >= x)
-				consoleQueue.enqueue(1); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+				consoleQueue.enqueue(1); 
 			if (13 <= x && 20 >= x)
-				consoleQueue.enqueue(2); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+				consoleQueue.enqueue(2); 
 			if (21 <= x && 26 >= x)
-				consoleQueue.enqueue(3); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+				consoleQueue.enqueue(3); 
 			if (27 <= x && 31 >= x)
-				consoleQueue.enqueue(4); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+				consoleQueue.enqueue(4); 
 			if (32 <= x && 35 >= x)
-				consoleQueue.enqueue(5); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+				consoleQueue.enqueue(5); 
 			if (36 <= x && 37 >= x)
-				consoleQueue.enqueue("="); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+				consoleQueue.enqueue("=");
 			if (38 == x)
-				consoleQueue.enqueue("*"); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+				consoleQueue.enqueue("*"); 
 			if (39 <= x && 40 >= x)
-				consoleQueue.enqueue("C"); // BU YAPILAR CLASSLAR OLUÞTURULDUÐUNDA DEÐÝÞTÝRÝLMELÝ
+				consoleQueue.enqueue("C"); 
 			if (consoleQueue.isFull())
 				flag = false;
 		}

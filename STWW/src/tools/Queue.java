@@ -20,7 +20,6 @@ public class Queue {
 	public Object dequeue() {
 		// check for queue underflow
 		if (isEmpty()) {
-			System.out.println("Underflow\nProgram Terminated");
 			System.exit(-1);
 		}
 
@@ -37,7 +36,6 @@ public class Queue {
 	public void enqueue(Object item) {
 		// check for queue overflow
 		if (isFull()) {
-			System.out.println("Overflow\nProgram Terminated");
 			System.exit(-1);
 		}
 
