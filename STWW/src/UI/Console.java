@@ -97,12 +97,12 @@ boolean isClose = false;
 				templateClear();
 				cn.getTextWindow().setCursorPosition(-1, -1);
 				System.out.print("\n\n");
-				System.out.print("\t\t\t\t\t   _____ _______ _________          __\r\n"
-						+ "\t\t\t\t\t  / ____|__   __|__   __\\ \\        / /\r\n"
-						+ "\t\t\t\t\t | (___    | |     | |   \\ \\  /\\  / / \r\n"
-						+ "\t\t\t\t\t  \\___ \\   | |     | |    \\ \\/  \\/ /  \r\n"
-						+ "\t\t\t\t\t  ____) |  | |     | |     \\  /\\  /   \r\n"
-						+ "\t\t\t\t\t |_____/   |_|     |_|      \\/  \\/    ");
+				System.out.print("\t\t\t\t\t   _____ _________          ____          __\r\n"
+						+ "\t\t\t\t\t  / ____|__   __\\ \\        / /\\ \\        / /\r\n"
+						+ "\t\t\t\t\t | (___    | |   \\ \\  /\\  / /  \\ \\  /\\  / / \r\n"
+						+ "\t\t\t\t\t  \\___ \\   | |    \\ \\/  \\/ /    \\ \\/  \\/ /  \r\n"
+						+ "\t\t\t\t\t  ____) |  | |     \\  /\\  /      \\  /\\  /   \r\n"
+						+ "\t\t\t\t\t |_____/   |_|      \\/  \\/        \\/  \\/    ");
 				System.out.print("\n\n\n\n");
 				System.out.println("   - Your character represented by the character \"P\" and the enemies are \n\t the \"C\" characters which is a represantation of Computer.");
 				System.out.println("   - Player can move using the cursor keys.");
