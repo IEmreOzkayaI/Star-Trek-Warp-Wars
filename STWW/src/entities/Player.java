@@ -110,7 +110,7 @@ public class Player {
 
 		}
 		int destinationX = coordinateX + coordinateDirectionX;
-		int destinationY =coordinateY + coordinateDirectionY;
+		int destinationY = coordinateY + coordinateDirectionY;
 		
 		if(backpackObject.getClass().getSimpleName().toString().equals("Trap"))
 		{
@@ -158,8 +158,7 @@ public class Player {
 				boolean isObjeActive = false;
 				Object backpackObject = 0;
 
-				int x = 0;
-				int y = 0;
+
 				char direction = keyList();
 
 				while (!isNull) {
@@ -173,23 +172,23 @@ public class Player {
 						if (direction == 'R') {
 							coordinateDirectionX = 1;
 							coordinateDirectionY = 0;
-							isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,
-									y = coordinateY + coordinateDirectionY, obj);
+							isNull = maze.updateMaze(coordinateX + coordinateDirectionX,
+									coordinateY + coordinateDirectionY, obj);
 						} else if (direction == 'L') {
 							coordinateDirectionX = -1;
 							coordinateDirectionY = 0;
-							isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,
-									y = coordinateY + coordinateDirectionY, obj);
+							isNull = maze.updateMaze(coordinateX + coordinateDirectionX,
+									coordinateY + coordinateDirectionY, obj);
 						} else if (direction == 'U') {
 							coordinateDirectionX = 0;
 							coordinateDirectionY = -1;
-							isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,
-									y = coordinateY + coordinateDirectionY, obj);
+							isNull = maze.updateMaze(coordinateX + coordinateDirectionX,
+									coordinateY + coordinateDirectionY, obj);
 						} else if (direction == 'B') {
 							coordinateDirectionX = 0;
 							coordinateDirectionY = 1;
-							isNull = maze.updateMaze(x = coordinateX + coordinateDirectionX,
-									y = coordinateY + coordinateDirectionY, obj);
+							isNull = maze.updateMaze(coordinateX + coordinateDirectionX,
+									coordinateY + coordinateDirectionY, obj);
 						} else {
 							backpackRemover(direction, coordinateDirectionX, coordinateDirectionY, backpackObject,
 									mazeMap);
