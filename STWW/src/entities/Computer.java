@@ -4,10 +4,10 @@ import java.util.SplittableRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import Treasures.Constants.One;
+
 import Treasures.Moves.Five;
 import Treasures.Moves.Four;
-import UI.Console;
+
 import tools.RandomMovingList;
 import tools.ScoreDefine;
 import tools.ComputerList;
@@ -16,7 +16,6 @@ import tools.RandomCoordinateGenerator;
 public class Computer {
 
 	private final String name = "C";
-	private final int currentScore = 0;
 	private final int score = 300;
 	private int coordinateX = 0;
 	private int coordinateY = 0;
@@ -26,7 +25,6 @@ public class Computer {
 	private enigma.console.Console cn;
 	private Maze maze;
 	private Player player;
-	private boolean isEscapeNeeded = false;
 	private boolean live = true;
 	private boolean isFreeze = false;
 	private int freezingTime = 0 ;
