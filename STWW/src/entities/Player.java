@@ -48,47 +48,48 @@ public class Player {
 			isNull = this.maze.updateMaze(this.getX(), this.getY(), this);
 		}
 	}
-	public void backpackCheck() {	
+
+	public void backpackCheck() {
 		Object object1 = 0;
-        Object object2 = 0;
-        if (!backpack.isEmpty()) {
-            object1 = backpack.pop();
-        }
-        if (!backpack.isEmpty()) {
-            object2 = backpack.pop();
-        }
+		Object object2 = 0;
+		if (!backpack.isEmpty()) {
+			object1 = backpack.pop();
+		}
+		if (!backpack.isEmpty()) {
+			object2 = backpack.pop();
+		}
 
-        if (!(object1.getClass().getPackageName().equals("Treasures.Devices"))
-                && !(object2.getClass().getPackageName().equals("Treasures.Devices"))) {
-            if (object1.getClass().getSimpleName().toString().equals(object2.getClass().getSimpleName().toString())) {
-                if (object1.getClass().getSimpleName().toString().equals("Two")) {
-                    EnergyAdd(30);
-                } else if (object1.getClass().getSimpleName().toString().equals("Three")) {
-                    backpack.push(new Trap());
-                } else if (object1.getClass().getSimpleName().toString().equals("Four")) {
-                    EnergyAdd(240);
-                } else if (object1.getClass().getSimpleName().toString().equals("Five")) {
-                    backpack.push(new Warp());
-                }
-            } else {
-                if (!object1.getClass().getSimpleName().equals("Integer")) {
-                    if (object2.getClass().getSimpleName().equals("Integer"))
-                        backpack.push(object1);
-                }
-            }
-        } else {
-        	if(!(object2.getClass().getSimpleName().equals("Integer"))){
-        		backpack.push(object2);
-                backpack.push(object1);
-        	}
-        	else {
-        		backpack.push(object1);
-        	}
+		if (!(object1.getClass().getPackageName().equals("Treasures.Devices"))
+				&& !(object2.getClass().getPackageName().equals("Treasures.Devices"))) {
+			if (object1.getClass().getSimpleName().toString().equals(object2.getClass().getSimpleName().toString())) {
+				if (object1.getClass().getSimpleName().toString().equals("Two")) {
+					EnergyAdd(30);
+				} else if (object1.getClass().getSimpleName().toString().equals("Three")) {
+					backpack.push(new Trap());
+				} else if (object1.getClass().getSimpleName().toString().equals("Four")) {
+					EnergyAdd(240);
+				} else if (object1.getClass().getSimpleName().toString().equals("Five")) {
+					backpack.push(new Warp());
+				}
+			} else {
+				if (!object1.getClass().getSimpleName().equals("Integer")) {
+					if (object2.getClass().getSimpleName().equals("Integer"))
+						backpack.push(object1);
+				}
+			}
+		} else {
+			if (!(object2.getClass().getSimpleName().equals("Integer"))) {
+				backpack.push(object2);
+				backpack.push(object1);
+			} else {
+				backpack.push(object1);
+			}
 
-        }
+		}
 	}
+
 	private void backpackRemover(char direction, int coordinateDirectionX, int coordinateDirectionY,
-		Object backpackObject, Object[][] mazeMap) {
+			Object backpackObject, Object[][] mazeMap) {
 		boolean isBackpackRemove = false;
 		backpackObject = backpack.pop();
 
@@ -111,39 +112,40 @@ public class Player {
 		}
 		int destinationX = coordinateX + coordinateDirectionX;
 		int destinationY = coordinateY + coordinateDirectionY;
-		
-		if(backpackObject.getClass().getSimpleName().toString().equals("Trap"))
-		{
-			isBackpackRemove = maze.updateMaze(destinationX, destinationY,backpackObject);
-			Trap trap = (Trap) backpackObject;
+
+		if (backpackObject.getClass().getSimpleName().toString().equals("Trap")) {
+			Trap trap = new Trap(cn,maze);
+			isBackpackRemove = maze.updateMaze(destinationX, destinationY,trap);
 			trap.setX(destinationX);
 			trap.setY(destinationY);
 			trap.setActivated(true);
-			
-		}else if(backpackObject.getClass().getSimpleName().toString().equals("Warp")) {
-			isBackpackRemove = maze.updateMaze(destinationX, destinationY,backpackObject);
-			Warp warp = (Warp) backpackObject;
+
+		} else if (backpackObject.getClass().getSimpleName().toString().equals("Warp")) {
+			Warp warp = new Warp(cn,maze);
+			isBackpackRemove = maze.updateMaze(destinationX, destinationY, warp);
 			warp.setX(destinationX);
 			warp.setY(destinationY);
 			warp.setActivated(true);
+
+		} else {
+			isBackpackRemove = maze.updateMaze(destinationX, destinationY, " ");
 		}
-		else {
-			isBackpackRemove = maze.updateMaze(destinationX, destinationY," ");
-		}
-		
+
 		if (!isBackpackRemove) {
 			backpack.push(backpackObject);
 		}
 	}
+
 	public int energyCheck() {
 		int timerNum = 1000;
-		if(getEnergy() > 0) {
+		if (getEnergy() > 0) {
 			timerNum = 500;
-		}else {
+		} else {
 			timerNum = 1000;
 		}
 		return timerNum;
 	}
+
 	public void playerMove() {
 
 		Timer timer = new Timer();
@@ -157,7 +159,6 @@ public class Player {
 				boolean isBackpackRemoverWorked = false;
 				boolean isObjeActive = false;
 				Object backpackObject = 0;
-
 
 				char direction = keyList();
 
@@ -193,7 +194,7 @@ public class Player {
 							backpackRemover(direction, coordinateDirectionX, coordinateDirectionY, backpackObject,
 									mazeMap);
 							isBackpackRemoverWorked = true;
-							
+
 						}
 						if (isNull) {
 							mazeMap[coordinateY][coordinateX] = " ";
@@ -201,45 +202,50 @@ public class Player {
 							coordinateY += coordinateDirectionY;
 						} else if (isBackpackRemoverWorked) {
 							isNull = true;
-						} else if (!(mazeMap[coordinateY + coordinateDirectionY][coordinateX+coordinateDirectionX].equals("#"))
-								&& !(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX].getClass().getSimpleName().toString().equalsIgnoreCase("Computer"))) {
-							Object object = mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX];
+						} else if (!(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]
+								.equals("#"))
+								&& !(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]
+										.getClass().getSimpleName().toString().equalsIgnoreCase("Computer"))) {
+							Object object = mazeMap[coordinateY + coordinateDirectionY][coordinateX
+									+ coordinateDirectionX];
 							Object objectPackage = object.getClass().getPackage().getName();
 							Object objectName = object.getClass().getSimpleName().toString();
-							if(objectPackage.equals("Treasures.Moves")){
-								if(objectName.equals("Four")) {
+							if (objectPackage.equals("Treasures.Moves")) {
+								if (objectName.equals("Four")) {
 									Four four = (Four) object;
 									four.numberDie();
 								}
-								if(objectName.equals("Five")) {
+								if (objectName.equals("Five")) {
 									Five five = (Five) object;
 									five.numberDie();
 								}
 							}
-							if(objectName.equals("Trap")) {
+							if (objectName.equals("Trap")) {
 								Trap trap = (Trap) object;
-								if(trap.isActivated())
+								if (trap.isActivated())
 									isObjeActive = true;
 							}
-							if(objectName.equals("Warp")) {
+							if (objectName.equals("Warp")) {
 								Warp warp = (Warp) object;
-								if(warp.isActivated())
+								if (warp.isActivated())
 									isObjeActive = true;
 							}
-							if(!isObjeActive) {
-								if(!(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX].getClass().getSimpleName().toString().equals("One"))) {
-									backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
+							if (!isObjeActive) {
+								if (!(mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]
+										.getClass().getSimpleName().toString().equals("One"))) {
+									backpack.push(mazeMap[coordinateY + coordinateDirectionY][coordinateX
+											+ coordinateDirectionX]);
 									backpackCheck();
 								}
-								score += ScoreDefine.scoreDefinder(
-										mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]);
+								score += ScoreDefine
+										.scoreDefinder(mazeMap[coordinateY + coordinateDirectionY][coordinateX
+												+ coordinateDirectionX]);
 								mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX] = " ";
-							}
-							else {
+							} else {
 								isNull = true;
 							}
-						} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX
-								+ coordinateDirectionX].equals("#")
+						} else if (mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]
+								.equals("#")
 								|| mazeMap[coordinateY + coordinateDirectionY][coordinateX + coordinateDirectionX]
 										.getClass().getSimpleName().toString().equalsIgnoreCase("Computer")
 										&& !isBackpackRemoverWorked) {
